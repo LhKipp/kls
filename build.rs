@@ -5,6 +5,8 @@ fn main() {
 
     cc::Build::new()
         .include(&dir)
+        .flag("-Wno-unused-variable")
+        .flag("-Wno-unused-but-set-variable")
         .file(dir.join("parser.c"))
         .file(dir.join("scanner.c"))
         .compile("tree-sitter-kotlin");
