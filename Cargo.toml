@@ -6,7 +6,15 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+tower-lsp = {version = "0.20.0", features = ["proposed"]}
 tree-sitter = "0.20.10"
+tracing = "0.1.37"
+tracing-subscriber = {version = "0.3.16", features = ["env-filter"]}
+tokio = { version = "1.32.0", features = ["full"] }
+parking_lot = "0.12.1"
+
+[dev-dependencies]
+assert_cmd = "2.0.12"
 
 [build-dependencies]
 cc="*"
