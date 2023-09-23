@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use kls::kserver::KServer;
+use server::kserver::KServer;
 use tower_lsp::{LspService, Server};
 use tracing::debug;
 use tracing_subscriber::EnvFilter;
@@ -19,22 +19,8 @@ async fn main() {
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 
-    let (service, socket) = LspService::build(|client| KServer {
-        client: Box::new(client),
-    })
-    .finish();
+    let (service, socket) = LspService::build(|client| KServer::new(Box::new(client))).finish();
 
     debug!("KLS starting");
     Server::new(stdin, stdout, socket).serve(service).await;
 }
-
-// let language = unsafe { tree_sitter_kotlin() };
-// parser.set_language(language).unwrap();
-
-// let source_code = "fun test() {}";
-// let tree = parser.parse(source_code, None).unwrap();
-// let root_node = tree.root_node();
-
-// assert_eq!(root_node.kind(), "source_file");
-// assert_eq!(root_node.start_position().column, 0);
-// assert_eq!(root_node.end_position().column, 13);

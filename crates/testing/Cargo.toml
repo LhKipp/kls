@@ -1,0 +1,12 @@
+[package]
+name = "testing"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+server.workspace = true
+stdx.workspace = true
+tower-lsp.workspace = true
+tracing.workspace = true
