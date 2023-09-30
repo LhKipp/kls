@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 tower-lsp.workspace = true
 tree-sitter.workspace = true
+parser.workspace = true
 stdx.workspace = true
 
 tracing.workspace= true
@@ -15,6 +16,8 @@ tokio.workspace = true
 parking_lot.workspace = true
 qp-trie.workspace = true
 walkdir.workspace = true
+derive-new = "0.5.9"
+smallvec = "1.11.1"
 
 [build-dependencies]
 cc="*"

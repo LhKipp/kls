@@ -5,7 +5,7 @@ use stdx::new_arc_rw_lock;
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::{async_trait, lsp_types::*, Client};
 use tower_lsp::{lsp_types::InitializeParams, LanguageServer};
-use tracing::{info, trace};
+use tracing::{debug, info, trace};
 use walkdir::WalkDir;
 
 use crate::indexes::Indexes;
@@ -59,19 +59,19 @@ impl KServer {
             return Ok(());
         };
 
-        self.client
-            .log_message(
-                MessageType::INFO,
-                "Loading all source files in directory".into(),
-            )
-            .await;
+        debug!("Loading all source files in {:?}", workspace_root);
 
         let source_dir = workspace_root.join("src/main/kotlin");
+
+        if !source_dir.is_dir() {
+            return Ok(());
+        }
+
         for f in WalkDir::new(source_dir)
             .follow_links(true)
             .into_iter()
             .map(|e| e.unwrap())
-        // .filter(|f| f.)
+            .filter(|f| f.file_type().is_file())
         {
             trace!("Visiting file {:?}", f.path());
             self.indexes.add_from_file(f.into_path()).await;

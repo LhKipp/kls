@@ -1,3 +1,6 @@
 [submodule "tree-sitter-kotlin"]
 	path = crates/server/tree-sitter-kotlin
 	url = https://github.com/fwcd/tree-sitter-kotlin
+[submodule "crates/server/tree-sitter-kotlin"]
+	path = crates/server/tree-sitter-kotlin
+	url = https://github.com/fwcd/tree-sitter-kotlin

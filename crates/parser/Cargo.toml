@@ -1,16 +1,11 @@
 [package]
-name = "testing"
+name = "parser"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-server.workspace = true
+tree-sitter.workspace = true
 stdx.workspace = true
-tower-lsp.workspace = true
-tracing.workspace = true
-tracing-subscriber.workspace = true
-
-testdir = "0.8.0"
-derive_builder = "0.12.0"
+derive-new = "0.5.9"

@@ -23,9 +23,3 @@ async fn shutdown_should_return_ok() {
     let (_, server) = server_init().await;
     server.shutdown().await.expect("server.shutdown failed")
 }
-
-#[tokio::test]
-async fn initializing_in_source_dir_should_index_files() {
-    let (_, server) = server_init().await;
-    server.shutdown().await.expect("server.shutdown failed")
-}
