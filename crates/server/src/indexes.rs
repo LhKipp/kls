@@ -1,10 +1,14 @@
+use core::fmt;
 use std::{path::PathBuf, sync::Arc};
 
 use crate::buffer::Buffer;
-use parser::{node, rec_descend, text_of};
+use parser::{node, rec_descend};
 use smallvec::SmallVec;
 
-use parking_lot::RwLock;
+use parking_lot::{
+    lock_api::{RawRwLock, RwLockWriteGuard},
+    RwLock,
+};
 use stdx::new_arc_rw_lock;
 
 use qp_trie::Trie;
@@ -20,6 +24,7 @@ pub struct SymbolClass {
 #[derive(Debug)]
 pub enum SymbolKind {
     Class(SymbolClass),
+    Package,
 }
 
 #[derive(new, Debug)]
@@ -53,6 +58,18 @@ impl Indexes {
         //     .replace("/", ".")
     }
 
+    fn add_symbol<Lock: RawRwLock>(
+        &self,
+        w_lock: &mut RwLockWriteGuard<'_, Lock, Trie<Vec<u8>, SmallVec<[Symbol; 2]>>>,
+        package: String,
+        symbol: Symbol,
+    ) {
+        w_lock
+            .entry(package.clone().into())
+            .or_insert_with(|| smallvec::smallvec![])
+            .push(symbol)
+    }
+
     pub fn add_from_buffer(&self, buffer: &Buffer) {
         let mut package = Self::get_default_package_name();
 
@@ -61,9 +78,20 @@ impl Indexes {
         trace!("Visiting tree {}", buffer.tree.root_node().to_sexp());
         rec_descend(&buffer.tree.root_node(), |node: &Node| match node.kind() {
             "package_header" => {
-                trace!("Visiting package_header {}", text_of(&node, &buffer.text));
-                if let Some(identifier) = node.child_by_field_name("identifier") {
-                    package = parser::text_of(&identifier, &buffer.text);
+                let package_decl = node::PackageDecl::new(&node, &buffer.text);
+                trace!("Visiting package_header {:?}", package_decl.package_ident());
+                if let Some(identifier) = package_decl.package_ident() {
+                    package = identifier.clone();
+                    self.add_symbol(
+                        &mut indexes_w_lock,
+                        package.clone(),
+                        Symbol::new(
+                            buffer.path.clone(),
+                            package_decl.node.range(),
+                            package.clone(),
+                            SymbolKind::Package,
+                        ),
+                    );
                 }
                 false
             }
@@ -71,15 +99,16 @@ impl Indexes {
                 let class_decl = node::ClassDecl::new(&node, &buffer.text);
                 trace!("Visiting class with name {:?}", class_decl.name());
                 if let Some(class_name) = class_decl.name() {
-                    indexes_w_lock
-                        .entry(class_name.clone().into())
-                        .or_insert_with(|| smallvec::smallvec![])
-                        .push(Symbol::new(
+                    self.add_symbol(
+                        &mut indexes_w_lock,
+                        class_name.clone(),
+                        Symbol::new(
                             buffer.path.clone(),
                             class_decl.node.range(),
                             package.clone(),
                             SymbolKind::Class(SymbolClass { name: class_name }),
-                        ));
+                        ),
+                    );
                 }
                 true
             }
@@ -88,11 +117,7 @@ impl Indexes {
     }
 
     pub fn completions_for(&self, word: &str) -> Vec<CompletionItem> {
-        trace!(
-            "Getting completion for {} while indexes are \n{:?}",
-            word,
-            self.indexes.read()
-        );
+        trace!("Completing {} with indexes \n{:?}", word, self);
         self.indexes
             .read()
             .iter_prefix(word.as_bytes())
@@ -108,7 +133,26 @@ impl Indexes {
                 item.label = class_symbol.name.clone();
                 item.kind = Some(CompletionItemKind::CLASS);
             }
+            SymbolKind::Package => {
+                item.label = symbol.package.clone();
+                item.kind = Some(CompletionItemKind::MODULE)
+            }
         }
+        trace!("Mapped {:?} to {:?}", symbol, item);
         item
+    }
+}
+
+impl fmt::Debug for Indexes {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let s: String = self
+            .indexes
+            .read()
+            .iter()
+            .flat_map(|(k, symbols)| symbols.iter().map(|s| (k.clone(), s)))
+            .map(|(k, symbol)| format!("{} -> {:?}\n", String::from_utf8(k).unwrap(), symbol))
+            .collect();
+
+        f.write_str(&s)
     }
 }

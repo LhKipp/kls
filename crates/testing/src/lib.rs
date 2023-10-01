@@ -1,22 +1,22 @@
 #[macro_use]
 extern crate derive_builder;
 
+use std::path::PathBuf;
+
 use server::kserver::ClientI;
 use server::kserver::KServer;
 use stdx::new_arc_lock;
 use stdx::AMtx;
 use tower_lsp::async_trait;
-use tower_lsp::lsp_types::InitializedParams;
-use tower_lsp::lsp_types::MessageType;
-use tower_lsp::lsp_types::Url;
-use tower_lsp::lsp_types::WorkspaceFolder;
-use tower_lsp::{lsp_types::InitializeParams, LanguageServer};
 use tracing::info;
 use tracing_subscriber::EnvFilter;
 
 pub mod completion;
 pub mod workspace;
 pub use workspace::*;
+
+pub use tower_lsp::lsp_types::*;
+pub use tower_lsp::LanguageServer;
 
 pub struct TestClientData {}
 
@@ -39,7 +39,7 @@ impl ClientI for TestClient {
     }
 }
 
-#[derive(Builder)]
+#[derive(Builder, Clone)]
 #[builder(setter(into), default)]
 pub struct ServerInitOptions {
     pub init: bool,
@@ -58,6 +58,22 @@ impl Default for ServerInitOptions {
 impl ServerInitOptions {
     pub fn workspace(&mut self) -> &mut Workspace {
         self.workspace.as_mut().unwrap()
+    }
+}
+
+impl ServerInitOptionsBuilder {
+    pub fn add_kt_file(&mut self, path: PathBuf, content: &str) -> &mut Self {
+        if self.workspace.is_none() {
+            self.workspace(Some(Workspace::new()));
+        }
+
+        self.workspace
+            .as_mut()
+            .unwrap()
+            .as_mut()
+            .unwrap()
+            .add_kt_file(path, content.trim().to_string());
+        self
     }
 }
 
@@ -95,4 +111,8 @@ pub fn init_test() {
         .with_env_filter(EnvFilter::from_default_env())
         .without_time()
         .init();
+}
+
+pub fn pos(line: u32, character: u32) -> Position {
+    Position { line, character }
 }

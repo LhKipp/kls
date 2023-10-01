@@ -11,21 +11,6 @@ use walkdir::WalkDir;
 use crate::buffer::Buffers;
 use crate::indexes::Indexes;
 
-// pub const LEGEND_TYPE: &[SemanticTokenType] = &[
-//     SemanticTokenType::FUNCTION,
-//     SemanticTokenType::VARIABLE,
-//     SemanticTokenType::STRING,
-//     SemanticTokenType::COMMENT,
-//     SemanticTokenType::NUMBER,
-//     SemanticTokenType::KEYWORD,
-//     SemanticTokenType::OPERATOR,
-//     SemanticTokenType::PARAMETER,
-// ];
-
-async fn a(client: Client) {
-    client.log_message(MessageType::LOG, "Init").await;
-}
-
 #[async_trait]
 pub trait ClientI: Send + Sync {
     async fn log_message(&self, ty: MessageType, msg: String);
@@ -137,7 +122,7 @@ impl LanguageServer for KServer {
     }
 
     async fn shutdown(&self) -> Result<()> {
-        info!("Shutting");
+        info!("Shutting down");
         Ok(())
     }
 
