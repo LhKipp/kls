@@ -1,7 +1,7 @@
 use std::{path::PathBuf, sync::Arc};
 
 use crate::buffer::Buffer;
-use parser::{node, rec_descend};
+use parser::{node, rec_descend, text_of};
 use smallvec::SmallVec;
 
 use parking_lot::RwLock;
@@ -9,17 +9,20 @@ use stdx::new_arc_rw_lock;
 
 use qp_trie::Trie;
 use tower_lsp::lsp_types::{CompletionItem, CompletionItemKind};
+use tracing::trace;
 use tree_sitter::{Node, Range};
 
+#[derive(Debug)]
 pub struct SymbolClass {
     pub name: String,
 }
 
+#[derive(Debug)]
 pub enum SymbolKind {
     Class(SymbolClass),
 }
 
-#[derive(new)]
+#[derive(new, Debug)]
 pub struct Symbol {
     pub file: PathBuf,
     pub location: Range,
@@ -55,8 +58,10 @@ impl Indexes {
 
         let mut indexes_w_lock = self.indexes.write();
 
+        trace!("Visiting tree {}", buffer.tree.root_node().to_sexp());
         rec_descend(&buffer.tree.root_node(), |node: &Node| match node.kind() {
             "package_header" => {
+                trace!("Visiting package_header {}", text_of(&node, &buffer.text));
                 if let Some(identifier) = node.child_by_field_name("identifier") {
                     package = parser::text_of(&identifier, &buffer.text);
                 }
@@ -64,6 +69,7 @@ impl Indexes {
             }
             "class_declaration" => {
                 let class_decl = node::ClassDecl::new(&node, &buffer.text);
+                trace!("Visiting class with name {:?}", class_decl.name());
                 if let Some(class_name) = class_decl.name() {
                     indexes_w_lock
                         .entry(class_name.clone().into())
@@ -82,6 +88,11 @@ impl Indexes {
     }
 
     pub fn completions_for(&self, word: &str) -> Vec<CompletionItem> {
+        trace!(
+            "Getting completion for {} while indexes are \n{:?}",
+            word,
+            self.indexes.read()
+        );
         self.indexes
             .read()
             .iter_prefix(word.as_bytes())

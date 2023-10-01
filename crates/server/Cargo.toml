@@ -21,6 +21,7 @@ derive-new.workspace = true
 smallvec.workspace = true
 crop.workspace = true
 anyhow = "1.0.75"
+tap = "1.0.1"
 
 [build-dependencies]
 cc="*"

@@ -28,7 +28,7 @@ fun x() {
         .completion(completion_for(
             kt_file_url,
             Position {
-                line: 6,
+                line: 5,
                 character: 13,
             },
         ))
@@ -40,6 +40,7 @@ fun x() {
         CompletionResponse::Array(v) => {
             assert!(v.len() == 1);
             assert!(v[0].label == "TestClass");
+            assert!(v[0].kind == Some(CompletionItemKind::CLASS));
 
             true
         }

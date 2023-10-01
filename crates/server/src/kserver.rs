@@ -58,6 +58,10 @@ impl KServer {
     }
 
     async fn load_source_files_in_workspace(&self) -> Result<()> {
+        trace!(
+            "Loading source files in workspace {:?}",
+            self.workspace_root.read()
+        );
         let Some(workspace_root) = self.workspace_root.read().clone() else {
             return Ok(());
         };
@@ -109,7 +113,7 @@ impl LanguageServer for KServer {
     async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
         (*self.workspace_root.write()) = find_workspace_folder(&params).unwrap();
 
-        self.load_source_files_in_workspace().await.unwrap();
+        self.load_source_files_in_workspace().await?;
 
         Ok(InitializeResult {
             server_info: Some(ServerInfo {

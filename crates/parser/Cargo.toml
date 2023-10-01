@@ -8,5 +8,6 @@ edition = "2021"
 [dependencies]
 tree-sitter.workspace = true
 stdx.workspace = true
+tracing.workspace = true
 derive-new.workspace = true
 crop.workspace = true

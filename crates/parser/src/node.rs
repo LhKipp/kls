@@ -1,6 +1,8 @@
 use crop::Rope;
 use tree_sitter::Node;
 
+use crate::text_of;
+
 #[derive(new)]
 pub struct ClassDecl<'a> {
     pub node: &'a Node<'a>,
@@ -9,9 +11,16 @@ pub struct ClassDecl<'a> {
 
 impl<'a> ClassDecl<'a> {
     pub fn name(&self) -> Option<String> {
-        self.node
-            .child_by_field_name("type_identifier")
-            .map(|type_ident| crate::text_of(&type_ident, &self.source))
+        // for w/e reasons looking up the child by field_name doesn't work
+        // so we filter on kind
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|type_ident| text_of(&type_ident, &self.source))
+            .next();
+        x
     }
 }
 
