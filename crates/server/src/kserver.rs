@@ -3,11 +3,12 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use stdx::new_arc_rw_lock;
 use tower_lsp::jsonrpc::Result;
-use tower_lsp::{async_trait, lsp_types::*, Client};
-use tower_lsp::{lsp_types::InitializeParams, LanguageServer};
+use tower_lsp::lsp_types::InitializeParams;
+use tower_lsp::{async_trait, lsp_types::*, Client, LanguageServer};
 use tracing::{debug, info, trace};
 use walkdir::WalkDir;
 
+use crate::buffer::Buffers;
 use crate::indexes::Indexes;
 
 // pub const LEGEND_TYPE: &[SemanticTokenType] = &[
@@ -42,6 +43,7 @@ pub struct Symbol {}
 pub struct KServer {
     pub client: Box<dyn ClientI>,
     pub indexes: Indexes,
+    pub buffers: Buffers,
     pub workspace_root: Arc<RwLock<Option<PathBuf>>>,
 }
 
@@ -50,6 +52,7 @@ impl KServer {
         KServer {
             client,
             indexes: Indexes::new(),
+            buffers: Buffers::new(),
             workspace_root: new_arc_rw_lock(None), // set in initialize
         }
     }
@@ -74,7 +77,11 @@ impl KServer {
             .filter(|f| f.file_type().is_file())
         {
             trace!("Visiting file {:?}", f.path());
-            self.indexes.add_from_file(f.into_path()).await;
+            self.buffers
+                .add_from_file(f.into_path(), |buffer| {
+                    self.indexes.add_from_buffer(buffer);
+                })
+                .await;
         }
 
         Ok(())
@@ -115,6 +122,7 @@ impl LanguageServer for KServer {
                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
                     TextDocumentSyncKind::INCREMENTAL,
                 )),
+                completion_provider: Some(CompletionOptions::default()),
                 // definition: Some(GotoCapability::default()),
                 definition_provider: Some(OneOf::Left(true)),
                 references_provider: Some(OneOf::Left(true)),
@@ -127,6 +135,18 @@ impl LanguageServer for KServer {
     async fn shutdown(&self) -> Result<()> {
         info!("Shutting");
         Ok(())
+    }
+
+    async fn completion(&self, params: CompletionParams) -> Result<Option<CompletionResponse>> {
+        let text = self
+            .buffers
+            .read(&params.text_document_position.text_document.uri, |buffer| {
+                buffer.text_at(params.text_document_position.position)
+            })?;
+
+        let completions = self.indexes.completions_for(&text);
+
+        Ok(Some(CompletionResponse::Array(completions)))
     }
 
     async fn did_open(&self, _: DidOpenTextDocumentParams) {

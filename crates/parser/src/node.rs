@@ -1,16 +1,17 @@
+use crop::Rope;
 use tree_sitter::Node;
 
 #[derive(new)]
 pub struct ClassDecl<'a> {
     pub node: &'a Node<'a>,
-    pub source: &'a [u8],
+    pub source: &'a Rope,
 }
 
 impl<'a> ClassDecl<'a> {
     pub fn name(&self) -> Option<String> {
         self.node
             .child_by_field_name("type_identifier")
-            .map(|type_ident| type_ident.utf8_text(self.source).unwrap().to_string())
+            .map(|type_ident| crate::text_of(&type_ident, &self.source))
     }
 }
 

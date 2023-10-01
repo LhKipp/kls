@@ -6,6 +6,7 @@ use std::path::Path;
 use tree_sitter::{Language, Parser, Tree};
 
 pub(crate) fn parse_file(path: &Path) -> (Option<Tree>, String) {
+    // TODO possibly parse a rope instead of read to string and then convert to rope?
     let txt = std::fs::read_to_string(path).unwrap();
     parse(txt)
 }
