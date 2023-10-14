@@ -1,3 +1,4 @@
+use core::fmt;
 use crop::Rope;
 use parking_lot::lock_api::RwLockWriteGuard;
 use parking_lot::RwLock;
@@ -53,11 +54,16 @@ impl Buffers {
         and_then(r_lock.get(&path).unwrap());
     }
 
-    pub fn edit(&self, uri: &Url, changes: &[TextDocumentContentChangeEvent]) {
+    pub fn edit(
+        &self,
+        uri: &Url,
+        changes: &[TextDocumentContentChangeEvent],
+    ) -> Result<Vec<tree_sitter::Range>> {
         let mut w_lock = self.buffers.write();
         if let Some(buffer) = w_lock.get_mut(&uri.to_file_path().unwrap()) {
-            buffer.edit(changes)
+            return Ok(buffer.edit(changes));
         }
+        Err(Error::invalid_params(format!("No such buffer: {}", uri)))
     }
 }
 
@@ -85,7 +91,7 @@ impl Buffer {
         Ok(word)
     }
 
-    pub fn edit(&mut self, changes: &[TextDocumentContentChangeEvent]) {
+    pub fn edit(&mut self, changes: &[TextDocumentContentChangeEvent]) -> Vec<tree_sitter::Range> {
         for change in changes {
             if let Some(range) = &change.range {
                 let old_byte_range = self.to_byte_range(range);
@@ -123,7 +129,9 @@ impl Buffer {
         let new_tree = crate::parse_kotlin::reparse(&self.text.to_string(), &self.tree)
             .expect("Not handling no tree yet");
 
-        self.tree = new_tree
+        let changed_ranges = self.tree.changed_ranges(&new_tree);
+        self.tree = new_tree;
+        changed_ranges.collect::<Vec<_>>()
     }
 
     // fn to_capped_byte_range(
@@ -168,5 +176,15 @@ impl Buffer {
         let col = byte_offset - self.text.byte_of_line(row);
 
         Point::new(row, col)
+    }
+}
+
+impl fmt::Debug for Buffer {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Buffer")
+            .field("path", &self.path)
+            .field("tree", &self.tree)
+            .field("text", &self.text)
+            .finish()
     }
 }

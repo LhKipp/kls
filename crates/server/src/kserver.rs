@@ -2,10 +2,10 @@ use parking_lot::RwLock;
 use std::path::PathBuf;
 use std::sync::Arc;
 use stdx::new_arc_rw_lock;
-use tower_lsp::jsonrpc::Result;
+use tower_lsp::jsonrpc::{Error, Result};
 use tower_lsp::lsp_types::InitializeParams;
 use tower_lsp::{async_trait, lsp_types::*, Client, LanguageServer};
-use tracing::{debug, info, trace};
+use tracing::{debug, error, info, trace};
 use walkdir::WalkDir;
 
 use crate::buffer::Buffers;
@@ -66,9 +66,14 @@ impl KServer {
             .filter(|f| f.file_type().is_file())
         {
             trace!("Visiting file {:?}", f.path());
+            // TODO make individual buffer creation possible without interaction with buffers
+            // then create indexes for buffer
+            // then collect buffer and indexes
             self.buffers
                 .add_from_file(f.into_path(), |buffer| {
-                    self.indexes.add_from_buffer(buffer);
+                    if let Err(e) = self.indexes.add_from_buffer(buffer) {
+                        panic!("Unhandled err {}", e);
+                    }
                 })
                 .await;
         }
@@ -170,7 +175,25 @@ impl LanguageServer for KServer {
     async fn did_change(&self, params: DidChangeTextDocumentParams) {
         // TODO synchronize notification. See
         // https://github.com/ebkalderon/tower-lsp/issues/284
-        self.buffers
+        let handle_err = |e: Error| {
+            error!("Error on did_change: {}", e);
+        };
+
+        let edited_ranges = match self
+            .buffers
             .edit(&params.text_document.uri, &params.content_changes)
+        {
+            Ok(r) => r,
+            Err(e) => {
+                handle_err(e);
+                return;
+            }
+        };
+
+        if let Err(e) = self.buffers.read(&params.text_document.uri, |buffer| {
+            self.indexes.add_from_buffer_changes(buffer, &edited_ranges)
+        }) {
+            handle_err(e);
+        }
     }
 }
