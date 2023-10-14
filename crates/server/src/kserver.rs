@@ -75,6 +75,12 @@ impl KServer {
 
         Ok(())
     }
+
+    pub fn text_of(&self, uri: &Url) -> String {
+        self.buffers
+            .read(uri, |buffer| Ok(buffer.text.to_string()))
+            .unwrap()
+    }
 }
 
 fn find_workspace_folder(params: &InitializeParams) -> Result<Option<PathBuf>> {
@@ -159,5 +165,12 @@ impl LanguageServer for KServer {
 
         // let mut wlock = self.asts.write();
         // wlock.insert(path, tree);
+    }
+
+    async fn did_change(&self, params: DidChangeTextDocumentParams) {
+        // TODO synchronize notification. See
+        // https://github.com/ebkalderon/tower-lsp/issues/284
+        self.buffers
+            .edit(&params.text_document.uri, &params.content_changes)
     }
 }

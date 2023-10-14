@@ -106,11 +106,14 @@ pub async fn server_init_(init_opts: ServerInitOptions) -> (TestClient, KServer)
 }
 
 pub fn init_test() {
-    tracing_subscriber::fmt()
+    if let Err(e) = tracing_subscriber::fmt()
         .with_writer(std::io::stderr)
         .with_env_filter(EnvFilter::from_default_env())
         .without_time()
-        .init();
+        .try_init()
+    {
+        eprintln!("Error while installing the tracing subscriber: {e}")
+    }
 }
 
 pub fn pos(line: u32, character: u32) -> Position {
