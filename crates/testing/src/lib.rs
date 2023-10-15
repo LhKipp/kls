@@ -56,8 +56,11 @@ impl Default for ServerInitOptions {
 }
 
 impl ServerInitOptions {
-    pub fn workspace(&mut self) -> &mut Workspace {
+    pub fn workspace_mut(&mut self) -> &mut Workspace {
         self.workspace.as_mut().unwrap()
+    }
+    pub fn workspace(&self) -> &Workspace {
+        self.workspace.as_ref().unwrap()
     }
 }
 
@@ -105,7 +108,9 @@ pub async fn server_init_(init_opts: ServerInitOptions) -> (TestClient, KServer)
     (client, server)
 }
 
-pub fn init_test() {
+pub async fn init_test(
+    set_init_opts: fn(&mut ServerInitOptionsBuilder),
+) -> (ServerInitOptions, TestClient, KServer) {
     if let Err(e) = tracing_subscriber::fmt()
         .with_writer(std::io::stderr)
         .with_env_filter(EnvFilter::from_default_env())
@@ -114,6 +119,14 @@ pub fn init_test() {
     {
         eprintln!("Error while installing the tracing subscriber: {e}")
     }
+
+    let mut init_opts = ServerInitOptionsBuilder::default();
+    set_init_opts(&mut init_opts);
+    let init_opts = init_opts.build().unwrap();
+
+    let (client, server) = server_init_(init_opts.clone()).await;
+
+    (init_opts, client, server)
 }
 
 pub fn pos(line: u32, character: u32) -> Position {

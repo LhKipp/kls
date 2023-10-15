@@ -3,14 +3,11 @@ use tower_lsp::LanguageServer;
 
 #[tokio::test]
 async fn adding_text_to_an_existing_document() {
-    init_test();
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file("com/test/clock/Clock.kt".into(), r#"package com.test"#);
+    })
+    .await;
 
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file("com/test/clock/Clock.kt".into(), r#"package com.test"#)
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
     let completions_before_edit = server.indexes.completions_for("com.t");
     assert_eq!(completions_before_edit.len(), 1);
     assert_eq!(completions_before_edit[0].label, "com.test");

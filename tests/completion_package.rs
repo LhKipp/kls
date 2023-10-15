@@ -4,10 +4,8 @@ use tower_lsp::LanguageServer;
 
 #[tokio::test]
 async fn initializing_in_source_dir_should_index_files() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file(
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file(
             "com/test/time/Time.kt".into(),
             r#"
 package com.test.time
@@ -21,11 +19,9 @@ package com.test.clock
 fun x() {
     com.test.t
 }"#,
-        )
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+        );
+    })
+    .await;
 
     let completion_result = server
         .completion(completion_for(

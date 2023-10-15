@@ -3,10 +3,8 @@ use testing::*;
 
 #[tokio::test]
 async fn should_complete_simple_class_name() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file(
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file(
             "com/test/TestClass.kt".into(),
             r#"
 package com.ppro.billing
@@ -17,11 +15,9 @@ fun x() {
     val y = T
 }
     "#,
-        )
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+        );
+    })
+    .await;
 
     let completion_result = server
         .completion(completion_for(

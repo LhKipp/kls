@@ -3,14 +3,10 @@ use tower_lsp::LanguageServer;
 
 #[tokio::test]
 async fn adding_text_to_an_existing_document() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file("com/test/clock/Clock.kt".into(), r#""#)
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file("com/test/clock/Clock.kt".into(), r#""#);
+    })
+    .await;
 
     server
         .did_change(DidChangeTextDocumentParams {
@@ -39,17 +35,13 @@ async fn adding_text_to_an_existing_document() {
 
 #[tokio::test]
 async fn removing_text_of_an_existing_document() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file(
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file(
             "com/test/clock/Clock.kt".into(),
             r#"package com.test.clock"#,
-        )
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+        );
+    })
+    .await;
 
     server
         .did_change(DidChangeTextDocumentParams {
@@ -78,17 +70,13 @@ async fn removing_text_of_an_existing_document() {
 
 #[tokio::test]
 async fn editing_text_in_an_existing_document() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file(
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file(
             "com/test/clock/Clock.kt".into(),
             r#"package com.test.clock"#,
-        )
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+        );
+    })
+    .await;
 
     server
         .did_change(DidChangeTextDocumentParams {
@@ -117,14 +105,10 @@ async fn editing_text_in_an_existing_document() {
 
 #[tokio::test]
 async fn adding_text_to_an_existing_document_multiline() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file("com/test/clock/Clock.kt".into(), r#"package"#)
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file("com/test/clock/Clock.kt".into(), r#"package"#);
+    })
+    .await;
 
     server
         .did_change(DidChangeTextDocumentParams {
@@ -153,17 +137,13 @@ async fn adding_text_to_an_existing_document_multiline() {
 
 #[tokio::test]
 async fn removing_text_of_an_existing_document_multiline() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file(
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file(
             "com/test/clock/Clock.kt".into(),
             "package com.time\nclass Clock()",
-        )
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+        );
+    })
+    .await;
 
     server
         .did_change(DidChangeTextDocumentParams {
@@ -191,17 +171,13 @@ async fn removing_text_of_an_existing_document_multiline() {
 
 #[tokio::test]
 async fn editing_text_in_an_existing_document_multiline() {
-    init_test();
-
-    let mut init = ServerInitOptionsBuilder::default()
-        .add_kt_file(
+    let (init, _, server) = init_test(|opts| {
+        opts.add_kt_file(
             "com/test/clock/Clock.kt".into(),
             "package com.time\nclass Clock()",
-        )
-        .build()
-        .unwrap();
-
-    let (_, server) = server_init_(init.clone()).await;
+        );
+    })
+    .await;
 
     server
         .did_change(DidChangeTextDocumentParams {
