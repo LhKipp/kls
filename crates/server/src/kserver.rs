@@ -86,6 +86,11 @@ impl KServer {
             .read(uri, |buffer| Ok(buffer.text.to_string()))
             .unwrap()
     }
+    pub fn tree_of(&self, uri: &Url) -> String {
+        self.buffers
+            .read(uri, |buffer| Ok(buffer.tree.root_node().to_sexp()))
+            .unwrap()
+    }
 }
 
 fn find_workspace_folder(params: &InitializeParams) -> Result<Option<PathBuf>> {

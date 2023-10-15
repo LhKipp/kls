@@ -9,7 +9,10 @@ use tower_lsp::{
     jsonrpc::Error,
     lsp_types::{Position, Url},
 };
+use tracing::trace;
 use tree_sitter::{InputEdit, Point};
+
+use crate::range_util::{self, byte_range_from_usize_range, ChangedRanges, TextByteRange};
 
 pub struct Buffers {
     pub buffers: RwLock<HashMap<PathBuf, Buffer>>,
@@ -58,7 +61,7 @@ impl Buffers {
         &self,
         uri: &Url,
         changes: &[TextDocumentContentChangeEvent],
-    ) -> Result<Vec<tree_sitter::Range>> {
+    ) -> Result<ChangedRanges> {
         let mut w_lock = self.buffers.write();
         if let Some(buffer) = w_lock.get_mut(&uri.to_file_path().unwrap()) {
             return Ok(buffer.edit(changes));
@@ -91,21 +94,23 @@ impl Buffer {
         Ok(word)
     }
 
-    pub fn edit(&mut self, changes: &[TextDocumentContentChangeEvent]) -> Vec<tree_sitter::Range> {
+    pub fn edit(&mut self, changes: &[TextDocumentContentChangeEvent]) -> ChangedRanges {
+        trace!("Buffer before edits:\n{}", self.text.to_string());
+        trace!("Tree before edits:\n{}", self.tree.root_node().to_sexp());
+
+        let mut new_client_changed_ranges: Vec<TextByteRange> = vec![];
+        let mut old_client_changed_ranges: Vec<TextByteRange> = vec![];
+
         for change in changes {
             if let Some(range) = &change.range {
                 let old_byte_range = self.to_byte_range(range);
+                old_client_changed_ranges.push(byte_range_from_usize_range(&old_byte_range));
+
                 let new_byte_range =
                     old_byte_range.start..(old_byte_range.start + change.text.len());
+                new_client_changed_ranges.push(byte_range_from_usize_range(&new_byte_range));
+
                 self.text.replace(old_byte_range.clone(), &change.text);
-                // if range.start == range.end {
-                //     // insert at point
-                //     trace!("Text before change: |{}|", self.text);
-                //     self.text.insert(old_byte_range.start, &change.text);
-                //     trace!("Text after change: |{}|", self.text);
-                // } else {
-                //     // replacement or deletion
-                // }
                 let new_end_point = self.point_of(new_byte_range.end);
 
                 self.tree.edit(&InputEdit {
@@ -124,14 +129,43 @@ impl Buffer {
                 });
             }
         }
+        trace!("Buffer after edits:\n{}", self.text.to_string());
 
-        // TODO parse rope
-        let new_tree = crate::parse_kotlin::reparse(&self.text.to_string(), &self.tree)
-            .expect("Not handling no tree yet");
+        let new_tree = crate::parse_kotlin::reparse(
+            &self.text.to_string(), /*TODO pass rope*/
+            &self.tree,
+        )
+        .expect("Not handling no tree yet");
 
-        let changed_ranges = self.tree.changed_ranges(&new_tree);
+        let new_ts_changed_ranges: Vec<TextByteRange> = self
+            .tree
+            .changed_ranges(&new_tree)
+            .map(|range| range.start_byte as u32..range.end_byte as u32)
+            .collect();
+
+        let old_ts_changed_ranges = range_util::map_new_ranges_to_old_ranges(
+            &new_ts_changed_ranges,
+            &old_client_changed_ranges,
+            changes.iter().map(|change| change.text.as_str()).collect(),
+        );
+
+        let changed_ranges = ChangedRanges {
+            old_ranges: range_util::merge_ranges(
+                &old_ts_changed_ranges,
+                &old_client_changed_ranges,
+            ),
+            new_ranges: range_util::merge_ranges(
+                &new_ts_changed_ranges,
+                &new_client_changed_ranges,
+            ),
+        };
+
+        trace!("Changed ranges: {:?}", changed_ranges);
+
         self.tree = new_tree;
-        changed_ranges.collect::<Vec<_>>()
+        trace!("Tree after edits:\n{}", self.tree.root_node().to_sexp());
+
+        changed_ranges
     }
 
     // fn to_capped_byte_range(
