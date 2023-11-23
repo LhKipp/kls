@@ -18,10 +18,15 @@ pub(crate) fn overlap(a: &TextByteRange, b: &TextByteRange) -> i32 {
         return 0;
     } else if a.start >= b.end {
         return 0;
+    } else if b.contains(&a.start) && a.end <= b.end {
+        // a in b
+        return a.len() as i32;
     } else {
-        // a within b
-        (a.len() - (b.start..a.start).len() - (a.end..b.end).len()) as i32
+        return (a.start..b.end).len() as i32;
     }
+    // code is unreachable from here on... I guess the compiler sees, that if else handle all
+    // cases?
+    // unreachable!("overlap({:?}, {:?}) case not handled", a, b);
 }
 
 pub(crate) fn to_memrange(range: &tree_sitter::Range) -> memrange::Range {
