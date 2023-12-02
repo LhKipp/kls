@@ -5,6 +5,7 @@ use lazy_static::lazy_static;
 use parser::{node, rec_descend};
 use std::path::{Path, PathBuf};
 use std::sync::{atomic::AtomicI32, atomic::Ordering};
+use tower_lsp::lsp_types::{CompletionItem, CompletionItemKind};
 use tracing::trace;
 use tree_sitter::{Node, Range};
 
@@ -14,7 +15,7 @@ lazy_static! {
 }
 
 static SYMBOL_ID_GENERATOR: AtomicI32 = AtomicI32::new(1);
-#[derive(new, Debug)]
+#[derive(new, Debug, Clone)]
 pub struct Symbol {
     #[new(value = "SYMBOL_ID_GENERATOR.fetch_add(1, Ordering::SeqCst)")]
     pub id: i32,
@@ -23,6 +24,48 @@ pub struct Symbol {
     pub location: Range,
     pub name: String,
     pub kind: SymbolKind,
+    pub duplicate_behind_package: bool,
+}
+
+impl Symbol {
+    pub fn name_behind_package(&self) -> Option<Vec<u8>> {
+        if self.duplicate_behind_package {
+            Some(format!("{}.{}", self.package, self.name).into())
+        } else {
+            None
+        }
+    }
+    pub fn clone_as_behind_package(&self) -> Symbol {
+        assert!(self.duplicate_behind_package);
+        Symbol {
+            id: self.id,
+            file: self.file.clone(),
+            package: self.package.clone(),
+            location: self.location,
+            name: format!("{}.{}", self.package, self.name),
+            kind: self.kind.clone(),
+            duplicate_behind_package: self.duplicate_behind_package,
+        }
+    }
+    pub fn to_completion_item(&self) -> CompletionItem {
+        let mut item = CompletionItem::default();
+        match &self.kind {
+            SymbolKind::Class(_) => {
+                item.label = self.name.clone();
+                item.kind = Some(CompletionItemKind::CLASS);
+            }
+            SymbolKind::Package => {
+                item.label = self.name.clone();
+                item.kind = Some(CompletionItemKind::MODULE)
+            }
+            SymbolKind::Enum(_) => {
+                item.label = self.name.clone();
+                item.kind = Some(CompletionItemKind::ENUM)
+            }
+        }
+        // trace!("Mapped {:?} to {:?}", symbol, item);
+        item
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -163,29 +206,25 @@ impl<'a> SymbolBuilder<'a> {
         location: Range,
         symbol_name: String,
         symbol_kind: SymbolKind,
-        duplicate_symbol_behind_package: bool,
+        searchable_behind_package: bool,
     ) {
-        if duplicate_symbol_behind_package {
-            if let Some(package) = &self.package {
-                self.symbols.push(Symbol::new(
-                    self.file.to_path_buf(),
-                    package.name.clone(),
-                    location.clone(),
-                    format!("{}.{}", package.name, symbol_name.clone()),
-                    symbol_kind.clone(),
-                ));
-            }
-        }
+        trace!("Adding symbol {} as {:?}", symbol_name, symbol_kind);
+
+        let package = self
+            .package
+            .as_ref()
+            .map(|p| p.name.as_str())
+            .unwrap_or("")
+            .to_string();
+        let duplicate_behind_package = !package.is_empty() && searchable_behind_package;
+
         self.symbols.push(Symbol::new(
             self.file.to_path_buf(),
-            self.package
-                .as_ref()
-                .map(|p| p.name.as_str())
-                .unwrap_or("")
-                .to_string(),
+            package,
             location,
             symbol_name,
             symbol_kind,
+            duplicate_behind_package,
         ))
     }
 }

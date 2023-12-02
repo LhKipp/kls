@@ -15,3 +15,22 @@ pub fn completion_for(file: Url, pos: Position) -> CompletionParams {
         context: None,
     }
 }
+
+pub fn expect_completion_in_response<'a>(
+    result: &'a Option<CompletionResponse>,
+    item_wanted: &str,
+) -> &'a CompletionItem {
+    assert!(result.is_some());
+    match result.as_ref().unwrap() {
+        CompletionResponse::Array(v) => expect_completion_in_vec(v, item_wanted),
+        _ => unreachable!(),
+    }
+}
+
+pub fn expect_completion_in_vec<'a>(
+    v: &'a Vec<CompletionItem>,
+    item_wanted: &str,
+) -> &'a CompletionItem {
+    let x = v.iter().filter(|c| c.label == item_wanted).next();
+    return x.expect(&format!("No item found with label {}", item_wanted));
+}

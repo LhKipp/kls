@@ -1,14 +1,11 @@
 use crate::symbol::NODES_CONTAINING_SYMBOLS;
 use crate::{
     range_util::{ChangedRanges, TextByteRange},
-    symbol::{Symbol, SymbolBuilder, SymbolKind},
+    symbol::{Symbol, SymbolBuilder},
 };
 use core::fmt;
 use std::sync::Arc;
-use tower_lsp::{
-    jsonrpc::Result,
-    lsp_types::{CompletionItem, CompletionItemKind},
-};
+use tower_lsp::{jsonrpc::Result, lsp_types::CompletionItem};
 
 use crate::{buffer::Buffer, range_util};
 use smallvec::SmallVec;
@@ -27,6 +24,7 @@ use tree_sitter::Node;
 #[derive(Clone)]
 struct AllIndexLookupData {
     name_key: Vec<u8>,
+    name_behind_package_key: Option<Vec<u8>>,
     symbol_id: i32,
 }
 
@@ -66,47 +64,46 @@ impl Indexes {
         w_lock: &mut RwLockWriteGuard<'_, Lock, Data>,
         symbol: Symbol,
     ) {
-        let roots_range = range_util::to_memrange(&symbol.location);
-        let symbol_already_present = w_lock.roots.get(roots_range).cloned();
+        trace!(
+            "Inserting index for symbol {} ({:?})",
+            symbol.name,
+            symbol.kind
+        );
 
-        // insert overwrites
+        let roots_range = range_util::to_memrange(&symbol.location);
+
+        // delete old entries
+        if let Some(root_data) = w_lock.roots.get(roots_range).cloned() {
+            w_lock.indexes.remove(&root_data.name_key);
+            if let Some(name_behind_package) = &root_data.name_behind_package_key {
+                w_lock.indexes.remove(name_behind_package);
+            }
+        }
+
+        // insert new entry in roots
         w_lock.roots.insert(
             roots_range,
             AllIndexLookupData {
                 name_key: symbol.name.clone().into(),
+                name_behind_package_key: symbol.name_behind_package(),
                 symbol_id: symbol.id,
             },
         );
 
-        if let Some(root_data) = symbol_already_present {
-            match w_lock.indexes.entry(root_data.name_key.clone()) {
-                qp_trie::Entry::Vacant(_) => error!(
-                    "Expected entry for {} is missing",
-                    String::from_utf8(root_data.name_key).unwrap()
-                ),
-                qp_trie::Entry::Occupied(mut entry) => {
-                    match entry
-                        .get_mut()
-                        .iter_mut()
-                        .filter(|symbol| symbol.id == root_data.symbol_id)
-                        .next()
-                    {
-                        Some(old_symbol) => *old_symbol = symbol,
-                        None => error!(
-                            "Expected symbol with name {} (id: {}) is missing",
-                            String::from_utf8(root_data.name_key).unwrap(),
-                            root_data.symbol_id
-                        ),
-                    }
-                }
-            }
-        } else {
+        // insert new entries in indexes
+        if symbol.duplicate_behind_package {
+            let symbol_behind_package = symbol.clone_as_behind_package();
             w_lock
                 .indexes
-                .entry(symbol.name.clone().into())
+                .entry(symbol_behind_package.name.clone().into())
                 .or_insert_with(|| smallvec::smallvec![])
-                .push(symbol);
+                .push(symbol_behind_package);
         }
+        w_lock
+            .indexes
+            .entry(symbol.name.clone().into())
+            .or_insert_with(|| smallvec::smallvec![])
+            .push(symbol);
     }
 
     fn delete_symbols<Lock: RawRwLock>(
@@ -126,6 +123,9 @@ impl Indexes {
                 range,
                 edit_range
             );
+            if let Some(name_behind_package_key) = &keys.name_behind_package_key {
+                w_lock.indexes.remove(name_behind_package_key);
+            }
             w_lock.indexes.remove(&keys.name_key);
             w_lock.roots.delete(range)
         }
@@ -200,28 +200,8 @@ impl Indexes {
             .indexes
             .iter_prefix(word.as_bytes())
             .flat_map(|(_, symbols)| symbols)
-            .map(|symbol| self.to_completion_item(symbol))
+            .map(|symbol| symbol.to_completion_item())
             .collect()
-    }
-
-    fn to_completion_item(&self, symbol: &Symbol) -> CompletionItem {
-        let mut item = CompletionItem::default();
-        match &symbol.kind {
-            SymbolKind::Class(class_symbol) => {
-                item.label = class_symbol.name.clone();
-                item.kind = Some(CompletionItemKind::CLASS);
-            }
-            SymbolKind::Package => {
-                item.label = symbol.name.clone();
-                item.kind = Some(CompletionItemKind::MODULE)
-            }
-            SymbolKind::Enum(enum_symbol) => {
-                item.label = enum_symbol.name.clone();
-                item.kind = Some(CompletionItemKind::ENUM)
-            }
-        }
-        trace!("Mapped {:?} to {:?}", symbol, item);
-        item
     }
 }
 
