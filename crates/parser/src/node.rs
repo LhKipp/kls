@@ -23,6 +23,17 @@ impl<'a> ClassDecl<'a> {
             .next();
         x
     }
+
+    pub fn enum_class_body(&self) -> Option<EnumBody> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "enum_class_body")
+            .map(|n| EnumBody::new(n, &self.source))
+            .next();
+        x
+    }
 }
 
 #[derive(new)]
@@ -39,6 +50,44 @@ impl<'a> PackageDecl<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "identifier")
             .map(|type_ident| text_of(&type_ident, &self.source))
+            .next();
+        x
+    }
+}
+
+#[derive(new)]
+pub struct EnumBody<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> EnumBody<'a> {
+    pub fn entries(&self) -> Vec<EnumEntry> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "enum_entry")
+            .map(|n| EnumEntry::new(n, &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+}
+
+#[derive(new)]
+pub struct EnumEntry<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> EnumEntry<'a> {
+    pub fn name(&self) -> Option<String> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "simple_identifier")
+            .map(|n| text_of(&n, &self.source))
             .next();
         x
     }

@@ -10,3 +10,4 @@ pub mod indexes;
 pub mod kserver;
 pub mod parse_kotlin;
 pub mod range_util;
+pub mod symbol;

@@ -1,14 +1,16 @@
-use crate::range_util::{ChangedRanges, TextByteRange};
-use core::fmt;
-use std::{
-    collections::HashSet,
-    path::PathBuf,
-    sync::{atomic::AtomicI32, atomic::Ordering, Arc},
+use crate::symbol::NODES_CONTAINING_SYMBOLS;
+use crate::{
+    range_util::{ChangedRanges, TextByteRange},
+    symbol::{Symbol, SymbolBuilder, SymbolKind},
 };
-use tower_lsp::jsonrpc::Result;
+use core::fmt;
+use std::sync::Arc;
+use tower_lsp::{
+    jsonrpc::Result,
+    lsp_types::{CompletionItem, CompletionItemKind},
+};
 
 use crate::{buffer::Buffer, range_util};
-use parser::{node, rec_descend};
 use smallvec::SmallVec;
 
 use parking_lot::{
@@ -17,39 +19,10 @@ use parking_lot::{
 };
 use stdx::new_arc_rw_lock;
 
-use lazy_static::lazy_static;
 use qp_trie::Trie;
 use theban_interval_tree::IntervalTree;
-use tower_lsp::lsp_types::{CompletionItem, CompletionItemKind};
 use tracing::{error, trace};
-use tree_sitter::{Node, Range};
-
-lazy_static! {
-    static ref NODES_CONTAINING_SYMBOLS: HashSet<&'static str> =
-        HashSet::from(["source_file", "package_header", "class_declaration"]);
-}
-
-#[derive(Debug)]
-pub struct SymbolClass {
-    pub name: String,
-}
-
-#[derive(Debug)]
-pub enum SymbolKind {
-    Class(SymbolClass),
-    Package,
-}
-
-static SYMBOL_ID_GENERATOR: AtomicI32 = AtomicI32::new(1);
-#[derive(new, Debug)]
-pub struct Symbol {
-    #[new(value = "SYMBOL_ID_GENERATOR.fetch_add(1, Ordering::SeqCst)")]
-    id: i32,
-    pub file: PathBuf,
-    pub location: Range,
-    pub package: String,
-    pub kind: SymbolKind,
-}
+use tree_sitter::Node;
 
 #[derive(Clone)]
 struct AllIndexLookupData {
@@ -91,7 +64,6 @@ impl Indexes {
     fn insert_symbol<Lock: RawRwLock>(
         &self,
         w_lock: &mut RwLockWriteGuard<'_, Lock, Data>,
-        name_key: String,
         symbol: Symbol,
     ) {
         let roots_range = range_util::to_memrange(&symbol.location);
@@ -101,7 +73,7 @@ impl Indexes {
         w_lock.roots.insert(
             roots_range,
             AllIndexLookupData {
-                name_key: name_key.clone().into(),
+                name_key: symbol.name.clone().into(),
                 symbol_id: symbol.id,
             },
         );
@@ -131,7 +103,7 @@ impl Indexes {
         } else {
             w_lock
                 .indexes
-                .entry(name_key.into())
+                .entry(symbol.name.clone().into())
                 .or_insert_with(|| smallvec::smallvec![])
                 .push(symbol);
         }
@@ -195,50 +167,29 @@ impl Indexes {
 
     fn add_from_node<Lock: RawRwLock>(
         &self,
-        mut w_lock: &mut RwLockWriteGuard<'_, Lock, Data>,
+        w_lock: &mut RwLockWriteGuard<'_, Lock, Data>,
         buffer: &Buffer,
         node: &Node,
     ) -> Result<()> {
-        let mut package = Self::get_default_package_name();
+        // TODO how to handle default package name?
+        let _package = Self::get_default_package_name();
+
         trace!("Adding from node {}", node.to_sexp());
-        rec_descend(node, |node: &Node| match node.kind() {
-            "package_header" => {
-                let package_decl = node::PackageDecl::new(&node, &buffer.text);
-                trace!("Visiting package_header {:?}", package_decl.package_ident());
-                if let Some(identifier) = package_decl.package_ident() {
-                    package = identifier.clone();
-                    self.insert_symbol(
-                        &mut w_lock,
-                        package.clone(),
-                        Symbol::new(
-                            buffer.path.clone(),
-                            package_decl.node.range(),
-                            package.clone(),
-                            SymbolKind::Package,
-                        ),
-                    );
-                }
-                false
-            }
-            "class_declaration" => {
-                let class_decl = node::ClassDecl::new(&node, &buffer.text);
-                trace!("Visiting class with name {:?}", class_decl.name());
-                if let Some(class_name) = class_decl.name() {
-                    self.insert_symbol(
-                        &mut w_lock,
-                        class_name.clone(),
-                        Symbol::new(
-                            buffer.path.clone(),
-                            class_decl.node.range(),
-                            package.clone(),
-                            SymbolKind::Class(SymbolClass { name: class_name }),
-                        ),
-                    );
-                }
-                true
-            }
-            _ => true,
-        });
+        let mut symbol_builder = SymbolBuilder::new(&buffer.path, &buffer.text);
+        symbol_builder.build_all_symbols_for(*node);
+        let (symbols, errors) = symbol_builder.finish();
+        if !errors.is_empty() {
+            error!(
+                "Errors building symbols from file {}: {}",
+                buffer.path.display(),
+                errors.join(",")
+            );
+        }
+
+        for symbol in symbols {
+            self.insert_symbol(w_lock, symbol);
+        }
+
         Ok(())
     }
 
@@ -261,8 +212,12 @@ impl Indexes {
                 item.kind = Some(CompletionItemKind::CLASS);
             }
             SymbolKind::Package => {
-                item.label = symbol.package.clone();
+                item.label = symbol.name.clone();
                 item.kind = Some(CompletionItemKind::MODULE)
+            }
+            SymbolKind::Enum(enum_symbol) => {
+                item.label = enum_symbol.name.clone();
+                item.kind = Some(CompletionItemKind::ENUM)
             }
         }
         trace!("Mapped {:?} to {:?}", symbol, item);

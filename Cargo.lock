@@ -986,6 +986,7 @@ dependencies = [
  "lazy_static",
  "memrange",
  "merged_range",
+ "once_cell",
  "parking_lot",
  "parser",
  "qp-trie",
