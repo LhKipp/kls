@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crop::Rope;
 use lazy_static::lazy_static;
-use parser::{node, rec_descend};
+use parser::{bfs_descend, node};
 use std::path::{Path, PathBuf};
 use std::sync::{atomic::AtomicI32, atomic::Ordering};
 use tower_lsp::lsp_types::{CompletionItem, CompletionItemKind};
@@ -116,7 +116,7 @@ impl<'a> SymbolBuilder<'a> {
     }
 
     pub fn build_all_symbols_for(&mut self, root_node: Node) {
-        rec_descend(&root_node, |node: &Node| match node.kind() {
+        bfs_descend(&root_node, |node: &Node| match node.kind() {
             "package_header" => self.symbols_of_package(node),
             "class_declaration" => self.symbols_of_class(node),
             _ => true,
@@ -124,8 +124,8 @@ impl<'a> SymbolBuilder<'a> {
     }
 
     fn symbols_of_package(&mut self, package_node: &Node) -> bool {
-        let package_decl = node::PackageDecl::new(&package_node, &self.source);
-        trace!("Visiting package_header {:?}", package_decl.package_ident());
+        let package_decl = node::PackageHeader::new(package_node.clone(), &self.source);
+        trace!("Visiting package_header {}", package_decl.text());
 
         if let Some(prev_package_decl) = &self.package {
             self.errors.push(format!(
@@ -140,8 +140,8 @@ impl<'a> SymbolBuilder<'a> {
             name: String::new(),
             range: package_node.range(),
         };
-        if let Some(identifier) = package_decl.package_ident() {
-            package_info.name = identifier;
+        if let Some(identifier) = package_decl.find_identifier() {
+            package_info.name = identifier.text();
 
             self.add_symbol(
                 package_info.range,
@@ -155,18 +155,23 @@ impl<'a> SymbolBuilder<'a> {
     }
 
     fn symbols_of_class(&mut self, class_node: &Node) -> bool {
-        let class_decl = node::ClassDecl::new(&class_node, &self.source);
-        trace!("Visiting class with name {:?}", class_decl.name());
+        let class_decl = node::ClassDeclaration::new(class_node.clone(), &self.source);
+        trace!(
+            "Visiting class with name {:?}",
+            class_decl.find_type_identifier()
+        );
 
-        if let Some(class_name) = class_decl.name() {
-            if let Some(enum_body) = class_decl.enum_class_body() {
-                self.symbols_of_enum_class(&class_decl, enum_body, class_name)
+        if let Some(class_name) = class_decl.find_type_identifier() {
+            if let Some(enum_body) = class_decl.find_enum_class_body() {
+                self.symbols_of_enum_class(&class_decl, enum_body, class_name.text())
             } else {
                 // normal class
                 self.add_symbol(
                     class_decl.node.range(),
-                    class_name.clone(),
-                    SymbolKind::Class(SymbolClass { name: class_name }),
+                    class_name.text(),
+                    SymbolKind::Class(SymbolClass {
+                        name: class_name.text(),
+                    }),
                     true,
                 );
             }
@@ -176,17 +181,18 @@ impl<'a> SymbolBuilder<'a> {
 
     fn symbols_of_enum_class(
         &mut self,
-        class_decl: &node::ClassDecl,
-        enum_body: node::EnumBody,
+        class_decl: &node::ClassDeclaration,
+        enum_body: node::EnumClassBody,
         class_name: String,
     ) {
         let entries = enum_body
-            .entries()
+            .find_all_enum_entry()
             .iter()
             .map(|entry| {
                 entry
-                    .name()
+                    .find_simple_identifier()
                     .expect("Not handling complex enum entries for now")
+                    .text()
             })
             .collect::<Vec<_>>();
 

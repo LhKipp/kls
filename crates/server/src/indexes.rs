@@ -171,7 +171,7 @@ impl Indexes {
         buffer: &Buffer,
         node: &Node,
     ) -> Result<()> {
-        // TODO how to handle default package name?
+        // TODO how to handle default package name? Does it need handling?
         let _package = Self::get_default_package_name();
 
         trace!("Adding from node {}", node.to_sexp());

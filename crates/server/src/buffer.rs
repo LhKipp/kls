@@ -41,7 +41,7 @@ impl Buffers {
     where
         F: FnMut(&Buffer),
     {
-        let (tree, source) = crate::parse_kotlin::parse_file(&path);
+        let (tree, source) = parser::parse_file(&path);
         let tree = tree.unwrap();
 
         let buffer = Buffer {
@@ -51,7 +51,8 @@ impl Buffers {
         };
 
         let mut w_lock = self.buffers.write();
-        w_lock.entry(path.clone()).insert_entry(buffer).get();
+        w_lock.insert(path.clone(), buffer);
+        // w_lock.entry(path.clone()).insert_entry(buffer).get();
 
         let r_lock = RwLockWriteGuard::downgrade(w_lock);
         and_then(r_lock.get(&path).unwrap());
@@ -131,11 +132,8 @@ impl Buffer {
         }
         trace!("Buffer after edits:\n{}", self.text.to_string());
 
-        let new_tree = crate::parse_kotlin::reparse(
-            &self.text.to_string(), /*TODO pass rope*/
-            &self.tree,
-        )
-        .expect("Not handling no tree yet");
+        let new_tree = parser::reparse(&self.text.to_string() /*TODO pass rope*/, &self.tree)
+            .expect("Not handling no tree yet");
 
         let new_ts_changed_ranges: Vec<TextByteRange> = self
             .tree

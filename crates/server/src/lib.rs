@@ -1,5 +1,5 @@
-#![feature(iter_intersperse)]
-#![feature(entry_insert)]
+// #![feature(iter_intersperse)]
+// #![feature(entry_insert)]
 #![allow(dead_code)]
 
 #[macro_use]
@@ -10,4 +10,5 @@ pub mod indexes;
 pub mod kserver;
 pub mod parse_kotlin;
 pub mod range_util;
+pub mod scope;
 pub mod symbol;

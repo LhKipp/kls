@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use stdx::new_arc_rw_lock;
 use tower_lsp::jsonrpc::{Error, Result};
+use tower_lsp::lsp_types::request::{GotoTypeDefinitionParams, GotoTypeDefinitionResponse};
 use tower_lsp::lsp_types::InitializeParams;
 use tower_lsp::{async_trait, lsp_types::*, Client, LanguageServer};
 use tracing::{debug, error, info, trace};
@@ -152,6 +153,17 @@ impl LanguageServer for KServer {
         let completions = self.indexes.completions_for(&text);
 
         Ok(Some(CompletionResponse::Array(completions)))
+    }
+
+    // async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
+    //     todo!();
+    // }
+
+    async fn goto_type_definition(
+        &self,
+        _params: GotoTypeDefinitionParams,
+    ) -> Result<Option<GotoTypeDefinitionResponse>> {
+        todo!();
     }
 
     async fn did_open(&self, _: DidOpenTextDocumentParams) {
