@@ -14,12 +14,6 @@ use tree_sitter::{Node, Range};
 
 use crate::buffer::Buffer;
 
-struct Scopes {
-    pub scopes: Arena<Scope>,
-    // Lookup for scope given range, to find scope quickly
-    scopes_of_buffer: HashMap<PathBuf, IntervalTree<Token>>,
-}
-
 static UNIQUE_NUMBER_GENERATOR: AtomicI32 = AtomicI32::new(1);
 
 struct Scope {
