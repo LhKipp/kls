@@ -7,21 +7,18 @@ use crate::text_of;
 
 // for w/e reasons looking up the child by field_name doesn't work
 // so we filter on kind
-
-
-
-#[derive(new)]
 pub struct AdditiveExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> AdditiveExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43,7 +40,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -65,7 +61,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -87,7 +82,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -109,7 +103,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -131,7 +124,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -153,7 +145,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -175,7 +166,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -197,7 +187,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -219,7 +208,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -241,7 +229,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -263,7 +250,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -285,7 +271,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -307,7 +292,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -329,7 +313,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -351,7 +334,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -373,7 +355,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -395,7 +376,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -417,7 +397,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -439,7 +418,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -461,7 +439,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -483,7 +460,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -505,7 +481,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -527,7 +502,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -549,7 +523,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -571,7 +544,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -593,7 +565,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -615,7 +586,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -637,7 +607,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -659,7 +628,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -681,7 +649,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -703,7 +670,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -725,7 +691,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -747,7 +712,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -769,7 +733,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -791,7 +754,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -813,7 +775,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -835,7 +796,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -857,7 +817,6 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -878,31 +837,24 @@ impl<'a> AdditiveExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for AdditiveExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct AnnotatedLambda<'a> {
+}pub struct AnnotatedLambda<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> AnnotatedLambda<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -924,7 +876,6 @@ impl<'a> AnnotatedLambda<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_label(&self) -> Option<Label> {
         let mut cursor = self.node.walk();
         let x = self
@@ -946,7 +897,6 @@ impl<'a> AnnotatedLambda<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -967,31 +917,24 @@ impl<'a> AnnotatedLambda<'a> {
             .map(|n| LambdaLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for AnnotatedLambda<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Annotation<'a> {
+}pub struct Annotation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Annotation<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_constructor_invocation(&self) -> Option<ConstructorInvocation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1013,7 +956,6 @@ impl<'a> Annotation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_use_site_target(&self) -> Option<UseSiteTarget> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1035,7 +977,6 @@ impl<'a> Annotation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1056,31 +997,24 @@ impl<'a> Annotation<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Annotation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct AnonymousFunction<'a> {
+}pub struct AnonymousFunction<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> AnonymousFunction<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1102,7 +1036,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1124,7 +1057,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_value_parameters(&self) -> Option<FunctionValueParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1146,7 +1078,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1168,7 +1099,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1190,7 +1120,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1212,7 +1141,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_arguments(&self) -> Option<TypeArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1234,7 +1162,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1256,7 +1183,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1278,7 +1204,6 @@ impl<'a> AnonymousFunction<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1299,31 +1224,24 @@ impl<'a> AnonymousFunction<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for AnonymousFunction<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct AnonymousInitializer<'a> {
+}pub struct AnonymousInitializer<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> AnonymousInitializer<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1344,31 +1262,24 @@ impl<'a> AnonymousInitializer<'a> {
             .map(|n| Statements::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for AnonymousInitializer<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct AsExpression<'a> {
+}pub struct AsExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> AsExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1390,7 +1301,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1412,7 +1322,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1434,7 +1343,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1456,7 +1364,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1478,7 +1385,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1500,7 +1406,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1522,7 +1427,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1544,7 +1448,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1566,7 +1469,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1588,7 +1490,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1610,7 +1511,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1632,7 +1532,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1654,7 +1553,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1676,7 +1574,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1698,7 +1595,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1720,7 +1616,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1742,7 +1637,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1764,7 +1658,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1786,7 +1679,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1808,7 +1700,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1830,7 +1721,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1852,7 +1742,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1874,7 +1763,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1896,7 +1784,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1918,7 +1805,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1940,7 +1826,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1962,7 +1847,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1984,7 +1868,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2006,7 +1889,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2028,7 +1910,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2050,7 +1931,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2072,7 +1952,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2094,7 +1973,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2116,7 +1994,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2138,7 +2015,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2160,7 +2036,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2182,7 +2057,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2204,7 +2078,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2226,7 +2099,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2248,7 +2120,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2270,7 +2141,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2292,7 +2162,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2314,7 +2183,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2336,7 +2204,6 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2357,31 +2224,24 @@ impl<'a> AsExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for AsExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Assignment<'a> {
+}pub struct Assignment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Assignment<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2403,7 +2263,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2425,7 +2284,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2447,7 +2305,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2469,7 +2326,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2491,7 +2347,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2513,7 +2368,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2535,7 +2389,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2557,7 +2410,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2579,7 +2431,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2601,7 +2452,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2623,7 +2473,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2645,7 +2494,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_directly_assignable_expression(&self) -> Option<DirectlyAssignableExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2667,7 +2515,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2689,7 +2536,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2711,7 +2557,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2733,7 +2578,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2755,7 +2599,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2777,7 +2620,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2799,7 +2641,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2821,7 +2662,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2843,7 +2683,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2865,7 +2704,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2887,7 +2725,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2909,7 +2746,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2931,7 +2767,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2953,7 +2788,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2975,7 +2809,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2997,7 +2830,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3019,7 +2851,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3041,7 +2872,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3063,7 +2893,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3085,7 +2914,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3107,7 +2935,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3129,7 +2956,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3151,7 +2977,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3173,7 +2998,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3195,7 +3019,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3217,7 +3040,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3239,7 +3061,6 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3260,54 +3081,41 @@ impl<'a> Assignment<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Assignment<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct BooleanLiteral<'a> {
+}pub struct BooleanLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> BooleanLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for BooleanLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CallExpression<'a> {
+}pub struct CallExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CallExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3329,7 +3137,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3351,7 +3158,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3373,7 +3179,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3395,7 +3200,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3417,7 +3221,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3439,7 +3242,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_suffix(&self) -> Option<CallSuffix> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3461,7 +3263,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3483,7 +3284,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3505,7 +3305,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3527,7 +3326,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3549,7 +3347,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3571,7 +3368,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3593,7 +3389,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3615,7 +3410,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3637,7 +3431,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3659,7 +3452,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3681,7 +3473,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3703,7 +3494,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3725,7 +3515,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3747,7 +3536,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3769,7 +3557,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3791,7 +3578,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3813,7 +3599,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3835,7 +3620,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3857,7 +3641,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3879,7 +3662,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3901,7 +3683,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3923,7 +3704,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3945,7 +3725,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3967,7 +3746,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3989,7 +3767,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4011,7 +3788,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4033,7 +3809,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4055,7 +3830,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4077,7 +3851,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4099,7 +3872,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4121,7 +3893,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4143,7 +3914,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4165,7 +3935,6 @@ impl<'a> CallExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4186,31 +3955,24 @@ impl<'a> CallExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CallExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CallSuffix<'a> {
+}pub struct CallSuffix<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CallSuffix<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotated_lambda(&self) -> Option<AnnotatedLambda> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4232,7 +3994,6 @@ impl<'a> CallSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_arguments(&self) -> Option<TypeArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4254,7 +4015,6 @@ impl<'a> CallSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_value_arguments(&self) -> Option<ValueArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4275,31 +4035,24 @@ impl<'a> CallSuffix<'a> {
             .map(|n| ValueArguments::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CallSuffix<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CallableReference<'a> {
+}pub struct CallableReference<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CallableReference<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4321,7 +4074,6 @@ impl<'a> CallableReference<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4342,31 +4094,24 @@ impl<'a> CallableReference<'a> {
             .map(|n| TypeIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CallableReference<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CatchBlock<'a> {
+}pub struct CatchBlock<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CatchBlock<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4388,7 +4133,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4410,7 +4154,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4432,7 +4175,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4454,7 +4196,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4476,7 +4217,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4498,7 +4238,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4520,7 +4259,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4542,7 +4280,6 @@ impl<'a> CatchBlock<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4563,54 +4300,41 @@ impl<'a> CatchBlock<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CatchBlock<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CharacterEscapeSeq<'a> {
+}pub struct CharacterEscapeSeq<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CharacterEscapeSeq<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CharacterEscapeSeq<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CharacterLiteral<'a> {
+}pub struct CharacterLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CharacterLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_character_escape_seq(&self) -> Option<CharacterEscapeSeq> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4631,31 +4355,24 @@ impl<'a> CharacterLiteral<'a> {
             .map(|n| CharacterEscapeSeq::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CharacterLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CheckExpression<'a> {
+}pub struct CheckExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CheckExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4677,7 +4394,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4699,7 +4415,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4721,7 +4436,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4743,7 +4457,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4765,7 +4478,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4787,7 +4499,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4809,7 +4520,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4831,7 +4541,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4853,7 +4562,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4875,7 +4583,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4897,7 +4604,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4919,7 +4625,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4941,7 +4646,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4963,7 +4667,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -4985,7 +4688,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5007,7 +4709,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5029,7 +4730,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5051,7 +4751,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5073,7 +4772,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5095,7 +4793,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5117,7 +4814,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5139,7 +4835,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5161,7 +4856,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5183,7 +4877,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5205,7 +4898,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5227,7 +4919,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5249,7 +4940,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5271,7 +4961,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5293,7 +4982,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5315,7 +5003,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5337,7 +5024,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5359,7 +5045,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5381,7 +5066,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5403,7 +5087,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5425,7 +5108,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5447,7 +5129,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5469,7 +5150,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5491,7 +5171,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5513,7 +5192,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5535,7 +5213,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5557,7 +5234,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5579,7 +5255,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5601,7 +5276,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5623,7 +5297,6 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5644,31 +5317,24 @@ impl<'a> CheckExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CheckExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ClassBody<'a> {
+}pub struct ClassBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ClassBody<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_anonymous_initializer(&self) -> Option<AnonymousInitializer> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5690,7 +5356,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_class_declaration(&self) -> Option<ClassDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5712,7 +5377,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_companion_object(&self) -> Option<CompanionObject> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5734,7 +5398,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_declaration(&self) -> Option<FunctionDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5756,7 +5419,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_getter(&self) -> Option<Getter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5778,7 +5440,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5800,7 +5461,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_declaration(&self) -> Option<PropertyDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5822,7 +5482,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_secondary_constructor(&self) -> Option<SecondaryConstructor> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5844,7 +5503,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_setter(&self) -> Option<Setter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5866,7 +5524,6 @@ impl<'a> ClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_alias(&self) -> Option<TypeAlias> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5887,31 +5544,24 @@ impl<'a> ClassBody<'a> {
             .map(|n| TypeAlias::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ClassBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ClassDeclaration<'a> {
+}pub struct ClassDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ClassDeclaration<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5933,7 +5583,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_delegation_specifier(&self) -> Option<DelegationSpecifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5955,7 +5604,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_enum_class_body(&self) -> Option<EnumClassBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5977,7 +5625,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5999,7 +5646,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_primary_constructor(&self) -> Option<PrimaryConstructor> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6021,7 +5667,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_constraints(&self) -> Option<TypeConstraints> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6043,7 +5688,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6065,7 +5709,6 @@ impl<'a> ClassDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_parameters(&self) -> Option<TypeParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6086,54 +5729,41 @@ impl<'a> ClassDeclaration<'a> {
             .map(|n| TypeParameters::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ClassDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ClassModifier<'a> {
+}pub struct ClassModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ClassModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ClassModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ClassParameter<'a> {
+}pub struct ClassParameter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ClassParameter<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6155,7 +5785,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6177,7 +5806,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6199,7 +5827,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6221,7 +5848,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6243,7 +5869,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6265,7 +5890,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6287,7 +5911,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6309,7 +5932,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6331,7 +5953,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6353,7 +5974,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6375,7 +5995,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6397,7 +6016,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6419,7 +6037,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6441,7 +6058,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6463,7 +6079,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6485,7 +6100,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6507,7 +6121,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6529,7 +6142,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6551,7 +6163,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6573,7 +6184,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6595,7 +6205,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6617,7 +6226,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6639,7 +6247,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6661,7 +6268,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6683,7 +6289,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6705,7 +6310,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6727,7 +6331,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6749,7 +6352,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6771,7 +6373,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6793,7 +6394,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6815,7 +6415,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6837,7 +6436,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6859,7 +6457,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6881,7 +6478,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6903,7 +6499,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6925,7 +6520,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6947,7 +6541,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6969,7 +6562,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6991,7 +6583,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7013,7 +6604,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7035,7 +6625,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7057,7 +6646,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7079,7 +6667,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7101,7 +6688,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7123,7 +6709,6 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7144,31 +6729,24 @@ impl<'a> ClassParameter<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ClassParameter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CollectionLiteral<'a> {
+}pub struct CollectionLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CollectionLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7190,7 +6768,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7212,7 +6789,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7234,7 +6810,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7256,7 +6831,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7278,7 +6852,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7300,7 +6873,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7322,7 +6894,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7344,7 +6915,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7366,7 +6936,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7388,7 +6957,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7410,7 +6978,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7432,7 +6999,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7454,7 +7020,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7476,7 +7041,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7498,7 +7062,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7520,7 +7083,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7542,7 +7104,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7564,7 +7125,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7586,7 +7146,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7608,7 +7167,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7630,7 +7188,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7652,7 +7209,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7674,7 +7230,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7696,7 +7251,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7718,7 +7272,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7740,7 +7293,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7762,7 +7314,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7784,7 +7335,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7806,7 +7356,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7828,7 +7377,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7850,7 +7398,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7872,7 +7419,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7894,7 +7440,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7916,7 +7461,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7938,7 +7482,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7960,7 +7503,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -7982,7 +7524,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8004,7 +7545,6 @@ impl<'a> CollectionLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8025,31 +7565,24 @@ impl<'a> CollectionLiteral<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CollectionLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct CompanionObject<'a> {
+}pub struct CompanionObject<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> CompanionObject<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8071,7 +7604,6 @@ impl<'a> CompanionObject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_delegation_specifier(&self) -> Option<DelegationSpecifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8093,7 +7625,6 @@ impl<'a> CompanionObject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8115,7 +7646,6 @@ impl<'a> CompanionObject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8136,31 +7666,24 @@ impl<'a> CompanionObject<'a> {
             .map(|n| TypeIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for CompanionObject<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ComparisonExpression<'a> {
+}pub struct ComparisonExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ComparisonExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8182,7 +7705,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8204,7 +7726,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8226,7 +7747,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8248,7 +7768,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8270,7 +7789,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8292,7 +7810,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8314,7 +7831,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8336,7 +7852,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8358,7 +7873,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8380,7 +7894,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8402,7 +7915,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8424,7 +7936,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8446,7 +7957,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8468,7 +7978,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8490,7 +7999,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8512,7 +8020,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8534,7 +8041,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8556,7 +8062,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8578,7 +8083,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8600,7 +8104,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8622,7 +8125,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8644,7 +8146,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8666,7 +8167,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8688,7 +8188,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8710,7 +8209,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8732,7 +8230,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8754,7 +8251,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8776,7 +8272,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8798,7 +8293,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8820,7 +8314,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8842,7 +8335,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8864,7 +8356,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8886,7 +8377,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8908,7 +8398,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8930,7 +8419,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8952,7 +8440,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8974,7 +8461,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -8996,7 +8482,6 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9017,31 +8502,24 @@ impl<'a> ComparisonExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ComparisonExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ConjunctionExpression<'a> {
+}pub struct ConjunctionExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ConjunctionExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9063,7 +8541,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9085,7 +8562,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9107,7 +8583,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9129,7 +8604,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9151,7 +8625,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9173,7 +8646,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9195,7 +8667,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9217,7 +8688,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9239,7 +8709,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9261,7 +8730,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9283,7 +8751,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9305,7 +8772,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9327,7 +8793,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9349,7 +8814,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9371,7 +8835,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9393,7 +8856,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9415,7 +8877,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9437,7 +8898,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9459,7 +8919,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9481,7 +8940,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9503,7 +8961,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9525,7 +8982,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9547,7 +9003,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9569,7 +9024,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9591,7 +9045,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9613,7 +9066,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9635,7 +9087,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9657,7 +9108,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9679,7 +9129,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9701,7 +9150,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9723,7 +9171,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9745,7 +9192,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9767,7 +9213,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9789,7 +9234,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9811,7 +9255,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9833,7 +9276,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9855,7 +9297,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9877,7 +9318,6 @@ impl<'a> ConjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9898,31 +9338,24 @@ impl<'a> ConjunctionExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ConjunctionExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ConstructorDelegationCall<'a> {
+}pub struct ConstructorDelegationCall<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ConstructorDelegationCall<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_value_arguments(&self) -> Option<ValueArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9943,31 +9376,24 @@ impl<'a> ConstructorDelegationCall<'a> {
             .map(|n| ValueArguments::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ConstructorDelegationCall<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ConstructorInvocation<'a> {
+}pub struct ConstructorInvocation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ConstructorInvocation<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9989,7 +9415,6 @@ impl<'a> ConstructorInvocation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_value_arguments(&self) -> Option<ValueArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10010,31 +9435,24 @@ impl<'a> ConstructorInvocation<'a> {
             .map(|n| ValueArguments::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ConstructorInvocation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ControlStructureBody<'a> {
+}pub struct ControlStructureBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ControlStructureBody<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10056,7 +9474,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10078,7 +9495,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10100,7 +9516,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10122,7 +9537,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_assignment(&self) -> Option<Assignment> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10144,7 +9558,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10166,7 +9579,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10188,7 +9600,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10210,7 +9621,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10232,7 +9642,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10254,7 +9663,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10276,7 +9684,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_class_declaration(&self) -> Option<ClassDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10298,7 +9705,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10320,7 +9726,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10342,7 +9747,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10364,7 +9768,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10386,7 +9789,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_do_while_statement(&self) -> Option<DoWhileStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10408,7 +9810,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10430,7 +9831,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10452,7 +9852,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_for_statement(&self) -> Option<ForStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10474,7 +9873,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_declaration(&self) -> Option<FunctionDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10496,7 +9894,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_getter(&self) -> Option<Getter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10518,7 +9915,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10540,7 +9936,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10562,7 +9957,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10584,7 +9978,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10606,7 +9999,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10628,7 +10020,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10650,7 +10041,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_label(&self) -> Option<Label> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10672,7 +10062,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10694,7 +10083,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10716,7 +10104,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10738,7 +10125,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10760,7 +10146,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10782,7 +10167,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10804,7 +10188,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10826,7 +10209,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10848,7 +10230,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10870,7 +10251,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_declaration(&self) -> Option<PropertyDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10892,7 +10272,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10914,7 +10293,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10936,7 +10314,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_setter(&self) -> Option<Setter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10958,7 +10335,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10980,7 +10356,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11002,7 +10377,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11024,7 +10398,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11046,7 +10419,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11068,7 +10440,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11090,7 +10461,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11112,7 +10482,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_alias(&self) -> Option<TypeAlias> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11134,7 +10503,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11156,7 +10524,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11178,7 +10545,6 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_while_statement(&self) -> Option<WhileStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11199,31 +10565,24 @@ impl<'a> ControlStructureBody<'a> {
             .map(|n| WhileStatement::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ControlStructureBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct DelegationSpecifier<'a> {
+}pub struct DelegationSpecifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> DelegationSpecifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_constructor_invocation(&self) -> Option<ConstructorInvocation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11245,7 +10604,6 @@ impl<'a> DelegationSpecifier<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_explicit_delegation(&self) -> Option<ExplicitDelegation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11267,7 +10625,6 @@ impl<'a> DelegationSpecifier<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11289,7 +10646,6 @@ impl<'a> DelegationSpecifier<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11310,31 +10666,24 @@ impl<'a> DelegationSpecifier<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for DelegationSpecifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct DirectlyAssignableExpression<'a> {
+}pub struct DirectlyAssignableExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> DirectlyAssignableExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11356,7 +10705,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11378,7 +10726,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11400,7 +10747,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11422,7 +10768,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11444,7 +10789,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11466,7 +10810,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11488,7 +10831,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11510,7 +10852,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_suffix(&self) -> Option<IndexingSuffix> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11532,7 +10873,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11554,7 +10894,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11576,7 +10915,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11598,7 +10936,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11620,7 +10957,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_suffix(&self) -> Option<NavigationSuffix> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11642,7 +10978,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11664,7 +10999,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11686,7 +11020,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11708,7 +11041,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11730,7 +11062,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11752,7 +11083,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11774,7 +11104,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11796,7 +11125,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11818,7 +11146,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11840,7 +11167,6 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11861,31 +11187,24 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for DirectlyAssignableExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct DisjunctionExpression<'a> {
+}pub struct DisjunctionExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> DisjunctionExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11907,7 +11226,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11929,7 +11247,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11951,7 +11268,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11973,7 +11289,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11995,7 +11310,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12017,7 +11331,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12039,7 +11352,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12061,7 +11373,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12083,7 +11394,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12105,7 +11415,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12127,7 +11436,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12149,7 +11457,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12171,7 +11478,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12193,7 +11499,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12215,7 +11520,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12237,7 +11541,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12259,7 +11562,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12281,7 +11583,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12303,7 +11604,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12325,7 +11625,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12347,7 +11646,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12369,7 +11667,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12391,7 +11688,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12413,7 +11709,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12435,7 +11730,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12457,7 +11751,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12479,7 +11772,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12501,7 +11793,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12523,7 +11814,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12545,7 +11835,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12567,7 +11856,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12589,7 +11877,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12611,7 +11898,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12633,7 +11919,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12655,7 +11940,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12677,7 +11961,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12699,7 +11982,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12721,7 +12003,6 @@ impl<'a> DisjunctionExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12742,31 +12023,24 @@ impl<'a> DisjunctionExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for DisjunctionExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct DoWhileStatement<'a> {
+}pub struct DoWhileStatement<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> DoWhileStatement<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12788,7 +12062,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12810,7 +12083,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12832,7 +12104,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12854,7 +12125,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12876,7 +12146,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12898,7 +12167,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12920,7 +12188,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12942,7 +12209,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12964,7 +12230,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -12986,7 +12251,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13008,7 +12272,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13030,7 +12293,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13052,7 +12314,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13074,7 +12335,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13096,7 +12356,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13118,7 +12377,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13140,7 +12398,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13162,7 +12419,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13184,7 +12440,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13206,7 +12461,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13228,7 +12482,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13250,7 +12503,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13272,7 +12524,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13294,7 +12545,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13316,7 +12566,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13338,7 +12587,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13360,7 +12608,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13382,7 +12629,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13404,7 +12650,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13426,7 +12671,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13448,7 +12692,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13470,7 +12713,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13492,7 +12734,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13514,7 +12755,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13536,7 +12776,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13558,7 +12797,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13580,7 +12818,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13602,7 +12839,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13624,7 +12860,6 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13645,31 +12880,24 @@ impl<'a> DoWhileStatement<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for DoWhileStatement<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ElvisExpression<'a> {
+}pub struct ElvisExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ElvisExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13691,7 +12919,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13713,7 +12940,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13735,7 +12961,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13757,7 +12982,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13779,7 +13003,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13801,7 +13024,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13823,7 +13045,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13845,7 +13066,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13867,7 +13087,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13889,7 +13108,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13911,7 +13129,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13933,7 +13150,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13955,7 +13171,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13977,7 +13192,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13999,7 +13213,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14021,7 +13234,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14043,7 +13255,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14065,7 +13276,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14087,7 +13297,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14109,7 +13318,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14131,7 +13339,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14153,7 +13360,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14175,7 +13381,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14197,7 +13402,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14219,7 +13423,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14241,7 +13444,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14263,7 +13465,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14285,7 +13486,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14307,7 +13507,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14329,7 +13528,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14351,7 +13549,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14373,7 +13570,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14395,7 +13591,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14417,7 +13612,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14439,7 +13633,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14461,7 +13654,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14483,7 +13675,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14505,7 +13696,6 @@ impl<'a> ElvisExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14526,31 +13716,24 @@ impl<'a> ElvisExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ElvisExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct EnumClassBody<'a> {
+}pub struct EnumClassBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> EnumClassBody<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_anonymous_initializer(&self) -> Option<AnonymousInitializer> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14572,7 +13755,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_class_declaration(&self) -> Option<ClassDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14594,7 +13776,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_companion_object(&self) -> Option<CompanionObject> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14616,7 +13797,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_enum_entry(&self) -> Option<EnumEntry> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14638,7 +13818,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_declaration(&self) -> Option<FunctionDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14660,7 +13839,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_getter(&self) -> Option<Getter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14682,7 +13860,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14704,7 +13881,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_declaration(&self) -> Option<PropertyDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14726,7 +13902,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_secondary_constructor(&self) -> Option<SecondaryConstructor> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14748,7 +13923,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_setter(&self) -> Option<Setter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14770,7 +13944,6 @@ impl<'a> EnumClassBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_alias(&self) -> Option<TypeAlias> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14791,31 +13964,24 @@ impl<'a> EnumClassBody<'a> {
             .map(|n| TypeAlias::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for EnumClassBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct EnumEntry<'a> {
+}pub struct EnumEntry<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> EnumEntry<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14837,7 +14003,6 @@ impl<'a> EnumEntry<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14859,7 +14024,6 @@ impl<'a> EnumEntry<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14881,7 +14045,6 @@ impl<'a> EnumEntry<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_value_arguments(&self) -> Option<ValueArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14902,31 +14065,24 @@ impl<'a> EnumEntry<'a> {
             .map(|n| ValueArguments::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for EnumEntry<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct EqualityExpression<'a> {
+}pub struct EqualityExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> EqualityExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14948,7 +14104,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14970,7 +14125,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -14992,7 +14146,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15014,7 +14167,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15036,7 +14188,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15058,7 +14209,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15080,7 +14230,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15102,7 +14251,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15124,7 +14272,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15146,7 +14293,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15168,7 +14314,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15190,7 +14335,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15212,7 +14356,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15234,7 +14377,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15256,7 +14398,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15278,7 +14419,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15300,7 +14440,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15322,7 +14461,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15344,7 +14482,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15366,7 +14503,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15388,7 +14524,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15410,7 +14545,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15432,7 +14566,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15454,7 +14587,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15476,7 +14608,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15498,7 +14629,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15520,7 +14650,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15542,7 +14671,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15564,7 +14692,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15586,7 +14713,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15608,7 +14734,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15630,7 +14755,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15652,7 +14776,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15674,7 +14797,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15696,7 +14818,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15718,7 +14839,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15740,7 +14860,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15762,7 +14881,6 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15783,31 +14901,24 @@ impl<'a> EqualityExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for EqualityExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ExplicitDelegation<'a> {
+}pub struct ExplicitDelegation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ExplicitDelegation<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15829,7 +14940,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15851,7 +14961,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15873,7 +14982,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15895,7 +15003,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15917,7 +15024,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15939,7 +15045,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15961,7 +15066,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15983,7 +15087,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16005,7 +15108,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16027,7 +15129,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16049,7 +15150,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16071,7 +15171,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16093,7 +15192,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16115,7 +15213,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16137,7 +15234,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16159,7 +15255,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16181,7 +15276,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16203,7 +15297,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16225,7 +15318,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16247,7 +15339,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16269,7 +15360,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16291,7 +15381,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16313,7 +15402,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16335,7 +15423,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16357,7 +15444,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16379,7 +15465,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16401,7 +15486,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16423,7 +15507,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16445,7 +15528,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16467,7 +15549,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16489,7 +15570,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16511,7 +15591,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16533,7 +15612,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16555,7 +15633,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16577,7 +15654,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16599,7 +15675,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16621,7 +15696,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16643,7 +15717,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16665,7 +15738,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16687,7 +15759,6 @@ impl<'a> ExplicitDelegation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16708,31 +15779,24 @@ impl<'a> ExplicitDelegation<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ExplicitDelegation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FileAnnotation<'a> {
+}pub struct FileAnnotation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FileAnnotation<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_constructor_invocation(&self) -> Option<ConstructorInvocation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16754,7 +15818,6 @@ impl<'a> FileAnnotation<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16775,31 +15838,24 @@ impl<'a> FileAnnotation<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FileAnnotation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FinallyBlock<'a> {
+}pub struct FinallyBlock<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FinallyBlock<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16820,31 +15876,24 @@ impl<'a> FinallyBlock<'a> {
             .map(|n| Statements::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FinallyBlock<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ForStatement<'a> {
+}pub struct ForStatement<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ForStatement<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16866,7 +15915,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16888,7 +15936,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16910,7 +15957,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16932,7 +15978,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16954,7 +15999,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16976,7 +16020,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -16998,7 +16041,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17020,7 +16062,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17042,7 +16083,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17064,7 +16104,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17086,7 +16125,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17108,7 +16146,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17130,7 +16167,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17152,7 +16188,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17174,7 +16209,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17196,7 +16230,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17218,7 +16251,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17240,7 +16272,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17262,7 +16293,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17284,7 +16314,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17306,7 +16335,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17328,7 +16356,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17350,7 +16377,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17372,7 +16398,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17394,7 +16419,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multi_variable_declaration(&self) -> Option<MultiVariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17416,7 +16440,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17438,7 +16461,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17460,7 +16482,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17482,7 +16503,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17504,7 +16524,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17526,7 +16545,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17548,7 +16566,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17570,7 +16587,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17592,7 +16608,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17614,7 +16629,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17636,7 +16650,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17658,7 +16671,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17680,7 +16692,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17702,7 +16713,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17724,7 +16734,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17746,7 +16755,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_variable_declaration(&self) -> Option<VariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17768,7 +16776,6 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17789,31 +16796,24 @@ impl<'a> ForStatement<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ForStatement<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FunctionBody<'a> {
+}pub struct FunctionBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FunctionBody<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17835,7 +16835,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17857,7 +16856,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17879,7 +16877,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17901,7 +16898,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17923,7 +16919,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17945,7 +16940,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17967,7 +16961,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17989,7 +16982,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18011,7 +17003,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18033,7 +17024,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18055,7 +17045,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18077,7 +17066,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18099,7 +17087,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18121,7 +17108,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18143,7 +17129,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18165,7 +17150,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18187,7 +17171,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18209,7 +17192,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18231,7 +17213,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18253,7 +17234,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18275,7 +17255,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18297,7 +17276,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18319,7 +17297,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18341,7 +17318,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18363,7 +17339,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18385,7 +17360,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18407,7 +17381,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18429,7 +17402,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18451,7 +17423,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18473,7 +17444,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18495,7 +17465,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18517,7 +17486,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18539,7 +17507,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18561,7 +17528,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18583,7 +17549,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18605,7 +17570,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18627,7 +17591,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18649,7 +17612,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18671,7 +17633,6 @@ impl<'a> FunctionBody<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18692,31 +17653,24 @@ impl<'a> FunctionBody<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FunctionBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FunctionDeclaration<'a> {
+}pub struct FunctionDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FunctionDeclaration<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18738,7 +17692,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18760,7 +17713,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_value_parameters(&self) -> Option<FunctionValueParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18782,7 +17734,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18804,7 +17755,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18826,7 +17776,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18848,7 +17797,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18870,7 +17818,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18892,7 +17839,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_constraints(&self) -> Option<TypeConstraints> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18914,7 +17860,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18936,7 +17881,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_parameters(&self) -> Option<TypeParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18958,7 +17902,6 @@ impl<'a> FunctionDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -18979,54 +17922,41 @@ impl<'a> FunctionDeclaration<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FunctionDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FunctionModifier<'a> {
+}pub struct FunctionModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FunctionModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FunctionModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FunctionType<'a> {
+}pub struct FunctionType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FunctionType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19048,7 +17978,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type_parameters(&self) -> Option<FunctionTypeParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19070,7 +17999,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19092,7 +18020,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19114,7 +18041,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19136,7 +18062,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_arguments(&self) -> Option<TypeArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19158,7 +18083,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19180,7 +18104,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19202,7 +18125,6 @@ impl<'a> FunctionType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19223,31 +18145,24 @@ impl<'a> FunctionType<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FunctionType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FunctionTypeParameters<'a> {
+}pub struct FunctionTypeParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FunctionTypeParameters<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19269,7 +18184,6 @@ impl<'a> FunctionTypeParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19291,7 +18205,6 @@ impl<'a> FunctionTypeParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19313,7 +18226,6 @@ impl<'a> FunctionTypeParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter(&self) -> Option<Parameter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19335,7 +18247,6 @@ impl<'a> FunctionTypeParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19357,7 +18268,6 @@ impl<'a> FunctionTypeParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19379,7 +18289,6 @@ impl<'a> FunctionTypeParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19400,31 +18309,24 @@ impl<'a> FunctionTypeParameters<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FunctionTypeParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct FunctionValueParameters<'a> {
+}pub struct FunctionValueParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> FunctionValueParameters<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19446,7 +18348,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19468,7 +18369,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19490,7 +18390,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19512,7 +18411,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19534,7 +18432,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19556,7 +18453,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19578,7 +18474,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19600,7 +18495,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19622,7 +18516,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19644,7 +18537,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19666,7 +18558,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19688,7 +18579,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19710,7 +18600,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19732,7 +18621,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19754,7 +18642,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19776,7 +18663,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19798,7 +18684,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19820,7 +18705,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19842,7 +18726,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19864,7 +18747,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19886,7 +18768,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19908,7 +18789,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19930,7 +18810,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19952,7 +18831,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19974,7 +18852,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19996,7 +18873,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter(&self) -> Option<Parameter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20018,7 +18894,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter_modifiers(&self) -> Option<ParameterModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20040,7 +18915,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20062,7 +18936,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20084,7 +18957,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20106,7 +18978,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20128,7 +18999,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20150,7 +19020,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20172,7 +19041,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20194,7 +19062,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20216,7 +19083,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20238,7 +19104,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20260,7 +19125,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20282,7 +19146,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20304,7 +19167,6 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20325,31 +19187,24 @@ impl<'a> FunctionValueParameters<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for FunctionValueParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Getter<'a> {
+}pub struct Getter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Getter<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20371,7 +19226,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20393,7 +19247,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20415,7 +19268,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20437,7 +19289,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20459,7 +19310,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20481,7 +19331,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20503,7 +19352,6 @@ impl<'a> Getter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20524,31 +19372,24 @@ impl<'a> Getter<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Getter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Identifier<'a> {
+}pub struct Identifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Identifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20569,31 +19410,24 @@ impl<'a> Identifier<'a> {
             .map(|n| SimpleIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Identifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct IfExpression<'a> {
+}pub struct IfExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> IfExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20615,7 +19449,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20637,7 +19470,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20659,7 +19491,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20681,7 +19512,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20703,7 +19533,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20725,7 +19554,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20747,7 +19575,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20769,7 +19596,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20791,7 +19617,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20813,7 +19638,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20835,7 +19659,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20857,7 +19680,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20879,7 +19701,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20901,7 +19722,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20923,7 +19743,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20945,7 +19764,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20967,7 +19785,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -20989,7 +19806,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21011,7 +19827,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21033,7 +19848,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21055,7 +19869,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21077,7 +19890,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21099,7 +19911,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21121,7 +19932,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21143,7 +19953,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21165,7 +19974,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21187,7 +19995,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21209,7 +20016,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21231,7 +20037,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21253,7 +20058,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21275,7 +20079,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21297,7 +20100,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21319,7 +20121,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21341,7 +20142,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21363,7 +20163,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21385,7 +20184,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21407,7 +20205,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21429,7 +20226,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21451,7 +20247,6 @@ impl<'a> IfExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21472,31 +20267,24 @@ impl<'a> IfExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for IfExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ImportAlias<'a> {
+}pub struct ImportAlias<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ImportAlias<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21517,31 +20305,24 @@ impl<'a> ImportAlias<'a> {
             .map(|n| TypeIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ImportAlias<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ImportHeader<'a> {
+}pub struct ImportHeader<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ImportHeader<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_identifier(&self) -> Option<Identifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21563,7 +20344,6 @@ impl<'a> ImportHeader<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_import_alias(&self) -> Option<ImportAlias> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21584,31 +20364,24 @@ impl<'a> ImportHeader<'a> {
             .map(|n| ImportAlias::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ImportHeader<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ImportList<'a> {
+}pub struct ImportList<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ImportList<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_import_header(&self) -> Option<ImportHeader> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21629,31 +20402,24 @@ impl<'a> ImportList<'a> {
             .map(|n| ImportHeader::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ImportList<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct IndexingExpression<'a> {
+}pub struct IndexingExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> IndexingExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21675,7 +20441,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21697,7 +20462,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21719,7 +20483,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21741,7 +20504,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21763,7 +20525,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21785,7 +20546,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21807,7 +20567,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21829,7 +20588,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21851,7 +20609,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21873,7 +20630,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21895,7 +20651,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21917,7 +20672,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21939,7 +20693,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21961,7 +20714,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -21983,7 +20735,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22005,7 +20756,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22027,7 +20777,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22049,7 +20798,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_suffix(&self) -> Option<IndexingSuffix> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22071,7 +20819,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22093,7 +20840,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22115,7 +20861,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22137,7 +20882,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22159,7 +20903,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22181,7 +20924,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22203,7 +20945,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22225,7 +20966,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22247,7 +20987,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22269,7 +21008,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22291,7 +21029,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22313,7 +21050,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22335,7 +21071,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22357,7 +21092,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22379,7 +21113,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22401,7 +21134,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22423,7 +21155,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22445,7 +21176,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22467,7 +21197,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22489,7 +21218,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22511,7 +21239,6 @@ impl<'a> IndexingExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22532,31 +21259,24 @@ impl<'a> IndexingExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for IndexingExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct IndexingSuffix<'a> {
+}pub struct IndexingSuffix<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> IndexingSuffix<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22578,7 +21298,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22600,7 +21319,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22622,7 +21340,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22644,7 +21361,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22666,7 +21382,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22688,7 +21403,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22710,7 +21424,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22732,7 +21445,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22754,7 +21466,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22776,7 +21487,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22798,7 +21508,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22820,7 +21529,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22842,7 +21550,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22864,7 +21571,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22886,7 +21592,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22908,7 +21613,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22930,7 +21634,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22952,7 +21655,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22974,7 +21676,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22996,7 +21697,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23018,7 +21718,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23040,7 +21739,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23062,7 +21760,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23084,7 +21781,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23106,7 +21802,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23128,7 +21823,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23150,7 +21844,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23172,7 +21865,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23194,7 +21886,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23216,7 +21907,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23238,7 +21928,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23260,7 +21949,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23282,7 +21970,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23304,7 +21991,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23326,7 +22012,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23348,7 +22033,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23370,7 +22054,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23392,7 +22075,6 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23413,31 +22095,24 @@ impl<'a> IndexingSuffix<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for IndexingSuffix<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct InfixExpression<'a> {
+}pub struct InfixExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> InfixExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23459,7 +22134,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23481,7 +22155,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23503,7 +22176,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23525,7 +22197,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23547,7 +22218,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23569,7 +22239,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23591,7 +22260,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23613,7 +22281,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23635,7 +22302,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23657,7 +22323,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23679,7 +22344,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23701,7 +22365,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23723,7 +22386,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23745,7 +22407,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23767,7 +22428,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23789,7 +22449,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23811,7 +22470,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23833,7 +22491,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23855,7 +22512,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23877,7 +22533,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23899,7 +22554,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23921,7 +22575,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23943,7 +22596,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23965,7 +22617,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -23987,7 +22638,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24009,7 +22659,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24031,7 +22680,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24053,7 +22701,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24075,7 +22722,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24097,7 +22743,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24119,7 +22764,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24141,7 +22785,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24163,7 +22806,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24185,7 +22827,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24207,7 +22848,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24229,7 +22869,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24251,7 +22890,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24273,7 +22911,6 @@ impl<'a> InfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24294,54 +22931,41 @@ impl<'a> InfixExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for InfixExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct InheritanceModifier<'a> {
+}pub struct InheritanceModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> InheritanceModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for InheritanceModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct InterpolatedExpression<'a> {
+}pub struct InterpolatedExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> InterpolatedExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24363,7 +22987,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24385,7 +23008,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24407,7 +23029,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24429,7 +23050,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24451,7 +23071,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24473,7 +23092,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24495,7 +23113,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24517,7 +23134,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24539,7 +23155,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24561,7 +23176,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24583,7 +23197,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24605,7 +23218,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24627,7 +23239,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24649,7 +23260,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24671,7 +23281,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24693,7 +23302,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24715,7 +23323,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24737,7 +23344,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24759,7 +23365,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24781,7 +23386,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24803,7 +23407,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24825,7 +23428,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24847,7 +23449,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24869,7 +23470,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24891,7 +23491,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24913,7 +23512,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24935,7 +23533,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24957,7 +23554,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24979,7 +23575,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25001,7 +23596,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25023,7 +23617,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25045,7 +23638,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25067,7 +23659,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25089,7 +23680,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25111,7 +23701,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25133,7 +23722,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25155,7 +23743,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25177,7 +23764,6 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25198,54 +23784,41 @@ impl<'a> InterpolatedExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for InterpolatedExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct InterpolatedIdentifier<'a> {
+}pub struct InterpolatedIdentifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> InterpolatedIdentifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for InterpolatedIdentifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct JumpExpression<'a> {
+}pub struct JumpExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> JumpExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25267,7 +23840,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25289,7 +23861,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25311,7 +23882,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25333,7 +23903,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25355,7 +23924,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25377,7 +23945,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25399,7 +23966,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25421,7 +23987,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25443,7 +24008,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25465,7 +24029,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25487,7 +24050,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25509,7 +24071,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25531,7 +24092,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25553,7 +24113,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25575,7 +24134,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25597,7 +24155,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25619,7 +24176,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25641,7 +24197,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25663,7 +24218,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25685,7 +24239,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25707,7 +24260,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25729,7 +24281,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25751,7 +24302,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25773,7 +24323,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25795,7 +24344,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25817,7 +24365,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25839,7 +24386,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25861,7 +24407,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25883,7 +24428,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25905,7 +24449,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25927,7 +24470,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25949,7 +24491,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25971,7 +24512,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -25993,7 +24533,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26015,7 +24554,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26037,7 +24575,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26059,7 +24596,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26081,7 +24617,6 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26102,31 +24637,24 @@ impl<'a> JumpExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for JumpExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct LambdaLiteral<'a> {
+}pub struct LambdaLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> LambdaLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_lambda_parameters(&self) -> Option<LambdaParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26148,7 +24676,6 @@ impl<'a> LambdaLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26169,31 +24696,24 @@ impl<'a> LambdaLiteral<'a> {
             .map(|n| Statements::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for LambdaLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct LambdaParameters<'a> {
+}pub struct LambdaParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> LambdaParameters<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_multi_variable_declaration(&self) -> Option<MultiVariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26215,7 +24735,6 @@ impl<'a> LambdaParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_variable_declaration(&self) -> Option<VariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26236,31 +24755,24 @@ impl<'a> LambdaParameters<'a> {
             .map(|n| VariableDeclaration::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for LambdaParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct LongLiteral<'a> {
+}pub struct LongLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> LongLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26282,7 +24794,6 @@ impl<'a> LongLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26304,7 +24815,6 @@ impl<'a> LongLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26325,54 +24835,41 @@ impl<'a> LongLiteral<'a> {
             .map(|n| IntegerLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for LongLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct MemberModifier<'a> {
+}pub struct MemberModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> MemberModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for MemberModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Modifiers<'a> {
+}pub struct Modifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Modifiers<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26394,7 +24891,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_class_modifier(&self) -> Option<ClassModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26416,7 +24912,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_modifier(&self) -> Option<FunctionModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26438,7 +24933,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_inheritance_modifier(&self) -> Option<InheritanceModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26460,7 +24954,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_member_modifier(&self) -> Option<MemberModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26482,7 +24975,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter_modifier(&self) -> Option<ParameterModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26504,7 +24996,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_platform_modifier(&self) -> Option<PlatformModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26526,7 +25017,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_modifier(&self) -> Option<PropertyModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26548,7 +25038,6 @@ impl<'a> Modifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_visibility_modifier(&self) -> Option<VisibilityModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26569,31 +25058,24 @@ impl<'a> Modifiers<'a> {
             .map(|n| VisibilityModifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Modifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct MultiVariableDeclaration<'a> {
+}pub struct MultiVariableDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> MultiVariableDeclaration<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_variable_declaration(&self) -> Option<VariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26614,31 +25096,24 @@ impl<'a> MultiVariableDeclaration<'a> {
             .map(|n| VariableDeclaration::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for MultiVariableDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct MultiplicativeExpression<'a> {
+}pub struct MultiplicativeExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> MultiplicativeExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26660,7 +25135,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26682,7 +25156,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26704,7 +25177,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26726,7 +25198,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26748,7 +25219,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26770,7 +25240,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26792,7 +25261,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26814,7 +25282,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26836,7 +25303,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26858,7 +25324,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26880,7 +25345,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26902,7 +25366,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26924,7 +25387,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26946,7 +25408,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26968,7 +25429,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26990,7 +25450,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27012,7 +25471,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27034,7 +25492,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27056,7 +25513,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27078,7 +25534,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27100,7 +25555,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27122,7 +25576,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27144,7 +25597,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27166,7 +25618,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27188,7 +25639,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27210,7 +25660,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27232,7 +25681,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27254,7 +25702,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27276,7 +25723,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27298,7 +25744,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27320,7 +25765,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27342,7 +25786,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27364,7 +25807,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27386,7 +25828,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27408,7 +25849,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27430,7 +25870,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27452,7 +25891,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27474,7 +25912,6 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27495,31 +25932,24 @@ impl<'a> MultiplicativeExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for MultiplicativeExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct NavigationExpression<'a> {
+}pub struct NavigationExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> NavigationExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27541,7 +25971,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27563,7 +25992,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27585,7 +26013,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27607,7 +26034,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27629,7 +26055,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27651,7 +26076,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27673,7 +26097,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27695,7 +26118,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27717,7 +26139,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27739,7 +26160,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27761,7 +26181,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27783,7 +26202,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27805,7 +26223,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27827,7 +26244,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27849,7 +26265,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27871,7 +26286,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27893,7 +26307,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27915,7 +26328,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27937,7 +26349,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27959,7 +26370,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -27981,7 +26391,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28003,7 +26412,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28025,7 +26433,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28047,7 +26454,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28069,7 +26475,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_suffix(&self) -> Option<NavigationSuffix> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28091,7 +26496,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28113,7 +26517,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28135,7 +26538,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28157,7 +26559,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28179,7 +26580,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28201,7 +26601,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28223,7 +26622,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28245,7 +26643,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28267,7 +26664,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28289,7 +26685,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28311,7 +26706,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28333,7 +26727,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28355,7 +26748,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28377,7 +26769,6 @@ impl<'a> NavigationExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28398,31 +26789,24 @@ impl<'a> NavigationExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for NavigationExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct NavigationSuffix<'a> {
+}pub struct NavigationSuffix<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> NavigationSuffix<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28444,7 +26828,6 @@ impl<'a> NavigationSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28465,31 +26848,24 @@ impl<'a> NavigationSuffix<'a> {
             .map(|n| SimpleIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for NavigationSuffix<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct NotNullableType<'a> {
+}pub struct NotNullableType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> NotNullableType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_parenthesized_user_type(&self) -> Option<ParenthesizedUserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28511,7 +26887,6 @@ impl<'a> NotNullableType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28533,7 +26908,6 @@ impl<'a> NotNullableType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28554,31 +26928,24 @@ impl<'a> NotNullableType<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for NotNullableType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct NullableType<'a> {
+}pub struct NullableType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> NullableType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28600,7 +26967,6 @@ impl<'a> NullableType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28621,31 +26987,24 @@ impl<'a> NullableType<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for NullableType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ObjectDeclaration<'a> {
+}pub struct ObjectDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ObjectDeclaration<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28667,7 +27026,6 @@ impl<'a> ObjectDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_delegation_specifier(&self) -> Option<DelegationSpecifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28689,7 +27047,6 @@ impl<'a> ObjectDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28711,7 +27068,6 @@ impl<'a> ObjectDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28732,31 +27088,24 @@ impl<'a> ObjectDeclaration<'a> {
             .map(|n| TypeIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ObjectDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ObjectLiteral<'a> {
+}pub struct ObjectLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ObjectLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28778,7 +27127,6 @@ impl<'a> ObjectLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_delegation_specifier(&self) -> Option<DelegationSpecifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28799,31 +27147,24 @@ impl<'a> ObjectLiteral<'a> {
             .map(|n| DelegationSpecifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ObjectLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PackageHeader<'a> {
+}pub struct PackageHeader<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PackageHeader<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_identifier(&self) -> Option<Identifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28844,31 +27185,24 @@ impl<'a> PackageHeader<'a> {
             .map(|n| Identifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PackageHeader<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Parameter<'a> {
+}pub struct Parameter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Parameter<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28890,7 +27224,6 @@ impl<'a> Parameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28912,7 +27245,6 @@ impl<'a> Parameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28934,7 +27266,6 @@ impl<'a> Parameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28956,7 +27287,6 @@ impl<'a> Parameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -28978,7 +27308,6 @@ impl<'a> Parameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29000,7 +27329,6 @@ impl<'a> Parameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29021,54 +27349,41 @@ impl<'a> Parameter<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Parameter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ParameterModifier<'a> {
+}pub struct ParameterModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ParameterModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ParameterModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ParameterModifiers<'a> {
+}pub struct ParameterModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ParameterModifiers<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29090,7 +27405,6 @@ impl<'a> ParameterModifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter_modifier(&self) -> Option<ParameterModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29111,31 +27425,24 @@ impl<'a> ParameterModifiers<'a> {
             .map(|n| ParameterModifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ParameterModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ParameterWithOptionalType<'a> {
+}pub struct ParameterWithOptionalType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ParameterWithOptionalType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29157,7 +27464,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29179,7 +27485,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29201,7 +27506,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter_modifiers(&self) -> Option<ParameterModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29223,7 +27527,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29245,7 +27548,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29267,7 +27569,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29289,7 +27590,6 @@ impl<'a> ParameterWithOptionalType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29310,31 +27610,24 @@ impl<'a> ParameterWithOptionalType<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ParameterWithOptionalType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ParenthesizedExpression<'a> {
+}pub struct ParenthesizedExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ParenthesizedExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29356,7 +27649,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29378,7 +27670,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29400,7 +27691,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29422,7 +27712,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29444,7 +27733,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29466,7 +27754,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29488,7 +27775,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29510,7 +27796,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29532,7 +27817,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29554,7 +27838,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29576,7 +27859,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29598,7 +27880,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29620,7 +27901,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29642,7 +27922,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29664,7 +27943,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29686,7 +27964,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29708,7 +27985,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29730,7 +28006,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29752,7 +28027,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29774,7 +28048,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29796,7 +28069,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29818,7 +28090,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29840,7 +28111,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29862,7 +28132,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29884,7 +28153,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29906,7 +28174,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29928,7 +28195,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29950,7 +28216,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29972,7 +28237,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29994,7 +28258,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30016,7 +28279,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30038,7 +28300,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30060,7 +28321,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30082,7 +28342,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30104,7 +28363,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30126,7 +28384,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30148,7 +28405,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30170,7 +28426,6 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30191,31 +28446,24 @@ impl<'a> ParenthesizedExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ParenthesizedExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ParenthesizedType<'a> {
+}pub struct ParenthesizedType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ParenthesizedType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30237,7 +28485,6 @@ impl<'a> ParenthesizedType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30259,7 +28506,6 @@ impl<'a> ParenthesizedType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30281,7 +28527,6 @@ impl<'a> ParenthesizedType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30303,7 +28548,6 @@ impl<'a> ParenthesizedType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30325,7 +28569,6 @@ impl<'a> ParenthesizedType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30346,31 +28589,24 @@ impl<'a> ParenthesizedType<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ParenthesizedType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ParenthesizedUserType<'a> {
+}pub struct ParenthesizedUserType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ParenthesizedUserType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_parenthesized_user_type(&self) -> Option<ParenthesizedUserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30392,7 +28628,6 @@ impl<'a> ParenthesizedUserType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30413,54 +28648,41 @@ impl<'a> ParenthesizedUserType<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ParenthesizedUserType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PlatformModifier<'a> {
+}pub struct PlatformModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PlatformModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PlatformModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PostfixExpression<'a> {
+}pub struct PostfixExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PostfixExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30482,7 +28704,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30504,7 +28725,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30526,7 +28746,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30548,7 +28767,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30570,7 +28788,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30592,7 +28809,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30614,7 +28830,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30636,7 +28851,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30658,7 +28872,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30680,7 +28893,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30702,7 +28914,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30724,7 +28935,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30746,7 +28956,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30768,7 +28977,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30790,7 +28998,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30812,7 +29019,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30834,7 +29040,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30856,7 +29061,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30878,7 +29082,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30900,7 +29103,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30922,7 +29124,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30944,7 +29145,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30966,7 +29166,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30988,7 +29187,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31010,7 +29208,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31032,7 +29229,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31054,7 +29250,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31076,7 +29271,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31098,7 +29292,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31120,7 +29313,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31142,7 +29334,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31164,7 +29355,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31186,7 +29376,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31208,7 +29397,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31230,7 +29418,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31252,7 +29439,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31274,7 +29460,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31296,7 +29481,6 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31317,31 +29501,24 @@ impl<'a> PostfixExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PostfixExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PrefixExpression<'a> {
+}pub struct PrefixExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PrefixExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31363,7 +29540,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31385,7 +29561,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31407,7 +29582,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31429,7 +29603,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31451,7 +29624,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31473,7 +29645,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31495,7 +29666,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31517,7 +29687,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31539,7 +29708,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31561,7 +29729,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31583,7 +29750,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31605,7 +29771,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31627,7 +29792,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31649,7 +29813,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31671,7 +29834,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31693,7 +29855,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31715,7 +29876,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31737,7 +29897,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31759,7 +29918,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31781,7 +29939,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31803,7 +29960,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31825,7 +29981,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_label(&self) -> Option<Label> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31847,7 +30002,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31869,7 +30023,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31891,7 +30044,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31913,7 +30065,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31935,7 +30086,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31957,7 +30107,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -31979,7 +30128,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32001,7 +30149,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32023,7 +30170,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32045,7 +30191,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32067,7 +30212,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32089,7 +30233,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32111,7 +30254,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32133,7 +30275,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32155,7 +30296,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32177,7 +30317,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32199,7 +30338,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32221,7 +30359,6 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32242,31 +30379,24 @@ impl<'a> PrefixExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PrefixExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PrimaryConstructor<'a> {
+}pub struct PrimaryConstructor<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PrimaryConstructor<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_class_parameter(&self) -> Option<ClassParameter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32288,7 +30418,6 @@ impl<'a> PrimaryConstructor<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32309,31 +30438,24 @@ impl<'a> PrimaryConstructor<'a> {
             .map(|n| Modifiers::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PrimaryConstructor<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PropertyDeclaration<'a> {
+}pub struct PropertyDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PropertyDeclaration<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32355,7 +30477,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32377,7 +30498,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32399,7 +30519,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32421,7 +30540,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32443,7 +30561,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32465,7 +30582,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32487,7 +30603,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32509,7 +30624,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32531,7 +30645,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32553,7 +30666,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32575,7 +30687,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32597,7 +30708,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32619,7 +30729,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32641,7 +30750,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32663,7 +30771,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_getter(&self) -> Option<Getter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32685,7 +30792,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32707,7 +30813,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32729,7 +30834,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32751,7 +30855,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32773,7 +30876,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32795,7 +30897,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32817,7 +30918,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32839,7 +30939,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32861,7 +30960,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32883,7 +30981,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multi_variable_declaration(&self) -> Option<MultiVariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32905,7 +31002,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32927,7 +31023,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32949,7 +31044,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32971,7 +31065,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32993,7 +31086,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33015,7 +31107,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33037,7 +31128,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33059,7 +31149,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33081,7 +31170,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_delegate(&self) -> Option<PropertyDelegate> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33103,7 +31191,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33125,7 +31212,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33147,7 +31233,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_setter(&self) -> Option<Setter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33169,7 +31254,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33191,7 +31275,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33213,7 +31296,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33235,7 +31317,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33257,7 +31338,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33279,7 +31359,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33301,7 +31380,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_constraints(&self) -> Option<TypeConstraints> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33323,7 +31401,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33345,7 +31422,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_parameters(&self) -> Option<TypeParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33367,7 +31443,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33389,7 +31464,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33411,7 +31485,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_variable_declaration(&self) -> Option<VariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33433,7 +31506,6 @@ impl<'a> PropertyDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33454,31 +31526,24 @@ impl<'a> PropertyDeclaration<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PropertyDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct PropertyDelegate<'a> {
+}pub struct PropertyDelegate<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PropertyDelegate<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33500,7 +31565,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33522,7 +31586,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33544,7 +31607,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33566,7 +31628,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33588,7 +31649,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33610,7 +31670,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33632,7 +31691,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33654,7 +31712,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33676,7 +31733,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33698,7 +31754,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33720,7 +31775,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33742,7 +31796,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33764,7 +31817,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33786,7 +31838,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33808,7 +31859,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33830,7 +31880,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33852,7 +31901,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33874,7 +31922,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33896,7 +31943,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33918,7 +31964,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33940,7 +31985,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33962,7 +32006,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33984,7 +32027,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34006,7 +32048,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34028,7 +32069,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34050,7 +32090,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34072,7 +32111,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34094,7 +32132,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34116,7 +32153,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34138,7 +32174,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34160,7 +32195,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34182,7 +32216,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34204,7 +32237,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34226,7 +32258,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34248,7 +32279,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34270,7 +32300,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34292,7 +32321,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34314,7 +32342,6 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34335,31 +32362,24 @@ impl<'a> PropertyDelegate<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PropertyDelegate<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct RangeExpression<'a> {
+}pub struct RangeExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> RangeExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34381,7 +32401,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34403,7 +32422,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34425,7 +32443,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34447,7 +32464,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34469,7 +32485,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34491,7 +32506,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34513,7 +32527,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34535,7 +32548,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34557,7 +32569,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34579,7 +32590,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34601,7 +32611,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34623,7 +32632,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34645,7 +32653,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34667,7 +32674,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34689,7 +32695,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34711,7 +32716,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34733,7 +32737,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34755,7 +32758,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34777,7 +32779,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34799,7 +32800,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34821,7 +32821,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34843,7 +32842,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34865,7 +32863,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34887,7 +32884,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34909,7 +32905,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34931,7 +32926,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34953,7 +32947,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34975,7 +32968,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -34997,7 +32989,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35019,7 +33010,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35041,7 +33031,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35063,7 +33052,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35085,7 +33073,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35107,7 +33094,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35129,7 +33115,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35151,7 +33136,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35173,7 +33157,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35195,7 +33178,6 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35216,31 +33198,24 @@ impl<'a> RangeExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for RangeExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct RangeTest<'a> {
+}pub struct RangeTest<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> RangeTest<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35262,7 +33237,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35284,7 +33258,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35306,7 +33279,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35328,7 +33300,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35350,7 +33321,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35372,7 +33342,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35394,7 +33363,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35416,7 +33384,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35438,7 +33405,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35460,7 +33426,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35482,7 +33447,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35504,7 +33468,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35526,7 +33489,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35548,7 +33510,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35570,7 +33531,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35592,7 +33552,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35614,7 +33573,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35636,7 +33594,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35658,7 +33615,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35680,7 +33636,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35702,7 +33657,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35724,7 +33678,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35746,7 +33699,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35768,7 +33720,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35790,7 +33741,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35812,7 +33762,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35834,7 +33783,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35856,7 +33804,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35878,7 +33825,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35900,7 +33846,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35922,7 +33867,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35944,7 +33888,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35966,7 +33909,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -35988,7 +33930,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36010,7 +33951,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36032,7 +33972,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36054,7 +33993,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36076,7 +34014,6 @@ impl<'a> RangeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36097,31 +34034,24 @@ impl<'a> RangeTest<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for RangeTest<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct SecondaryConstructor<'a> {
+}pub struct SecondaryConstructor<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> SecondaryConstructor<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_constructor_delegation_call(&self) -> Option<ConstructorDelegationCall> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36143,7 +34073,6 @@ impl<'a> SecondaryConstructor<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_value_parameters(&self) -> Option<FunctionValueParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36165,7 +34094,6 @@ impl<'a> SecondaryConstructor<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36187,7 +34115,6 @@ impl<'a> SecondaryConstructor<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36208,31 +34135,24 @@ impl<'a> SecondaryConstructor<'a> {
             .map(|n| Statements::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for SecondaryConstructor<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Setter<'a> {
+}pub struct Setter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Setter<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36254,7 +34174,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36276,7 +34195,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36298,7 +34216,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36320,7 +34237,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36342,7 +34258,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parameter_with_optional_type(&self) -> Option<ParameterWithOptionalType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36364,7 +34279,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36386,7 +34300,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36408,7 +34321,6 @@ impl<'a> Setter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36429,77 +34341,58 @@ impl<'a> Setter<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Setter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ShebangLine<'a> {
+}pub struct ShebangLine<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ShebangLine<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ShebangLine<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct SimpleIdentifier<'a> {
+}pub struct SimpleIdentifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> SimpleIdentifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for SimpleIdentifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct SourceFile<'a> {
+}pub struct SourceFile<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> SourceFile<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36521,7 +34414,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36543,7 +34435,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36565,7 +34456,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36587,7 +34477,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_assignment(&self) -> Option<Assignment> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36609,7 +34498,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36631,7 +34519,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36653,7 +34540,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36675,7 +34561,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36697,7 +34582,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36719,7 +34603,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36741,7 +34624,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_class_declaration(&self) -> Option<ClassDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36763,7 +34645,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36785,7 +34666,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36807,7 +34687,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36829,7 +34708,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36851,7 +34729,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_do_while_statement(&self) -> Option<DoWhileStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36873,7 +34750,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36895,7 +34771,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36917,7 +34792,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_file_annotation(&self) -> Option<FileAnnotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36939,7 +34813,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_for_statement(&self) -> Option<ForStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36961,7 +34834,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_declaration(&self) -> Option<FunctionDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36983,7 +34855,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_getter(&self) -> Option<Getter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37005,7 +34876,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37027,7 +34897,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37049,7 +34918,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_import_list(&self) -> Option<ImportList> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37071,7 +34939,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37093,7 +34960,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37115,7 +34981,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37137,7 +35002,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37159,7 +35023,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_label(&self) -> Option<Label> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37181,7 +35044,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37203,7 +35065,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37225,7 +35086,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37247,7 +35107,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37269,7 +35128,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37291,7 +35149,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37313,7 +35170,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_package_header(&self) -> Option<PackageHeader> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37335,7 +35191,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37357,7 +35212,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37379,7 +35233,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37401,7 +35254,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_declaration(&self) -> Option<PropertyDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37423,7 +35275,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37445,7 +35296,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37467,7 +35317,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_setter(&self) -> Option<Setter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37489,7 +35338,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_shebang_line(&self) -> Option<ShebangLine> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37511,7 +35359,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37533,7 +35380,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37555,7 +35401,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37577,7 +35422,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37599,7 +35443,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37621,7 +35464,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37643,7 +35485,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_alias(&self) -> Option<TypeAlias> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37665,7 +35506,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37687,7 +35527,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37709,7 +35548,6 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_while_statement(&self) -> Option<WhileStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37730,31 +35568,24 @@ impl<'a> SourceFile<'a> {
             .map(|n| WhileStatement::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for SourceFile<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct SpreadExpression<'a> {
+}pub struct SpreadExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> SpreadExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37776,7 +35607,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37798,7 +35628,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37820,7 +35649,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37842,7 +35670,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37864,7 +35691,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37886,7 +35712,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37908,7 +35733,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37930,7 +35754,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37952,7 +35775,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37974,7 +35796,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37996,7 +35817,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38018,7 +35838,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38040,7 +35859,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38062,7 +35880,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38084,7 +35901,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38106,7 +35922,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38128,7 +35943,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38150,7 +35964,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38172,7 +35985,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38194,7 +36006,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38216,7 +36027,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38238,7 +36048,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38260,7 +36069,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38282,7 +36090,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38304,7 +36111,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38326,7 +36132,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38348,7 +36153,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38370,7 +36174,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38392,7 +36195,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38414,7 +36216,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38436,7 +36237,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38458,7 +36258,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38480,7 +36279,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38502,7 +36300,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38524,7 +36321,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38546,7 +36342,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38568,7 +36363,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38590,7 +36384,6 @@ impl<'a> SpreadExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38611,31 +36404,24 @@ impl<'a> SpreadExpression<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for SpreadExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct Statements<'a> {
+}pub struct Statements<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Statements<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38657,7 +36443,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38679,7 +36464,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38701,7 +36485,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38723,7 +36506,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_assignment(&self) -> Option<Assignment> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38745,7 +36527,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38767,7 +36548,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38789,7 +36569,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38811,7 +36590,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38833,7 +36611,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38855,7 +36632,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38877,7 +36653,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_class_declaration(&self) -> Option<ClassDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38899,7 +36674,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38921,7 +36695,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38943,7 +36716,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38965,7 +36737,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -38987,7 +36758,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_do_while_statement(&self) -> Option<DoWhileStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39009,7 +36779,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39031,7 +36800,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39053,7 +36821,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_for_statement(&self) -> Option<ForStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39075,7 +36842,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_declaration(&self) -> Option<FunctionDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39097,7 +36863,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_getter(&self) -> Option<Getter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39119,7 +36884,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39141,7 +36905,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39163,7 +36926,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39185,7 +36947,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39207,7 +36968,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39229,7 +36989,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39251,7 +37010,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_label(&self) -> Option<Label> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39273,7 +37031,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39295,7 +37052,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39317,7 +37073,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39339,7 +37094,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39361,7 +37115,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39383,7 +37136,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39405,7 +37157,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39427,7 +37178,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39449,7 +37199,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39471,7 +37220,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_property_declaration(&self) -> Option<PropertyDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39493,7 +37241,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39515,7 +37262,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39537,7 +37283,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_setter(&self) -> Option<Setter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39559,7 +37304,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39581,7 +37325,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39603,7 +37346,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39625,7 +37367,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39647,7 +37388,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39669,7 +37409,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39691,7 +37430,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_alias(&self) -> Option<TypeAlias> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39713,7 +37451,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39735,7 +37472,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39757,7 +37493,6 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_while_statement(&self) -> Option<WhileStatement> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39778,31 +37513,24 @@ impl<'a> Statements<'a> {
             .map(|n| WhileStatement::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Statements<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct StringLiteral<'a> {
+}pub struct StringLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> StringLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_interpolated_expression(&self) -> Option<InterpolatedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39824,7 +37552,6 @@ impl<'a> StringLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_interpolated_identifier(&self) -> Option<InterpolatedIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39845,77 +37572,58 @@ impl<'a> StringLiteral<'a> {
             .map(|n| InterpolatedIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for StringLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct SuperExpression<'a> {
+}pub struct SuperExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> SuperExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for SuperExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ThisExpression<'a> {
+}pub struct ThisExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ThisExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ThisExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TryExpression<'a> {
+}pub struct TryExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TryExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_catch_block(&self) -> Option<CatchBlock> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39937,7 +37645,6 @@ impl<'a> TryExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_finally_block(&self) -> Option<FinallyBlock> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39959,7 +37666,6 @@ impl<'a> TryExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
         let x = self
@@ -39980,31 +37686,24 @@ impl<'a> TryExpression<'a> {
             .map(|n| Statements::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TryExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeAlias<'a> {
+}pub struct TypeAlias<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeAlias<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40026,7 +37725,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_modifiers(&self) -> Option<Modifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40048,7 +37746,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40070,7 +37767,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40092,7 +37788,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40114,7 +37809,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40136,7 +37830,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40158,7 +37851,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_parameters(&self) -> Option<TypeParameters> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40180,7 +37872,6 @@ impl<'a> TypeAlias<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40201,31 +37892,24 @@ impl<'a> TypeAlias<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeAlias<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeArguments<'a> {
+}pub struct TypeArguments<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeArguments<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_type_projection(&self) -> Option<TypeProjection> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40246,31 +37930,24 @@ impl<'a> TypeArguments<'a> {
             .map(|n| TypeProjection::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeArguments<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeConstraint<'a> {
+}pub struct TypeConstraint<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeConstraint<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40292,7 +37969,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40314,7 +37990,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40336,7 +38011,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40358,7 +38032,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40380,7 +38053,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40402,7 +38074,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40424,7 +38095,6 @@ impl<'a> TypeConstraint<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40445,31 +38115,24 @@ impl<'a> TypeConstraint<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeConstraint<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeConstraints<'a> {
+}pub struct TypeConstraints<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeConstraints<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_type_constraint(&self) -> Option<TypeConstraint> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40490,54 +38153,41 @@ impl<'a> TypeConstraints<'a> {
             .map(|n| TypeConstraint::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeConstraints<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeIdentifier<'a> {
+}pub struct TypeIdentifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeIdentifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeIdentifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeModifiers<'a> {
+}pub struct TypeModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeModifiers<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40558,31 +38208,24 @@ impl<'a> TypeModifiers<'a> {
             .map(|n| Annotation::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeParameter<'a> {
+}pub struct TypeParameter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeParameter<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40604,7 +38247,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40626,7 +38268,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40648,7 +38289,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40670,7 +38310,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40692,7 +38331,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40714,7 +38352,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_parameter_modifiers(&self) -> Option<TypeParameterModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40736,7 +38373,6 @@ impl<'a> TypeParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40757,31 +38393,24 @@ impl<'a> TypeParameter<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeParameter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeParameterModifiers<'a> {
+}pub struct TypeParameterModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeParameterModifiers<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40803,7 +38432,6 @@ impl<'a> TypeParameterModifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_reification_modifier(&self) -> Option<ReificationModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40825,7 +38453,6 @@ impl<'a> TypeParameterModifiers<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_variance_modifier(&self) -> Option<VarianceModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40846,31 +38473,24 @@ impl<'a> TypeParameterModifiers<'a> {
             .map(|n| VarianceModifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeParameterModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeParameters<'a> {
+}pub struct TypeParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeParameters<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_type_parameter(&self) -> Option<TypeParameter> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40891,31 +38511,24 @@ impl<'a> TypeParameters<'a> {
             .map(|n| TypeParameter::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeProjection<'a> {
+}pub struct TypeProjection<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeProjection<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40937,7 +38550,6 @@ impl<'a> TypeProjection<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40959,7 +38571,6 @@ impl<'a> TypeProjection<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40981,7 +38592,6 @@ impl<'a> TypeProjection<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41003,7 +38613,6 @@ impl<'a> TypeProjection<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41025,7 +38634,6 @@ impl<'a> TypeProjection<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_projection_modifiers(&self) -> Option<TypeProjectionModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41047,7 +38655,6 @@ impl<'a> TypeProjection<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41068,31 +38675,24 @@ impl<'a> TypeProjection<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeProjection<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeProjectionModifiers<'a> {
+}pub struct TypeProjectionModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeProjectionModifiers<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_variance_modifier(&self) -> Option<VarianceModifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41113,31 +38713,24 @@ impl<'a> TypeProjectionModifiers<'a> {
             .map(|n| VarianceModifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeProjectionModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct TypeTest<'a> {
+}pub struct TypeTest<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> TypeTest<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41159,7 +38752,6 @@ impl<'a> TypeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41181,7 +38773,6 @@ impl<'a> TypeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41203,7 +38794,6 @@ impl<'a> TypeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41225,7 +38815,6 @@ impl<'a> TypeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41247,7 +38836,6 @@ impl<'a> TypeTest<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41268,31 +38856,24 @@ impl<'a> TypeTest<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for TypeTest<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct UnsignedLiteral<'a> {
+}pub struct UnsignedLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> UnsignedLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41314,7 +38895,6 @@ impl<'a> UnsignedLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41336,7 +38916,6 @@ impl<'a> UnsignedLiteral<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41357,54 +38936,41 @@ impl<'a> UnsignedLiteral<'a> {
             .map(|n| IntegerLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for UnsignedLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct UseSiteTarget<'a> {
+}pub struct UseSiteTarget<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> UseSiteTarget<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for UseSiteTarget<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct UserType<'a> {
+}pub struct UserType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> UserType<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_type_arguments(&self) -> Option<TypeArguments> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41426,7 +38992,6 @@ impl<'a> UserType<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41447,31 +39012,24 @@ impl<'a> UserType<'a> {
             .map(|n| TypeIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for UserType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ValueArgument<'a> {
+}pub struct ValueArgument<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ValueArgument<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41493,7 +39051,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41515,7 +39072,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41537,7 +39093,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41559,7 +39114,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41581,7 +39135,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41603,7 +39156,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41625,7 +39177,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41647,7 +39198,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41669,7 +39219,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41691,7 +39240,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41713,7 +39261,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41735,7 +39282,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41757,7 +39303,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41779,7 +39324,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41801,7 +39345,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41823,7 +39366,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41845,7 +39387,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41867,7 +39408,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41889,7 +39429,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41911,7 +39450,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41933,7 +39471,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41955,7 +39492,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41977,7 +39513,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41999,7 +39534,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42021,7 +39555,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42043,7 +39576,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42065,7 +39597,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42087,7 +39618,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42109,7 +39639,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42131,7 +39660,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42153,7 +39681,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42175,7 +39702,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42197,7 +39723,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42219,7 +39744,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42241,7 +39765,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42263,7 +39786,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42285,7 +39807,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42307,7 +39828,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42329,7 +39849,6 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42350,31 +39869,24 @@ impl<'a> ValueArgument<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ValueArgument<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct ValueArguments<'a> {
+}pub struct ValueArguments<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ValueArguments<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_value_argument(&self) -> Option<ValueArgument> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42395,31 +39907,24 @@ impl<'a> ValueArguments<'a> {
             .map(|n| ValueArgument::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ValueArguments<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct VariableDeclaration<'a> {
+}pub struct VariableDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> VariableDeclaration<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42441,7 +39946,6 @@ impl<'a> VariableDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42463,7 +39967,6 @@ impl<'a> VariableDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42485,7 +39988,6 @@ impl<'a> VariableDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42507,7 +40009,6 @@ impl<'a> VariableDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42529,7 +40030,6 @@ impl<'a> VariableDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42551,7 +40051,6 @@ impl<'a> VariableDeclaration<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42572,77 +40071,58 @@ impl<'a> VariableDeclaration<'a> {
             .map(|n| UserType::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for VariableDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct VarianceModifier<'a> {
+}pub struct VarianceModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> VarianceModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for VarianceModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct VisibilityModifier<'a> {
+}pub struct VisibilityModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> VisibilityModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for VisibilityModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct WhenCondition<'a> {
+}pub struct WhenCondition<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> WhenCondition<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42664,7 +40144,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42686,7 +40165,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42708,7 +40186,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42730,7 +40207,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42752,7 +40228,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42774,7 +40249,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42796,7 +40270,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42818,7 +40291,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42840,7 +40312,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42862,7 +40333,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42884,7 +40354,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42906,7 +40375,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42928,7 +40396,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42950,7 +40417,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42972,7 +40438,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42994,7 +40459,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43016,7 +40480,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43038,7 +40501,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43060,7 +40522,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43082,7 +40543,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43104,7 +40564,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43126,7 +40585,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43148,7 +40606,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43170,7 +40627,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43192,7 +40648,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43214,7 +40669,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43236,7 +40690,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43258,7 +40711,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43280,7 +40732,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43302,7 +40753,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_test(&self) -> Option<RangeTest> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43324,7 +40774,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43346,7 +40795,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43368,7 +40816,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43390,7 +40837,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43412,7 +40858,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43434,7 +40879,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43456,7 +40900,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43478,7 +40921,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_type_test(&self) -> Option<TypeTest> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43500,7 +40942,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43522,7 +40963,6 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43543,31 +40983,24 @@ impl<'a> WhenCondition<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for WhenCondition<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct WhenEntry<'a> {
+}pub struct WhenEntry<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> WhenEntry<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43589,7 +41022,6 @@ impl<'a> WhenEntry<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_condition(&self) -> Option<WhenCondition> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43610,31 +41042,24 @@ impl<'a> WhenEntry<'a> {
             .map(|n| WhenCondition::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for WhenEntry<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct WhenExpression<'a> {
+}pub struct WhenExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> WhenExpression<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_when_entry(&self) -> Option<WhenEntry> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43656,7 +41081,6 @@ impl<'a> WhenExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_subject(&self) -> Option<WhenSubject> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43677,31 +41101,24 @@ impl<'a> WhenExpression<'a> {
             .map(|n| WhenSubject::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for WhenExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct WhenSubject<'a> {
+}pub struct WhenSubject<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> WhenSubject<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43723,7 +41140,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43745,7 +41161,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43767,7 +41182,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43789,7 +41203,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43811,7 +41224,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43833,7 +41245,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43855,7 +41266,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43877,7 +41287,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43899,7 +41308,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43921,7 +41329,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43943,7 +41350,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43965,7 +41371,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43987,7 +41392,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44009,7 +41413,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44031,7 +41434,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44053,7 +41455,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44075,7 +41476,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44097,7 +41497,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44119,7 +41518,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44141,7 +41539,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44163,7 +41560,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44185,7 +41581,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44207,7 +41602,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44229,7 +41623,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44251,7 +41644,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44273,7 +41665,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44295,7 +41686,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44317,7 +41707,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44339,7 +41728,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44361,7 +41749,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44383,7 +41770,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44405,7 +41791,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44427,7 +41812,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44449,7 +41833,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44471,7 +41854,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44493,7 +41875,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44515,7 +41896,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44537,7 +41917,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44559,7 +41938,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_variable_declaration(&self) -> Option<VariableDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44581,7 +41959,6 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44602,31 +41979,24 @@ impl<'a> WhenSubject<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for WhenSubject<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct WhileStatement<'a> {
+}pub struct WhileStatement<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> WhileStatement<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
-
-    
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44648,7 +42018,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44670,7 +42039,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_as_expression(&self) -> Option<AsExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44692,7 +42060,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44714,7 +42081,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44736,7 +42102,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_call_expression(&self) -> Option<CallExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44758,7 +42123,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_callable_reference(&self) -> Option<CallableReference> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44780,7 +42144,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44802,7 +42165,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_check_expression(&self) -> Option<CheckExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44824,7 +42186,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44846,7 +42207,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44868,7 +42228,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44890,7 +42249,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44912,7 +42270,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44934,7 +42291,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44956,7 +42312,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -44978,7 +42333,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_hex_literal(&self) -> Option<HexLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45000,7 +42354,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_if_expression(&self) -> Option<IfExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45022,7 +42375,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45044,7 +42396,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_infix_expression(&self) -> Option<InfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45066,7 +42417,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45088,7 +42438,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_jump_expression(&self) -> Option<JumpExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45110,7 +42459,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45132,7 +42480,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_long_literal(&self) -> Option<LongLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45154,7 +42501,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45176,7 +42522,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45198,7 +42543,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45220,7 +42564,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45242,7 +42585,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45264,7 +42606,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45286,7 +42627,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_range_expression(&self) -> Option<RangeExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45308,7 +42648,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_real_literal(&self) -> Option<RealLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45330,7 +42669,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45352,7 +42690,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45374,7 +42711,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_string_literal(&self) -> Option<StringLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45396,7 +42732,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_super_expression(&self) -> Option<SuperExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45418,7 +42753,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_this_expression(&self) -> Option<ThisExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45440,7 +42774,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_try_expression(&self) -> Option<TryExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45462,7 +42795,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45484,7 +42816,6 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
-    
     pub fn find_when_expression(&self) -> Option<WhenExpression> {
         let mut cursor = self.node.walk();
         let x = self
@@ -45505,478 +42836,163 @@ impl<'a> WhileStatement<'a> {
             .map(|n| WhenExpression::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
-    }
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for WhileStatement<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#[derive(new)]
-pub struct BinLiteral<'a> {
+}pub struct BinLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> BinLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for BinLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#[derive(new)]
-pub struct HexLiteral<'a> {
+}pub struct HexLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> HexLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for HexLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#[derive(new)]
-pub struct IntegerLiteral<'a> {
+}pub struct IntegerLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> IntegerLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for IntegerLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-
-
-
-
-#[derive(new)]
-pub struct Label<'a> {
+}pub struct Label<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> Label<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for Label<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-#[derive(new)]
-pub struct LineComment<'a> {
+}pub struct LineComment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> LineComment<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for LineComment<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-#[derive(new)]
-pub struct MultilineComment<'a> {
+}pub struct MultilineComment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> MultilineComment<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for MultilineComment<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#[derive(new)]
-pub struct PropertyModifier<'a> {
+}pub struct PropertyModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> PropertyModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for PropertyModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-
-
-#[derive(new)]
-pub struct RealLiteral<'a> {
+}pub struct RealLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> RealLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for RealLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}
-
-
-
-
-
-
-#[derive(new)]
-pub struct ReificationModifier<'a> {
+}pub struct ReificationModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> ReificationModifier<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-
-    
-}
+    }}
 
 impl<'a> std::fmt::Debug for ReificationModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

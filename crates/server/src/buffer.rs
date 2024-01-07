@@ -37,9 +37,9 @@ impl Buffers {
         Err(Error::invalid_params(format!("No such buffer {}", uri)))
     }
 
-    pub async fn add_from_file<F>(&self, path: PathBuf, mut and_then: F)
+    pub async fn add_from_file<F, R>(&self, path: PathBuf, mut and_then: F) -> R
     where
-        F: FnMut(&Buffer),
+        F: FnMut(&Buffer) -> R,
     {
         let (tree, source) = parser::parse_file(&path);
         let tree = tree.unwrap();
@@ -55,7 +55,7 @@ impl Buffers {
         // w_lock.entry(path.clone()).insert_entry(buffer).get();
 
         let r_lock = RwLockWriteGuard::downgrade(w_lock);
-        and_then(r_lock.get(&path).unwrap());
+        and_then(r_lock.get(&path).unwrap())
     }
 
     pub fn edit(

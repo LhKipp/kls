@@ -1,5 +1,6 @@
 use merged_range::MergedRange;
 use tracing::trace;
+use tree_sitter::Range;
 
 pub(crate) type TextByteRange = std::ops::Range<u32>;
 

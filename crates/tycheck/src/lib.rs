@@ -6,7 +6,7 @@ use std::{
 use qp_trie::Trie;
 
 static TC_KEY_GENERATOR: AtomicI32 = AtomicI32::new(1);
-#[derive(Eq, Hash, PartialEq, Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy, Debug)]
 pub struct TcKey(i32);
 
 pub enum Ty {

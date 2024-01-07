@@ -1,7 +1,5 @@
-use parking_lot::RwLock;
 use std::path::PathBuf;
-use std::sync::Arc;
-use stdx::new_arc_rw_lock;
+use stdx::{new_arc_rw_lock, ARwLock};
 use tower_lsp::jsonrpc::{Error, Result};
 use tower_lsp::lsp_types::request::{GotoTypeDefinitionParams, GotoTypeDefinitionResponse};
 use tower_lsp::lsp_types::InitializeParams;
@@ -10,7 +8,8 @@ use tracing::{debug, error, info, trace};
 use walkdir::WalkDir;
 
 use crate::buffer::Buffers;
-use crate::indexes::Indexes;
+use crate::project::Project;
+use crate::scope::*;
 
 #[async_trait]
 pub trait ClientI: Send + Sync {
@@ -28,33 +27,30 @@ pub struct Symbol {}
 
 pub struct KServer {
     pub client: Box<dyn ClientI>,
-    pub indexes: Indexes,
+    pub scopes: Scopes,
     pub buffers: Buffers,
-    pub workspace_root: Arc<RwLock<Option<PathBuf>>>,
+    pub root_project: ARwLock<Project>,
 }
 
 impl KServer {
     pub fn new(client: Box<dyn ClientI>) -> Self {
         KServer {
             client,
-            indexes: Indexes::new(),
+            scopes: Scopes::new(),
             buffers: Buffers::new(),
-            workspace_root: new_arc_rw_lock(None), // set in initialize
+            // After init phase, project will be set to something meaningful (panic otherwise)
+            root_project: new_arc_rw_lock(Project::invalid_project()),
         }
     }
 
     async fn load_source_files_in_workspace(&self) -> Result<()> {
-        trace!(
+        debug!(
             "Loading source files in workspace {:?}",
-            self.workspace_root.read()
+            self.root_project.read()
         );
-        let Some(workspace_root) = self.workspace_root.read().clone() else {
-            return Ok(());
-        };
+        let r_project = self.root_project.read();
 
-        debug!("Loading all source files in {:?}", workspace_root);
-
-        let source_dir = workspace_root.join("src/main/kotlin");
+        let source_dir = r_project.root_path().join("src/main/kotlin");
 
         if !source_dir.is_dir() {
             return Ok(());
@@ -67,16 +63,17 @@ impl KServer {
             .filter(|f| f.file_type().is_file())
         {
             trace!("Visiting file {:?}", f.path());
-            // TODO make individual buffer creation possible without interaction with buffers
-            // then create indexes for buffer
-            // then collect buffer and indexes
-            self.buffers
+            let scopes = self
+                .buffers
                 .add_from_file(f.into_path(), |buffer| {
-                    if let Err(e) = self.indexes.add_from_buffer(buffer) {
-                        panic!("Unhandled err {}", e);
+                    let (scopes, errors) = Scope::build_scopes_from(buffer);
+                    for e in errors {
+                        println!("TODO handle error {}", e.msg);
                     }
+                    scopes
                 })
                 .await;
+            self.scopes.add(scopes)
         }
 
         Ok(())
@@ -113,8 +110,13 @@ fn find_workspace_folder(params: &InitializeParams) -> Result<Option<PathBuf>> {
 #[tower_lsp::async_trait]
 impl LanguageServer for KServer {
     async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
-        (*self.workspace_root.write()) = find_workspace_folder(&params).unwrap();
+        let Some(project_path) = find_workspace_folder(&params).unwrap() else {
+            panic!("No project passed to LSP via InitializeParams");
+        };
+        (*self.root_project.write()) = Some(Project::new(project_path));
 
+        self.scopes
+            .add(Scope::new(SKind::Project(self.root_project.read().name())));
         self.load_source_files_in_workspace().await?;
 
         Ok(InitializeResult {

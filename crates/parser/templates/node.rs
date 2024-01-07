@@ -7,21 +7,22 @@ use crate::text_of;
 
 // for w/e reasons looking up the child by field_name doesn't work
 // so we filter on kind
-
-{% for node in nodes %}
-{% if node.named %}
-#[derive(new)]
+{% for node in nodes -%}
+{% if node.named -%}
 pub struct {{node.type | camel_case }}<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
 
 impl<'a> {{node.type | camel_case }}<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
     }
 
-    {% for child in node.children.types %}
+    {%- for child in node.children.types %}
     pub fn find_{{ child.type }}(&self) -> Option<{{child.type | camel_case }}> {
         let mut cursor = self.node.walk();
         let x = self
@@ -43,7 +44,7 @@ impl<'a> {{node.type | camel_case }}<'a> {
             .collect::<Vec<_>>();
         x
     }
-    {% endfor %}
+    {%- endfor -%}
 }
 
 impl<'a> std::fmt::Debug for {{ node.type | camel_case }}<'a> {
@@ -52,5 +53,5 @@ impl<'a> std::fmt::Debug for {{ node.type | camel_case }}<'a> {
     }
 }
 
-{% endif %}
-{% endfor %}
+{%- endif -%}
+{%- endfor -%}
