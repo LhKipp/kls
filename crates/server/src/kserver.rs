@@ -48,9 +48,13 @@ impl KServer {
             "Loading source files in workspace {:?}",
             self.root_project.read()
         );
-        let r_project = self.root_project.read();
-
-        let source_dir = r_project.root_path().join("src/main/kotlin");
+        let (source_dir, project_name) = {
+            let r_project = self.root_project.read();
+            (
+                r_project.root_path().join("src/main/kotlin"),
+                r_project.name(),
+            )
+        };
 
         if !source_dir.is_dir() {
             return Ok(());
@@ -65,7 +69,7 @@ impl KServer {
             trace!("Visiting file {:?}", f.path());
             let scopes = self
                 .buffers
-                .add_from_file(f.into_path(), |buffer| {
+                .add_from_file(f.clone().into_path(), |buffer| {
                     let (scopes, errors) = Scope::build_scopes_from(buffer);
                     for e in errors {
                         println!("TODO handle error {}", e.msg);
@@ -73,7 +77,11 @@ impl KServer {
                     scopes
                 })
                 .await;
-            self.scopes.add(scopes)
+
+            if let Err(e) = self.scopes.add_module(&project_name, scopes) {
+                error!("Error loading source file {}: {:?}", f.path().display(), e);
+                return Err(Error::internal_error());
+            }
         }
 
         Ok(())
@@ -113,10 +121,9 @@ impl LanguageServer for KServer {
         let Some(project_path) = find_workspace_folder(&params).unwrap() else {
             panic!("No project passed to LSP via InitializeParams");
         };
-        (*self.root_project.write()) = Some(Project::new(project_path));
+        (*self.root_project.write()) = Project::new(project_path);
 
-        self.scopes
-            .add(Scope::new(SKind::Project(self.root_project.read().name())));
+        self.scopes.add_project(self.root_project.read().name());
         self.load_source_files_in_workspace().await?;
 
         Ok(InitializeResult {
@@ -145,16 +152,16 @@ impl LanguageServer for KServer {
         Ok(())
     }
 
-    async fn completion(&self, params: CompletionParams) -> Result<Option<CompletionResponse>> {
-        let text = self
-            .buffers
-            .read(&params.text_document_position.text_document.uri, |buffer| {
-                buffer.text_at(params.text_document_position.position)
-            })?;
+    async fn completion(&self, _params: CompletionParams) -> Result<Option<CompletionResponse>> {
+        // let text = self
+        //     .buffers
+        //     .read(&params.text_document_position.text_document.uri, |buffer| {
+        //         buffer.text_at(params.text_document_position.position)
+        //     })?;
 
-        let completions = self.indexes.completions_for(&text);
+        // let completions = self.scopes.completions_for(&text);
 
-        Ok(Some(CompletionResponse::Array(completions)))
+        Ok(Some(CompletionResponse::Array(vec![])))
     }
 
     // async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
@@ -198,7 +205,7 @@ impl LanguageServer for KServer {
             error!("Error on did_change: {}", e);
         };
 
-        let edited_ranges = match self
+        let _edited_ranges = match self
             .buffers
             .edit(&params.text_document.uri, &params.content_changes)
         {
@@ -209,10 +216,12 @@ impl LanguageServer for KServer {
             }
         };
 
-        if let Err(e) = self.buffers.read(&params.text_document.uri, |buffer| {
-            self.indexes.add_from_buffer_changes(buffer, &edited_ranges)
-        }) {
-            handle_err(e);
-        }
+        // TODO edit scopes
+
+        // if let Err(e) = self.buffers.read(&params.text_document.uri, |buffer| {
+        //     self.indexes.add_from_buffer_changes(buffer, &edited_ranges)
+        // }) {
+        //     handle_err(e);
+        // }
     }
 }

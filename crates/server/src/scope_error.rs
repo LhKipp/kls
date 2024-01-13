@@ -1,5 +1,6 @@
-pub(crate) type ScopeErrors = Vec<ScopeError>;
+pub type ScopeErrors = Vec<ScopeError>;
 
-pub(crate) struct ScopeError {
+#[derive(new)]
+pub struct ScopeError {
     pub msg: String,
 }

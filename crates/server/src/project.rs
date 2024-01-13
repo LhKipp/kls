@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 // TODO Communicate with gradle to retrieve actual values. For now default/dummy values are
 // returned
 #[derive(Debug)]
-pub(crate) struct Project {
+pub struct Project {
     pub path: PathBuf,
 }
 

@@ -3,7 +3,10 @@ use crate::visit::*;
 pub(crate) fn visit_source_file(builder: &mut ScopeBuilder, source_file_node: &Node) {
     let root_scope_token = builder
         .all
-        .new_node(Scope::new(SKind::Module, source_file_node.range()));
+        // TODO module name
+        .new_node(stdx::new_arc_rw_lock(Scope::new(SKind::Module {
+            range: source_file_node.range(),
+        })));
     builder.root = Some(root_scope_token);
     builder.current = builder.root;
 

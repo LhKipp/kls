@@ -1,6 +1,6 @@
 use std::sync::atomic::Ordering;
 
-use crate::visit::*;
+use crate::{scope_error::ScopeError, visit::*};
 
 pub(crate) fn visit_class(builder: &mut ScopeBuilder, class_node: &Node) {
     let class_decl = node::ClassDeclaration::new(class_node.clone(), &builder.buffer.text);
@@ -12,7 +12,9 @@ pub(crate) fn visit_class(builder: &mut ScopeBuilder, class_node: &Node) {
     let (class_name, name_range) = if let Some(class_name) = class_decl.find_type_identifier() {
         (class_name.text(), class_name.node.range())
     } else {
-        builder.errors.push("Class is missing a name".into());
+        builder
+            .errors
+            .push(ScopeError::new("Class is missing a name".into()));
         (
             format!(
                 "___{}",
@@ -22,25 +24,29 @@ pub(crate) fn visit_class(builder: &mut ScopeBuilder, class_node: &Node) {
         )
     };
 
-    let cur_scope = &mut builder.current_mut().data;
-    let class_tc_key = cur_scope.ty_table.new_key();
+    let class_tc_key = {
+        let mut w_current = builder.current_mut();
+        let class_tc_key = w_current.ty_table.new_key();
 
-    cur_scope.items.insert(
-        class_name.clone(),
-        SItem::new(
-            name_range,
-            SItemKind::Class(SItemClass {
-                name: class_name.clone(),
-                tc_key: class_tc_key,
-            }),
-        ),
-    );
+        w_current.items.insert(
+            class_name.clone(),
+            SItem::new(
+                name_range,
+                SItemKind::Class(SItemClass {
+                    name: class_name.clone(),
+                    tc_key: class_tc_key,
+                }),
+            ),
+        );
+        class_tc_key
+    };
 
-    builder.push_scope(Scope::new(
-        SKind::Class(class_name),
-        class_decl.node.range(),
-    ));
-    builder.current_mut().data.items.insert(
+    builder.push_scope(Scope::new(SKind::Class {
+        name: class_name,
+        range: class_decl.node.range(),
+    }));
+
+    builder.current_mut().items.insert(
         "this".into(),
         SItem::new(
             name_range,
@@ -64,8 +70,9 @@ pub(crate) fn visit_class_definition(builder: &mut ScopeBuilder, node: &node::Cl
             let Some(simple_identifier) = parameter.find_simple_identifier() else {
                 continue;
             };
-            let tc_key = builder.current_ty_table().new_key();
-            builder.current_mut().data.items.insert(
+            let mut w_current = builder.current_mut();
+            let tc_key = w_current.ty_table.new_key();
+            w_current.items.insert(
                 simple_identifier.text(),
                 SItem::new(
                     simple_identifier.node.range(),
@@ -92,10 +99,11 @@ pub(crate) fn visit_enum_class(
     _class_decl: &node::ClassDeclaration,
     enum_body: node::EnumClassBody,
 ) {
-    let class_tc_key = builder.find_var("this").unwrap().tc_key;
+    let mut w_current = builder.current_mut();
+    let class_tc_key = w_current.find_var("this").unwrap().tc_key;
     for enum_entry in enum_body.find_all_enum_entry() {
         if let Some(enum_entry_name) = enum_entry.find_simple_identifier() {
-            builder.current_mut().data.items.insert(
+            w_current.items.insert(
                 enum_entry_name.text(),
                 SItem::new(
                     enum_entry_name.node.range(),

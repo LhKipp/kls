@@ -1,5 +1,7 @@
 use enum_as_inner::EnumAsInner;
+use parking_lot::{RwLockReadGuard, RwLockWriteGuard};
 use std::{collections::HashMap, fmt};
+use stdx::ARwLock;
 use tycheck::{TcKey, TyTable};
 
 use atree::{Arena, Token};
@@ -9,33 +11,40 @@ use tree_sitter::{Node, Range};
 
 use crate::{buffer::Buffer, scope_error::ScopeErrors, visit};
 
-pub(crate) use crate::scopes::Scopes;
+pub use crate::scopes::Scopes;
 
-pub(crate) type ScopeTree = Arena<Scope>;
-pub(crate) struct Scope {
+pub struct ScopeTree {
+    pub tree: Arena<ARwLock<Scope>>,
+    pub root: Token,
+}
+
+pub struct Scope {
     pub kind: SKind,
     pub ty_table: TyTable,
     pub items: HashMap<String /*item-name*/, SItem>,
 }
+pub type WScope<'a> = RwLockWriteGuard<'a, Scope>;
+pub type RScope<'a> = RwLockReadGuard<'a, Scope>;
 
 // Used for debugging purposes
 #[derive(Debug)]
-pub(crate) enum SKind {
+pub enum SKind {
     Project { name: String },
-    Module(String /*name*/),
+    // TODO add name
+    Module { /*name: String,*/ range: Range },
     Class { name: String, range: Range },
     Function(String /*name*/),
     MemberFunction(String /*name*/),
 }
 
 #[derive(new, Debug)]
-pub(crate) struct SItem {
+pub struct SItem {
     pub location: Range,
     pub item: SItemKind,
 }
 
 #[derive(EnumAsInner, Debug)]
-pub(crate) enum SItemKind {
+pub enum SItemKind {
     SourceFileMetadata(SItemSourceFileMetadata),
     PackageHeader(String),
     Class(SItemClass),
@@ -43,16 +52,16 @@ pub(crate) enum SItemKind {
 }
 
 #[derive(Debug)]
-pub(crate) struct SItemSourceFileMetadata {}
+pub struct SItemSourceFileMetadata {}
 
 #[derive(Debug)]
-pub(crate) struct SItemClass {
+pub struct SItemClass {
     pub name: String,
     pub tc_key: TcKey,
 }
 
 #[derive(Debug)]
-pub(crate) struct SItemVar {
+pub struct SItemVar {
     pub name: String,
     pub tc_key: TcKey,
     pub mutable: bool,
@@ -72,15 +81,29 @@ impl Scope {
         ScopeBuilder::build_scopes_from(buffer, &buffer.tree.root_node())
     }
 
-    pub fn fmt_debug(&mut self, f: &mut fmt::Formatter<'_>, depth: usize) -> fmt::Result {
-        let ws_prefix = || f.write_str(&" ".repeat(depth));
-        let e1 = ws_prefix();
+    pub fn find_var(&self, var_name: &str) -> Option<&SItemVar> {
+        self.items
+            .get(var_name)
+            .map(|sitem| sitem.item.as_var())
+            .flatten()
+    }
+
+    pub fn find_var_mut(&mut self, var_name: &str) -> Option<&mut SItemVar> {
+        self.items
+            .get_mut(var_name)
+            .map(|sitem| sitem.item.as_var_mut())
+            .flatten()
+    }
+
+    pub fn fmt_debug(&self, f: &mut fmt::Formatter<'_>, depth: usize) -> fmt::Result {
+        let ws_prefix = |f: &mut fmt::Formatter<'_>| f.write_str(&" ".repeat(depth));
+        let e1 = ws_prefix(f);
         let e5 = f.write_str(&format!("Kind: {:?}\n", self.kind));
         let errs = self
             .items
             .iter()
             .map(|(_, item)| format!("Item: {:?}", item))
-            .map(|item| ws_prefix().or(f.write_str(&item)))
+            .map(|item| ws_prefix(f).or(f.write_str(&item)))
             .reduce(|a, b| a.or(b))
             .unwrap_or(Ok(()));
 
@@ -94,10 +117,10 @@ impl fmt::Debug for Scope {
     }
 }
 
-pub(crate) struct ScopeBuilder<'a> {
+pub struct ScopeBuilder<'a> {
     pub buffer: &'a Buffer,
     pub root: Option<Token>,
-    pub all: ScopeTree,
+    pub all: Arena<ARwLock<Scope>>,
     pub errors: ScopeErrors,
     pub current: Option<Token>,
 }
@@ -114,7 +137,11 @@ impl<'a> ScopeBuilder<'a> {
     }
 
     pub fn push_scope(&mut self, scope: Scope) -> Token {
-        self.current = Some(self.current_mut().token().append(&mut self.all, scope));
+        self.current = Some(
+            self.current_node_mut()
+                .token()
+                .append(&mut self.all, stdx::new_arc_rw_lock(scope)),
+        );
         self.current.unwrap()
     }
 
@@ -123,47 +150,34 @@ impl<'a> ScopeBuilder<'a> {
         assert!(self.current.is_some()); // when finishing, a parent scope must be present
     }
 
-    pub fn current_ty_table(&mut self) -> &mut TyTable {
-        &mut self.current_mut().data.ty_table
-    }
-
-    pub fn current_mut(&mut self) -> &mut atree::Node<Scope> {
+    pub fn current_node_mut(&mut self) -> &mut atree::Node<ARwLock<Scope>> {
         self.all.get_mut(self.current.unwrap()).unwrap()
     }
 
-    pub fn current(&mut self) -> &atree::Node<Scope> {
-        self.all.get(self.current.unwrap()).unwrap()
+    pub fn current_mut(&mut self) -> WScope {
+        self.all
+            .get_mut(self.current.unwrap())
+            .unwrap()
+            .data
+            .try_write() // ScopeBuilder currently is not building parallel.
+            .unwrap() // If unwrap fails, a lock is hold up in the call chain
     }
 
     pub fn root(&self) -> Token {
         self.root.unwrap()
     }
 
-    pub fn find_var(&mut self, var_name: &str) -> Option<&SItemVar> {
-        self.current()
-            .data
-            .items
-            .get(var_name)
-            .unwrap()
-            .item
-            .as_var()
-    }
-
-    pub fn find_var_mut(&mut self, var_name: &str) -> Option<&SItemVar> {
-        self.current_mut()
-            .data
-            .items
-            .get(var_name)
-            .unwrap()
-            .item
-            .as_var()
-    }
-
     pub fn build_scopes_from(buffer: &Buffer, node: &Node) -> (ScopeTree, ScopeErrors) {
         trace!("Creating scopes from node {}", node.to_sexp());
         let mut scope_builder = ScopeBuilder::new(buffer);
         scope_builder.build_for(node);
-        (scope_builder.all, scope_builder.errors)
+        (
+            ScopeTree {
+                tree: scope_builder.all,
+                root: scope_builder.root.unwrap(),
+            },
+            scope_builder.errors,
+        )
     }
 
     pub fn build_for(&mut self, node: &Node) {
