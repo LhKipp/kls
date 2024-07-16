@@ -1,3 +1,6 @@
-[submodule "tree-sitter-kotlin"]
-	path = crates/parser/tree-sitter-kotlin
-	url = https://github.com/fwcd/tree-sitter-kotlin
+# [submodule "tree-sitter-kotlin"]
+# 	path = crates/parser/tree-sitter-kotlin
+# 	url = https://github.com/fwcd/tree-sitter-kotlin
+[submodule "plenary"]
+	path = plenary
+	url = https://github.com/nvim-lua/plenary.nvim
