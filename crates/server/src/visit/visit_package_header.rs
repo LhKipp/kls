@@ -19,7 +19,7 @@ pub(crate) fn visit_package_header(builder: &mut ScopeBuilder, package_node: &No
     };
 
     builder.current_mut().items.insert(
-        package_ident.clone(),
+        package_ident.clone().into(),
         SItem::new(
             package_node.range(),
             SItemKind::PackageHeader(package_ident),

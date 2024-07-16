@@ -1,6 +1,18 @@
 use testing::{completion::expect_completion_in_vec, *};
 use tower_lsp::LanguageServer;
 
+fn x() -> CompletionParams {
+    return CompletionParams {
+        text_document_position: TextDocumentPositionParams{
+            text_document: TextDocumentIdentifier {
+                uri: Url::parse("com/test/clock/Clock.kt")
+            }
+            position: todo!(),
+        },
+        ..
+    };
+}
+
 #[tokio::test]
 async fn adding_text_to_an_existing_document() {
     let (init, _, server) = init_test(|opts| {
@@ -8,7 +20,7 @@ async fn adding_text_to_an_existing_document() {
     })
     .await;
 
-    let completions_before_edit = server.indexes.completions_for("com.t");
+    let completions_before_edit = server.completion("com.t");
     assert_eq!(completions_before_edit.len(), 1);
     assert_eq!(completions_before_edit[0].label, "com.test");
 

@@ -29,11 +29,11 @@ pub(crate) fn visit_class(builder: &mut ScopeBuilder, class_node: &Node) {
         let class_tc_key = w_current.ty_table.new_key();
 
         w_current.items.insert(
-            class_name.clone(),
+            class_name.clone().into(),
             SItem::new(
                 name_range,
                 SItemKind::Class(SItemClass {
-                    name: class_name.clone(),
+                    name: class_name.clone().into(),
                     tc_key: class_tc_key,
                 }),
             ),
@@ -73,7 +73,7 @@ pub(crate) fn visit_class_definition(builder: &mut ScopeBuilder, node: &node::Cl
             let mut w_current = builder.current_mut();
             let tc_key = w_current.ty_table.new_key();
             w_current.items.insert(
-                simple_identifier.text(),
+                simple_identifier.text().into(),
                 SItem::new(
                     simple_identifier.node.range(),
                     SItemKind::Var(
@@ -104,7 +104,7 @@ pub(crate) fn visit_enum_class(
     for enum_entry in enum_body.find_all_enum_entry() {
         if let Some(enum_entry_name) = enum_entry.find_simple_identifier() {
             w_current.items.insert(
-                enum_entry_name.text(),
+                enum_entry_name.text().into(),
                 SItem::new(
                     enum_entry_name.node.range(),
                     SItemKind::Var(

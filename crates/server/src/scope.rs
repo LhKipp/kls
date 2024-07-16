@@ -1,6 +1,7 @@
 use enum_as_inner::EnumAsInner;
 use parking_lot::{RwLockReadGuard, RwLockWriteGuard};
-use std::{collections::HashMap, fmt};
+use qp_trie::{wrapper::BString, Trie};
+use std::{collections::HashMap, fmt, path::PathBuf};
 use stdx::ARwLock;
 use tycheck::{TcKey, TyTable};
 
@@ -21,29 +22,48 @@ pub struct ScopeTree {
 pub struct Scope {
     pub kind: SKind,
     pub ty_table: TyTable,
-    pub items: HashMap<String /*item-name*/, SItem>,
+    pub items: Trie<BString /*item-name*/, SItem>,
 }
 pub type WScope<'a> = RwLockWriteGuard<'a, Scope>;
 pub type RScope<'a> = RwLockReadGuard<'a, Scope>;
 
-// Used for debugging purposes
-#[derive(Debug)]
-pub enum SKind {
+#[derive(Debug, Clone)]
+pub enum SSourceSetInclude {
     Project { name: String },
-    // TODO add name
-    Module { /*name: String,*/ range: Range },
+    SourceSet { name: String },
+}
+
+#[derive(Debug, Clone)]
+pub struct SSourceSet {
+    pub name: String,
+    pub project_name: String,
+    pub sources_path: Vec<PathBuf>,
+    pub includes: Vec<SSourceSetInclude>,
+}
+#[derive(Debug)]
+pub struct SProject {
+    pub name: String,
+    pub path: PathBuf,
+}
+
+// Used for debugging purposes
+#[derive(Debug, EnumAsInner)]
+pub enum SKind {
+    Project(SProject),
+    SourceSet(SSourceSet),
+    Module { path: PathBuf, range: Range },
     Class { name: String, range: Range },
     Function(String /*name*/),
     MemberFunction(String /*name*/),
 }
 
-#[derive(new, Debug)]
+#[derive(new, Debug, Clone)]
 pub struct SItem {
     pub location: Range,
     pub item: SItemKind,
 }
 
-#[derive(EnumAsInner, Debug)]
+#[derive(EnumAsInner, Debug, Clone)]
 pub enum SItemKind {
     SourceFileMetadata(SItemSourceFileMetadata),
     PackageHeader(String),
@@ -51,16 +71,16 @@ pub enum SItemKind {
     Var(SItemVar),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SItemSourceFileMetadata {}
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SItemClass {
     pub name: String,
     pub tc_key: TcKey,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SItemVar {
     pub name: String,
     pub tc_key: TcKey,
@@ -72,7 +92,7 @@ impl Scope {
     pub fn new(kind: SKind) -> Scope {
         Scope {
             kind,
-            items: HashMap::new(),
+            items: Trie::new(),
             ty_table: TyTable::new(),
         }
     }
@@ -83,14 +103,14 @@ impl Scope {
 
     pub fn find_var(&self, var_name: &str) -> Option<&SItemVar> {
         self.items
-            .get(var_name)
+            .get(var_name.as_bytes())
             .map(|sitem| sitem.item.as_var())
             .flatten()
     }
 
     pub fn find_var_mut(&mut self, var_name: &str) -> Option<&mut SItemVar> {
         self.items
-            .get_mut(var_name)
+            .get_mut(var_name.as_bytes())
             .map(|sitem| sitem.item.as_var_mut())
             .flatten()
     }
@@ -170,7 +190,7 @@ impl<'a> ScopeBuilder<'a> {
     pub fn build_scopes_from(buffer: &Buffer, node: &Node) -> (ScopeTree, ScopeErrors) {
         trace!("Creating scopes from node {}", node.to_sexp());
         let mut scope_builder = ScopeBuilder::new(buffer);
-        scope_builder.build_for(node);
+        scope_builder.build_for(node, buffer.path.clone());
         (
             ScopeTree {
                 tree: scope_builder.all,
@@ -180,9 +200,9 @@ impl<'a> ScopeBuilder<'a> {
         )
     }
 
-    pub fn build_for(&mut self, node: &Node) {
+    pub fn build_for(&mut self, node: &Node, path: PathBuf) {
         match node.kind() {
-            "source_file" => visit::visit_source_file(self, node),
+            "source_file" => visit::visit_source_file(self, node, path),
             _ => panic!("not implement to start somewhere else than source_file"),
         }
     }

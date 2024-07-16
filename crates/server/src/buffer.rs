@@ -1,61 +1,54 @@
 use core::fmt;
 use crop::Rope;
-use parking_lot::lock_api::RwLockWriteGuard;
-use parking_lot::RwLock;
+use parking_lot::{RwLockReadGuard, RwLockWriteGuard};
 use std::{collections::HashMap, path::PathBuf};
+use stdx::ARwLock;
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::TextDocumentContentChangeEvent;
 use tower_lsp::{
     jsonrpc::Error,
     lsp_types::{Position, Url},
 };
-use tracing::trace;
-use tree_sitter::{InputEdit, Point};
+use tracing::{trace, warn, Level};
+use tree_sitter::{InputEdit, Node, Point};
 
 use crate::range_util::{self, byte_range_from_usize_range, ChangedRanges, TextByteRange};
 
 pub struct Buffers {
-    pub buffers: RwLock<HashMap<PathBuf, Buffer>>,
+    pub buffers: ARwLock<HashMap<PathBuf, ARwLock<Buffer>>>,
 }
 
-impl Buffers {
+impl<'a> Buffers {
     pub fn new() -> Self {
         Buffers {
-            buffers: RwLock::new(HashMap::new()),
+            buffers: stdx::new_arc_rw_lock(HashMap::new()),
         }
     }
 
-    pub fn read<F, R>(&self, uri: &Url, mut f: F) -> Result<R>
-    where
-        F: FnMut(&Buffer) -> Result<R>,
-    {
+    pub fn shallow_clone(&self) -> Buffers {
+        Buffers {
+            buffers: self.buffers.clone(),
+        }
+    }
+
+    pub fn at(&'a self, uri: &Url) -> Result<ARwLock<Buffer>> {
         let path = uri.to_file_path().unwrap();
-        if let Some(buffer) = self.buffers.read().get(&path) {
-            return f(buffer);
+        let r_lock = self.buffers.read();
+        if let Some(buffer) = r_lock.get(&path).cloned() {
+            return Ok(buffer);
         }
 
         Err(Error::invalid_params(format!("No such buffer {}", uri)))
     }
 
-    pub async fn add_from_file<F, R>(&self, path: PathBuf, mut and_then: F) -> R
-    where
-        F: FnMut(&Buffer) -> R,
-    {
-        let (tree, source) = parser::parse_file(&path);
-        let tree = tree.unwrap();
-
-        let buffer = Buffer {
-            path: path.clone(),
-            text: source.into(),
-            tree,
-        };
-
-        let mut w_lock = self.buffers.write();
-        w_lock.insert(path.clone(), buffer);
-        // w_lock.entry(path.clone()).insert_entry(buffer).get();
-
-        let r_lock = RwLockWriteGuard::downgrade(w_lock);
-        and_then(r_lock.get(&path).unwrap())
+    pub fn add(&self, buffer: Buffer) {
+        let old_val = self
+            .buffers
+            .write()
+            .insert(buffer.path.clone(), stdx::new_arc_rw_lock(buffer));
+        if let Some(old_val) = old_val {
+            warn!("Logic error: Buffer at {} was set to be added, but already present! (Updated instead)", old_val.read().path.display());
+        }
     }
 
     pub fn edit(
@@ -65,20 +58,59 @@ impl Buffers {
     ) -> Result<ChangedRanges> {
         let mut w_lock = self.buffers.write();
         if let Some(buffer) = w_lock.get_mut(&uri.to_file_path().unwrap()) {
-            return Ok(buffer.edit(changes));
+            return Ok(buffer.write().edit(changes));
         }
         Err(Error::invalid_params(format!("No such buffer: {}", uri)))
     }
 }
 
+type WBuffer<'a> = RwLockWriteGuard<'a, Buffer>;
+type RBuffer<'a> = RwLockReadGuard<'a, Buffer>;
 pub struct Buffer {
+    /// path to the buffer
     pub path: PathBuf,
+    /// the project this buffer belongs to
+    pub project: String,
+    /// the source set this buffer belongs to
+    pub source_set: String,
     pub tree: tree_sitter::Tree,
     pub text: Rope,
 }
 
 impl Buffer {
-    pub fn text_at(&self, position: Position) -> Result<String> {
+    pub fn from_file(project: String, source_set: String, path: PathBuf) -> Self {
+        let (tree, text) = parser::parse_file(&path);
+        let tree = tree.unwrap();
+
+        Buffer {
+            path: path.clone(),
+            project,
+            source_set,
+            text: text.into(),
+            tree,
+        }
+    }
+    pub fn node_chain_to(&self, byte_pos: usize) -> Vec<Node> {
+        let mut node_chain = vec![];
+        while let Some(node) = self
+            .tree
+            .root_node()
+            .descendant_for_byte_range(byte_pos, byte_pos)
+        {
+            node_chain.push(node)
+        }
+        if tracing::event_enabled!(Level::TRACE) {
+            let nodes = node_chain
+                .iter()
+                .map(|n| parser::text_of(n, &self.text))
+                .fold(String::new(), |a, b| a + &b + "->");
+            trace!("Nodes to byte_pos {byte_pos}: {}", nodes);
+        }
+
+        node_chain
+    }
+
+    pub fn text_at(&self, position: &Position) -> Result<String> {
         // by position.character the protocol means the number of bytes
         let word: String = self
             .text
@@ -198,9 +230,12 @@ impl Buffer {
     //     start_byte..(end_byte) // don't know why -1
     // }
 
+    pub fn to_byte_position(&self, point: &tower_lsp::lsp_types::Position) -> usize {
+        self.text.byte_of_line(point.line as usize) + point.character as usize
+    }
+
     fn to_byte_range(&self, range: &tower_lsp::lsp_types::Range) -> std::ops::Range<usize> {
-        (self.text.byte_of_line(range.start.line as usize) + range.start.character as usize)
-            ..(self.text.byte_of_line(range.end.line as usize) + range.end.character as usize)
+        self.to_byte_position(&range.start)..self.to_byte_position(&range.end)
     }
 
     fn point_of(&self, byte_offset: usize) -> Point {
