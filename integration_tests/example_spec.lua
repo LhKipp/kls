@@ -1,0 +1,6 @@
+describe('Test example', function()
+    it('Test can access vim namespace', function()
+        require 'log'.info("Running test")
+        assert.are.same(vim.trim('  a '), 'a')
+    end)
+end)
