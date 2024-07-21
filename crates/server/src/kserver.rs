@@ -56,7 +56,6 @@ impl LanguageServer for KServer {
     }
 
     async fn shutdown(&self) -> Result<()> {
-        info!("Shutting down");
         Ok(())
     }
 
