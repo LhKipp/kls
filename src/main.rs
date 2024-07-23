@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+use std::sync::Arc;
+
 use server::kserver::KServer;
 use tower_lsp::{LspService, Server};
 use tracing::debug;
@@ -19,7 +21,9 @@ async fn main() {
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 
-    let (service, socket) = LspService::build(|client| KServer::new(Box::new(client))).finish();
+    let (service, socket) = LspService::build(|client| KServer::new(Arc::new(client)))
+        .custom_method("custom/printScopes", KServer::print_scopes)
+        .finish();
 
     debug!("KLS starting");
     Server::new(stdin, stdout, socket).serve(service).await;

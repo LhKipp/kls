@@ -21,7 +21,7 @@ local default_config = {
     use_file = true,
 
     -- Any messages above this level will be logged.
-    level = "info",
+    level = os.getenv("KLS_TEST_LOG") or "info",
 
     -- Level configuration
     modes = {

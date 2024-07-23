@@ -1,5 +1,7 @@
+local log = require 'log'
+
 function DBG(arg)
-    print("Debug:", vim.inspect(arg))
+    log.debug(vim.inspect(arg))
 end
 
 function DBG_I(arg)

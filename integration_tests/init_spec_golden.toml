@@ -1,0 +1,5 @@
+[tests.project_source_set_nodes]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""

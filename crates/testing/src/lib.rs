@@ -2,6 +2,7 @@
 extern crate derive_builder;
 
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use server::kserver::ClientI;
 use server::kserver::KServer;
@@ -85,7 +86,7 @@ pub async fn server_init() -> (TestClient, KServer) {
 }
 pub async fn server_init_(init_opts: ServerInitOptions) -> (TestClient, KServer) {
     let client = TestClient::new();
-    let server = KServer::new(Box::new(client.clone()));
+    let server = KServer::new(Arc::new(client.clone()));
 
     if init_opts.init {
         let mut params = InitializeParams::default();
