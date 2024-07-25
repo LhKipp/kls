@@ -6,6 +6,7 @@ use crate::kserver::KServer;
 
 pub struct PrintScopesRequest {
     pub print_file_contents: bool,
+    pub trim_from_file_paths: Option<PathBuf>,
 }
 
 #[derive(new)]
@@ -57,10 +58,19 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
             }
 
             SKind::File(s_file) => {
+                let file_path = match &self.request.trim_from_file_paths {
+                    Some(prefix) => s_file
+                        .path
+                        .strip_prefix(prefix)
+                        .expect("Could not strip passed prefix from file")
+                        .display()
+                        .to_string(),
+                    None => s_file.path.display().to_string(),
+                };
                 if self.request.print_file_contents {
-                    format!("File ({})\n{}", s_file.path.display(), s_file.text)
+                    format!("File ({})\n{}", file_path, s_file.text)
                 } else {
-                    format!("File ({})", s_file.path.display())
+                    format!("File ({})", file_path)
                 }
             }
         }
@@ -71,7 +81,7 @@ use crate::scope::*;
 use core::fmt::{self, Write as _};
 use indextree::*;
 use itertools::Itertools;
-use std::{fmt::Debug, vec::Vec};
+use std::{fmt::Debug, path::PathBuf, vec::Vec};
 use stdx::ARwLock;
 
 //use crate::dynamic::hierarchy::traverse::{DepthFirstTraverser, DftEvent};
