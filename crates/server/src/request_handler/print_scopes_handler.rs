@@ -1,3 +1,72 @@
+use serde::{Deserialize, Serialize};
+
+use crate::kserver::KServer;
+
+#[derive(Debug, Serialize, Deserialize)]
+
+pub struct PrintScopesRequest {
+    pub print_file_contents: bool,
+}
+
+#[derive(new)]
+pub struct PrintScopesHandler<'a> {
+    server: &'a KServer,
+    request: &'a PrintScopesRequest,
+}
+
+impl<'a> PrintScopesHandler<'a> {
+    pub fn handle(&self) -> anyhow::Result<String> {
+        let r_scopes = self.server.scopes.0.read();
+        let printer =
+            ScopeDebugPrettyPrint::new(&r_scopes.project_nodes[0], &r_scopes.scopes, &self.request);
+        Ok(format!("{:?}", printer))
+    }
+}
+
+impl<'a> ScopeDebugPrettyPrint<'a> {
+    /// Creates a new `DebugPrettyPrint` object for the node.
+    #[inline]
+    pub(crate) fn new(
+        id: &'a NodeId,
+        arena: &'a Arena<ARwLock<Scope>>,
+        request: &'a PrintScopesRequest,
+    ) -> Self {
+        Self { id, arena, request }
+    }
+}
+
+impl<'a> ScopeDebugPrettyPrint<'a> {
+    fn print_debug(&self, scope: &ARwLock<Scope>) -> String {
+        let r_scope = scope.read();
+        match &r_scope.kind {
+            SKind::Project(project) => format!("Project {}", project.data.name.clone()),
+
+            SKind::SourceSet(source_set) => {
+                let includes = source_set
+                    .data
+                    .dependencies
+                    .iter()
+                    .map(|d| format!("{:?} {:?} ({:?})", d.visibility, d.name, d.kind))
+                    .join(", ");
+
+                let mut result = format!("SourceSet {}", source_set.data.name.clone());
+                if !includes.is_empty() {
+                    result += &format!(" (includes {includes})");
+                }
+                result
+            }
+
+            SKind::File(s_file) => {
+                if self.request.print_file_contents {
+                    format!("File ({})\n{}", s_file.path.display(), s_file.text)
+                } else {
+                    format!("File ({})", s_file.path.display())
+                }
+            }
+        }
+    }
+}
+
 use crate::scope::*;
 use core::fmt::{self, Write as _};
 use indextree::*;
@@ -212,21 +281,14 @@ impl fmt::Write for IndentWriter<'_, '_> {
 }
 
 #[derive(Clone, Copy)]
-pub struct ScopeDebugPrettyPrint<'a> {
+struct ScopeDebugPrettyPrint<'a> {
     /// Root node ID of the (sub)tree to print.
     id: &'a NodeId,
     /// Arena the node belongs to.
     arena: &'a Arena<ARwLock<Scope>>,
+    /// params
+    request: &'a PrintScopesRequest,
 }
-
-impl<'a> ScopeDebugPrettyPrint<'a> {
-    /// Creates a new `DebugPrettyPrint` object for the node.
-    #[inline]
-    pub(crate) fn new(id: &'a NodeId, arena: &'a Arena<ARwLock<Scope>>) -> Self {
-        Self { id, arena }
-    }
-}
-
 impl<'a> fmt::Debug for ScopeDebugPrettyPrint<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut writer = IndentWriter::new(f);
@@ -236,13 +298,13 @@ impl<'a> fmt::Debug for ScopeDebugPrettyPrint<'a> {
         traverser.next();
         {
             let data = self.arena[*self.id].get();
-            writer.write_str(&print_debug(data))?;
+            writer.write_str(&self.print_debug(data))?;
         }
 
         // Print the descendants.
         while let Some(id) = prepare_next_node_printing(&mut writer, &mut traverser, &self.arena)? {
             let data = self.arena[id].get();
-            writer.write_str(&print_debug(data))?;
+            writer.write_str(&self.print_debug(data))?;
         }
 
         Ok(())
@@ -279,26 +341,4 @@ fn prepare_next_node_printing<'a, T>(
     }
 
     Ok(None)
-}
-
-fn print_debug(scope: &ARwLock<Scope>) -> String {
-    let r_scope = scope.read();
-    match &r_scope.kind {
-        SKind::Project(project) => return format!("Project {}", project.data.name.clone()),
-
-        SKind::SourceSet(source_set) => {
-            let includes = source_set
-                .data
-                .dependencies
-                .iter()
-                .map(|d| format!("{:?} {:?} ({:?})", d.visibility, d.name, d.kind))
-                .join(", ");
-
-            let mut result = format!("SourceSet {}", source_set.data.name.clone());
-            if !includes.is_empty() {
-                result += &format!(" (includes {includes})");
-            }
-            result
-        }
-    }
 }

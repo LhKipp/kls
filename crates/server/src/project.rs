@@ -12,14 +12,13 @@ use self::kls_test_project::KlsTestProject;
 /// A project is e.G. a gradle project.
 pub trait ProjectI: Debug + Send {
     fn project_info(&self) -> anyhow::Result<PProject>;
-    fn source_sets(&self) -> anyhow::Result<Vec<PSourceSet>>;
 }
 
 impl dyn ProjectI {
     pub fn new(root_dir: &Path) -> anyhow::Result<Box<dyn ProjectI>> {
         let test_project_file = root_dir.join("kls-test-project.json");
         if test_project_file.exists() {
-            return KlsTestProject::new(&test_project_file);
+            KlsTestProject::try_new(&test_project_file)
         } else {
             bail!("Unknown project type at {}", root_dir.display())
         }
@@ -30,11 +29,13 @@ impl dyn ProjectI {
 pub struct PProject {
     pub name: String,
     pub root_dir: PathBuf,
+    pub source_sets: Vec<PSourceSet>,
 }
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct PSourceSet {
     pub name: String,
+    /// Relative to the project [PProject::root_dir]
     pub src_dir: PathBuf,
     pub dependencies: Vec<PDependency>,
 }

@@ -15,6 +15,7 @@ use tracing::{debug, error, info, trace};
 use walkdir::WalkDir;
 
 use crate::project::ProjectI;
+use crate::request_handler::print_scopes_handler::{PrintScopesHandler, PrintScopesRequest};
 use crate::scope::*;
 
 #[async_trait]
@@ -44,14 +45,13 @@ impl KServer {
             client,
             root_dir: new_arc_rw_lock(None),
             background_tasks: new_arc_lock(vec![]),
-            scopes: new_scopes(),
+            scopes: Scopes::new(),
         }
     }
 
-    pub async fn print_scopes(&self) -> Result<String> {
-        let r_scopes = self.scopes.read();
-        let printer = ScopeDebugPrettyPrint::new(&r_scopes.project_nodes[0], &r_scopes.scopes);
-        return Ok(format!("{:?}", printer));
+    /// Custom request
+    pub async fn print_scopes(&self, request: PrintScopesRequest) -> Result<String> {
+        map_result(PrintScopesHandler::new(&self, &request).handle())
     }
 }
 
@@ -80,9 +80,7 @@ impl LanguageServer for KServer {
             let scopes = self.scopes.clone();
             let client = self.client.clone();
             self.background_tasks.lock().push(tokio::spawn(async move {
-                let result =
-                    SProject::create_project_and_source_set_scopes_from(scopes, root_project);
-                if let Err(e) = result {
+                if let Err(e) = scopes.add_scopes_from_project_recursive(root_project).await {
                     client
                         .log_message(
                             MessageType::ERROR,
@@ -140,17 +138,17 @@ fn root_dir_of(init_params: &InitializeParams) -> Result<PathBuf> {
             ));
         }
 
-        return Ok(workspace_folders[0].uri.to_file_path().unwrap().to_owned());
+        Ok(workspace_folders[0].uri.to_file_path().unwrap().to_owned())
     } else {
-        return Err(tower_lsp::jsonrpc::Error::invalid_params(
+        Err(tower_lsp::jsonrpc::Error::invalid_params(
             "No workspace folders are passed",
-        ));
+        ))
     }
 }
 
 fn map_err<T>(err: anyhow::Error) -> tower_lsp::jsonrpc::Result<T> {
     error!("KServer caught error: {}", err);
-    return Err(tower_lsp::jsonrpc::Error::invalid_params(err.to_string()));
+    Err(tower_lsp::jsonrpc::Error::invalid_params(err.to_string()))
 }
 
 fn map_result<T>(result: anyhow::Result<T>) -> tower_lsp::jsonrpc::Result<T> {

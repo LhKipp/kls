@@ -11,7 +11,7 @@ async.describe("Test init", function()
 
     async.it("Sets up project and source set scope nodes", function()
         local client = require "kserver".start("project_scope_node")
-        local scopes = client.print_scopes()
+        local scopes = client.print_scopes({ print_file_contents = true })
 
         local t = GoldenTest:new("integration_tests/init_spec_golden.toml", "project_source_set_nodes")
         t:is_expected(scopes)

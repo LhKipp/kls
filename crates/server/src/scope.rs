@@ -1,19 +1,50 @@
-mod debug_print;
+mod file_scope;
 mod project_scope;
+mod source_set_scope;
 
-pub use debug_print::ScopeDebugPrettyPrint;
+pub use file_scope::SFile;
 pub use project_scope::SProject;
+pub use source_set_scope::SSourceSet;
 
-use crate::project::PSourceSet;
+use tokio::task::JoinHandle;
+use tracing::{debug, error};
+
+use crate::project::{PSourceSet, ProjectI};
 use enum_as_inner::EnumAsInner;
 use indextree::{Arena, NodeId};
 use std::{fmt, path::PathBuf, sync::Arc};
 use stdx::{new_arc_rw_lock, ARwLock};
 use tree_sitter::{Node, Range};
 
-pub type Scopes = ARwLock<ScopesData>;
-pub fn new_scopes() -> Scopes {
-    return new_arc_rw_lock(ScopesData::new());
+#[derive(Clone)]
+pub struct Scopes(pub ARwLock<ScopesData>);
+
+impl Scopes {
+    pub fn new() -> Self {
+        Scopes(new_arc_rw_lock(ScopesData::new()))
+    }
+
+    /// Adds scopes
+    pub async fn add_scopes_from_project_recursive(
+        &self,
+        project: Box<dyn ProjectI>,
+    ) -> anyhow::Result<()> {
+        let (project_node_id, s_project) = SProject::create_project_scope(self, &project)?;
+        let source_sets = SSourceSet::create_source_set_scopes(self, project_node_id, &s_project)?;
+
+        for (source_set_node_id, source_set) in source_sets {
+            let scopes = self.clone();
+            tokio::spawn(async move {
+                if let Err(e) =
+                    SFile::create_file_scopes(scopes, source_set_node_id, source_set).await
+                {
+                    error!("Error while creating files of source_set - {}", e);
+                }
+            });
+        }
+
+        Ok(())
+    }
 }
 
 pub struct ScopesData {
@@ -37,7 +68,7 @@ impl ScopesData {
         //     }
         // }
 
-        return Ok(result);
+        Ok(result)
     }
 
     pub fn new() -> Self {
@@ -48,14 +79,15 @@ impl ScopesData {
     }
 }
 
+pub type ARwScope = ARwLock<Scope>;
 #[derive(new)]
 pub struct Scope {
     pub kind: SKind,
 }
 
 impl Scope {
-    pub fn new_arw(kind: SKind) -> ARwLock<Self> {
-        return new_arc_rw_lock(Scope { kind });
+    pub fn new_arw(kind: SKind) -> ARwScope {
+        new_arc_rw_lock(Scope { kind })
     }
 }
 
@@ -66,13 +98,9 @@ impl Scope {
 pub enum SKind {
     Project(SProject),
     SourceSet(SSourceSet),
+    File(SFile),
     // Module { path: PathBuf, range: Range },
     // Class { name: String, range: Range },
     // Function(String /*name*/),
     // MemberFunction(String /*name*/),
-}
-
-#[derive(Debug)]
-pub struct SSourceSet {
-    data: PSourceSet,
 }

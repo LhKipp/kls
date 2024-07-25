@@ -2,4 +2,6 @@
 expected = """
 Project KLS Test
 I-- SourceSet kotlin
+|   L-- File (/tmp/tmp.73UANpVQix/src/main/kotlin/example.kt)
+I       package example.com
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""

@@ -1,13 +1,29 @@
 --- Test file system
 local log = require 'log'
+local Path = require 'plenary.path'
 
 local M = {}
+
+M.write = function(path, text)
+    local p = Path:new(path)
+    log.debug("Writing file at ", p.filename)
+    p:parent():mkdir({ parents = true })
+
+    local f, e = io.open(p.filename, "w")
+    assert(f ~= nil, e)
+    f:write(text)
+    f:close()
+end
 
 M.test_dir = function(args)
     local dir = vim.system({ "mktemp", "-d" }, { text = true })
         -- Remove trailing newline via sub
         :wait().stdout:sub(1, -2) .. "/"
+
     log.debug("Setting up test in ", dir)
+
+    vim.iter(args.files):map(function(k, v) return dir .. k, v end):each(M.write)
+
     local project = {
         id = 1,
         name = args.name or "KLS Test",
@@ -32,10 +48,9 @@ M.test_dir = function(args)
             }
         }
     }
-    local defs_file = io.open(dir .. "kls-test-project.json", "w")
-    assert.not_nil(defs_file)
-    defs_file:write(vim.fn.json_encode(project))
-    defs_file:close()
+
+    M.write(dir .. "kls-test-project.json", vim.fn.json_encode(project))
+
     return project
 end
 

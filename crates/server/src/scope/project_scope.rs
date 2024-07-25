@@ -10,25 +10,24 @@ pub struct SProject {
 }
 
 impl SProject {
-    pub fn create_project_and_source_set_scopes_from(
-        scopes: Scopes,
-        project: Box<dyn ProjectI>,
-    ) -> anyhow::Result<()> {
-        let mut w_scopes = scopes.write();
-        let project_node_id = w_scopes
-            .scopes
-            .new_node(Scope::new_arw(SKind::Project(SProject {
-                data: project.project_info()?,
-            })));
-        w_scopes.project_nodes.push(project_node_id);
+    pub fn create_project_scope(
+        scopes: &Scopes,
+        project: &Box<dyn ProjectI>,
+    ) -> anyhow::Result<(NodeId, ARwScope)> {
+        let project_info = project.project_info()?;
 
-        for p_source_set in project.source_sets()? {
-            project_node_id.append_value(
-                Scope::new_arw(SKind::SourceSet(SSourceSet { data: p_source_set })),
-                &mut w_scopes.scopes,
-            );
-        }
+        debug!("Adding scope for project {}", project_info.name);
 
-        Ok(())
+        let s_project = Scope::new_arw(SKind::Project(SProject { data: project_info }));
+
+        let project_node_id = {
+            let mut w_scopes = scopes.0.write();
+
+            let project_node_id = w_scopes.scopes.new_node(s_project.clone());
+            w_scopes.project_nodes.push(project_node_id);
+            project_node_id
+        };
+
+        Ok((project_node_id, s_project))
     }
 }

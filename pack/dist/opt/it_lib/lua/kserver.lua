@@ -13,7 +13,7 @@ local M = {}
 M.start = function(test_case_name, client_config)
     vim.lsp.log.set_level("trace")
 
-    local test_dir = tfs.test_dir({})
+    local test_dir = tfs.test_dir({ files = { ["src/main/kotlin/example.kt"] = "package example.com" } })
 
     local client_config_fixed = vim.tbl_deep_extend("keep", client_config or {}, {
         name = "KLS Client - " .. test_case_name,
@@ -36,8 +36,12 @@ M.start = function(test_case_name, client_config)
     assert(client ~= nil, "vim.lsp.start did not return an existing client")
     vim.wait(5000, function() return client.initialized end, 100)
     assert(client.initialized == true)
-    client.print_scopes = function()
-        local kls_response, err = client.request_sync("custom/printScopes", nil, nil, 0)
+    client.print_scopes = function(params)
+        local kls_response, err = client.request_sync(
+            "custom/printScopes",
+            vim.tbl_deep_extend('keep', params or {}, { print_file_contents = false }),
+            nil,
+            0)
         assert(kls_response ~= nil, "Request failed")
         if err ~= nil then
             assert(err == "", "Err is not empty: " .. err)

@@ -15,7 +15,7 @@ pub struct KlsTestProject {
 }
 
 impl KlsTestProject {
-    pub fn new(defs_file: &Path) -> anyhow::Result<Box<dyn ProjectI>> {
+    pub fn try_new(defs_file: &Path) -> anyhow::Result<Box<dyn ProjectI>> {
         let reader = BufReader::new(File::open(defs_file)?);
 
         Ok(Box::new(KlsTestProject {
@@ -29,10 +29,8 @@ impl ProjectI for KlsTestProject {
         return Ok(PProject {
             name: self.defs.name.clone(),
             root_dir: self.defs.root_dir.clone(),
+            source_sets: self.defs.source_sets.clone(),
         });
-    }
-    fn source_sets(&self) -> Result<Vec<project::PSourceSet>, anyhow::Error> {
-        return Ok(self.defs.source_sets.clone());
     }
 }
 
