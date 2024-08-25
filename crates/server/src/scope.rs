@@ -12,7 +12,7 @@ use tracing::{debug, error};
 use crate::project::{PSourceSet, ProjectI};
 use enum_as_inner::EnumAsInner;
 use indextree::{Arena, NodeId};
-use std::{fmt, path::PathBuf, sync::Arc};
+use std::{collections::HashMap, fmt, path::PathBuf, sync::Arc};
 use stdx::{new_arc_rw_lock, ARwLock};
 use tree_sitter::{Node, Range};
 
@@ -36,9 +36,13 @@ impl Scopes {
             let scopes = self.clone();
             tokio::spawn(async move {
                 if let Err(e) =
-                    SFile::create_file_scopes(scopes, source_set_node_id, source_set).await
+                    SFile::create_file_scopes(scopes, source_set_node_id, &source_set).await
                 {
-                    error!("Error while creating files of source_set - {}", e);
+                    error!(
+                        "Error while creating files of source_set {:?} - {}",
+                        source_set.read().kind.as_source_set().unwrap(),
+                        e
+                    );
                 }
             });
         }
@@ -51,6 +55,7 @@ pub struct ScopesData {
     pub(crate) scopes: indextree::Arena<ARwLock<Scope>>,
     /// root nodes in scopes
     pub project_nodes: Vec<NodeId>,
+    pub file_nodes: HashMap<PathBuf, NodeId>,
 }
 
 impl ScopesData {
@@ -75,12 +80,13 @@ impl ScopesData {
         ScopesData {
             scopes: Arena::new(),
             project_nodes: vec![],
+            file_nodes: HashMap::new(),
         }
     }
 }
 
 pub type ARwScope = ARwLock<Scope>;
-#[derive(new)]
+#[derive(new, Debug)]
 pub struct Scope {
     pub kind: SKind,
 }

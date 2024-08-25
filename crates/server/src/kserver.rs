@@ -15,6 +15,7 @@ use tracing::{debug, error, info, trace};
 use walkdir::WalkDir;
 
 use crate::project::ProjectI;
+use crate::request_handler::did_change_text_document_handler::DidChangeTextDocumentHandler;
 use crate::request_handler::print_scopes_handler::{PrintScopesHandler, PrintScopesRequest};
 use crate::scope::*;
 
@@ -57,6 +58,16 @@ impl KServer {
 
 #[tower_lsp::async_trait]
 impl LanguageServer for KServer {
+    async fn did_open(&self, _: DidOpenTextDocumentParams) {}
+
+    async fn did_change(&self, notification: DidChangeTextDocumentParams) {
+        // TODO synchronize notification. See
+        // https://github.com/ebkalderon/tower-lsp/issues/284
+        if let Err(e) = DidChangeTextDocumentHandler::new(&self, &notification).handle() {
+            error!("{}", e);
+        }
+    }
+
     async fn initialize(&self, init_params: InitializeParams) -> Result<InitializeResult> {
         {
             let mut w_root_dir = self.root_dir.write();
@@ -91,6 +102,16 @@ impl LanguageServer for KServer {
             }));
         }
 
+        let _file_operation_registration_options = FileOperationRegistrationOptions {
+            filters: vec![FileOperationFilter {
+                pattern: FileOperationPattern {
+                    glob: "**.kt".to_string(),
+                    ..FileOperationPattern::default()
+                },
+                ..FileOperationFilter::default()
+            }],
+        };
+
         Ok(InitializeResult {
             server_info: Some(ServerInfo {
                 name: "Kls".into(),
@@ -102,25 +123,35 @@ impl LanguageServer for KServer {
                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
                     TextDocumentSyncKind::INCREMENTAL,
                 )),
+                // Not working :(
+                // text_document_sync: Some(TextDocumentSyncCapability::Options(
+                //     TextDocumentSyncOptions {
+                //         open_close: Some(true),
+                //         change: Some(TextDocumentSyncKind::INCREMENTAL),
+                //         ..Default::default()
+                //     },
+                // )),
                 completion_provider: None,
                 // definition: Some(GotoCapability::default()),
                 definition_provider: None,
                 references_provider: None,
                 rename_provider: None,
-                ..ServerCapabilities::default()
+                // workspace: Some(WorkspaceServerCapabilities {
+                //     file_operations: Some(WorkspaceFileOperationsServerCapabilities {
+                //         did_create: Some(file_operation_registration_options.clone()),
+                //         did_rename: Some(file_operation_registration_options.clone()),
+                //         did_delete: Some(file_operation_registration_options.clone()),
+                //         ..Default::default()
+                //     }),
+                //     ..Default::default()
+                // }),
+                ..Default::default()
             },
         })
     }
 
     async fn shutdown(&self) -> Result<()> {
         Ok(())
-    }
-
-    async fn did_open(&self, _: DidOpenTextDocumentParams) {}
-
-    async fn did_change(&self, _: DidChangeTextDocumentParams) {
-        // TODO synchronize notification. See
-        // https://github.com/ebkalderon/tower-lsp/issues/284
     }
 }
 

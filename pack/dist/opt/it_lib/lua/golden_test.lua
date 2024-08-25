@@ -12,7 +12,7 @@ GoldenTest = {}
 ---@param file string
 ---@return GoldenTest
 function GoldenTest:new(file, test_name)
-    local test = { test_name = test_name, file = file }
+    local test = { test_name = test_name, file = vim.env.KLS_PROJECT_DIR .. "/" .. file }
     setmetatable(test, self)
     self.__index = self
     return test

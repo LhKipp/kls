@@ -15,14 +15,17 @@ M.write = function(path, text)
     f:close()
 end
 
-M.test_dir = function(args)
-    local dir = vim.system({ "mktemp", "-d" }, { text = true })
-        -- Remove trailing newline via sub
-        :wait().stdout:sub(1, -2) .. "/"
+M.create = function(test_case_name, passed_args)
+    local args = passed_args or {}
 
+    local dir = "/tmp/" .. test_case_name
     log.debug("Setting up test in ", dir)
+    vim.system({ "rm", "-r", dir }):wait()
+    vim.system({ "mkdir", dir }):wait()
+    vim.system({ "mkdir", "-p", dir .. "/src/main/kotlin" }):wait()
+    vim.system({ "mkdir", "-p", dir .. "/src/main/test" }):wait()
 
-    vim.iter(args.files):map(function(k, v) return dir .. k, v end):each(M.write)
+    vim.iter(args.files or {}):map(function(k, v) return dir .. "/" .. k, v end):each(M.write)
 
     local project = {
         id = 1,
@@ -49,7 +52,7 @@ M.test_dir = function(args)
         }
     }
 
-    M.write(dir .. "kls-test-project.json", vim.fn.json_encode(project))
+    M.write(dir .. "/kls-test-project.json", vim.fn.json_encode(project))
 
     return project
 end
