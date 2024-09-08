@@ -38,13 +38,13 @@ struct AppArgs {
 impl AppArgs {
     fn from_env() -> Result<AppArgs, pico_args::Error> {
         let mut pargs = pico_args::Arguments::from_env();
-        return Ok(AppArgs {
+        Ok(AppArgs {
             log_file: pargs.opt_value_from_str("--log-file")?,
             start_new_log_file: pargs.contains("--start-new-log-file"),
             log_timestamps: pargs
                 .opt_value_from_str("--log-timestamps")?
                 .unwrap_or(true),
-        });
+        })
     }
 }
 
@@ -52,7 +52,8 @@ fn init_logging(args: &AppArgs) {
     let stderr_layer = fmt::Layer::default().with_writer(std::io::stderr);
     let file_layer = if let Some(log_file) = &args.log_file {
         if args.start_new_log_file && std::fs::metadata(log_file).is_ok_and(|f| f.is_file()) {
-            std::fs::remove_file(log_file).expect(&format!("Could not remove log file {log_file}"));
+            std::fs::remove_file(log_file)
+                .unwrap_or_else(|_| panic!("Could not remove log file {log_file}"));
         }
 
         let logfile = tracing_appender::rolling::never(".", log_file);

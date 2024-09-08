@@ -26,11 +26,11 @@ impl KlsTestProject {
 
 impl ProjectI for KlsTestProject {
     fn project_info(&self) -> Result<project::PProject, anyhow::Error> {
-        return Ok(PProject {
+        Ok(PProject {
             name: self.defs.name.clone(),
             root_dir: self.defs.root_dir.clone(),
             source_sets: self.defs.source_sets.clone(),
-        });
+        })
     }
 }
 

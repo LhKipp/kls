@@ -51,6 +51,12 @@ impl Scopes {
     }
 }
 
+impl Default for Scopes {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 pub struct ScopesData {
     pub(crate) scopes: indextree::Arena<ARwLock<Scope>>,
     /// root nodes in scopes
@@ -82,6 +88,12 @@ impl ScopesData {
             project_nodes: vec![],
             file_nodes: HashMap::new(),
         }
+    }
+}
+
+impl Default for ScopesData {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
