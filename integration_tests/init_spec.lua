@@ -1,7 +1,8 @@
 local log = require 'log'
 local async = require 'plenary.async.tests'
-local tfs = require 'tfs'
 local golden = require 'golden_test'
+
+local golden_spec = GoldenTestSpec:new("integration_tests/init_spec_golden.toml")
 
 async.describe("Test init", function()
     before_each(function()
@@ -19,7 +20,6 @@ async.describe("Test init", function()
             { files = { ["src/main/kotlin/example.kt"] = "package example.com" } })
         local scopes = client.print_scopes({ print_file_contents = true })
 
-        local t = GoldenTest:new("integration_tests/init_spec_golden.toml", "project_source_set_nodes")
-        t:is_expected(scopes)
+        golden_spec:test("project_source_set_nodes"):is_expected(scopes)
     end)
 end)

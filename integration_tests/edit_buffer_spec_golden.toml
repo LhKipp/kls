@@ -1,0 +1,8 @@
+[tests.did_change__add_new_text]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package example.com
+I       // hello world
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
