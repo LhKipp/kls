@@ -12,8 +12,8 @@ use super::*;
 #[derive(Debug, new)]
 pub struct SFile {
     pub path: PathBuf,
-    // pub tree: tree_sitter::Tree,
     pub text: Rope,
+    pub tree: tree_sitter::Tree,
 }
 
 impl SFile {
@@ -67,8 +67,9 @@ impl SFile {
         debug!("Creating scope for file {}", file_path.display());
         let file_content = fs::read_to_string(&file_path).await?;
         let rope = Rope::from(file_content);
+        let ast = parser::parse(&rope, None).unwrap_or_else(|| panic!("No tree for {}", rope));
 
-        let s_file = Scope::new_arw(SKind::File(SFile::new(file_path.clone(), rope)));
+        let s_file = Scope::new_arw(SKind::File(SFile::new(file_path.clone(), rope, ast)));
 
         let s_file_node_id = {
             let mut w_scopes = scopes.0.write();

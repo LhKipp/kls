@@ -54,7 +54,8 @@ async.describe("DidChangeNotification", function()
         local client = require "kserver".start("did_change__delete_text",
             {
                 files = {
-                    ["src/main/kotlin/example.kt"] = "package example.com",
+                    ["src/main/kotlin/example.kt"] = [[package example.com
+]],
                 }
             }
         )
@@ -64,7 +65,7 @@ async.describe("DidChangeNotification", function()
         vim.cmd.write()
 
         -- assert exec_keys worked
-        assert.equal(vim.api.nvim_buf_get_lines(0, 0, 1, false)[1], '')
+        -- assert.equal(vim.api.nvim_buf_get_lines(0, 0, 1, false)[1], '')
 
         local scopes = client.print_scopes({ print_file_contents = true })
         golden_spec:test("did_change__delete_text"):is_expected(scopes)

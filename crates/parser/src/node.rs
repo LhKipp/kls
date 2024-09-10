@@ -544,6 +544,27 @@ impl<'a> AdditiveExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -1847,6 +1868,27 @@ impl<'a> AsExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -2788,6 +2830,27 @@ impl<'a> Assignment<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -3084,6 +3147,23 @@ impl<'a> Assignment<'a> {
     }}
 
 impl<'a> std::fmt::Debug for Assignment<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.text())
+    }
+}pub struct BindingPatternKind<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> BindingPatternKind<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
+    pub fn text(&self) -> String {
+        text_of(&self.node, self.source)
+    }}
+
+impl<'a> std::fmt::Debug for BindingPatternKind<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
@@ -3659,6 +3739,27 @@ impl<'a> CallExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -4940,6 +5041,27 @@ impl<'a> CheckExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_nullable_type(&self) -> Option<NullableType> {
         let mut cursor = self.node.walk();
         let x = self
@@ -5848,6 +5970,27 @@ impl<'a> ClassParameter<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_binding_pattern_kind(&self) -> Option<BindingPatternKind> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| BindingPatternKind::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_binding_pattern_kind(&self) -> Vec<BindingPatternKind> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| BindingPatternKind::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -6349,6 +6492,27 @@ impl<'a> ClassParameter<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NotNullableType::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -7269,6 +7433,27 @@ impl<'a> CollectionLiteral<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -8209,6 +8394,27 @@ impl<'a> ComparisonExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -9042,6 +9248,27 @@ impl<'a> ConjunctionExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -10146,6 +10373,27 @@ impl<'a> ControlStructureBody<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -10978,6 +11226,27 @@ impl<'a> DirectlyAssignableExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -11727,6 +11996,27 @@ impl<'a> DisjunctionExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -12587,6 +12877,27 @@ impl<'a> DoWhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -13420,6 +13731,27 @@ impl<'a> ElvisExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -14608,6 +14940,27 @@ impl<'a> EqualityExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -15462,6 +15815,27 @@ impl<'a> ExplicitDelegation<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -16482,6 +16856,27 @@ impl<'a> ForStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -17336,6 +17731,27 @@ impl<'a> FunctionBody<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -18852,6 +19268,27 @@ impl<'a> FunctionValueParameters<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -19427,846 +19864,6 @@ impl<'a> IfExpression<'a> {
     }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
-    }
-    pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| AdditiveExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_additive_expression(&self) -> Vec<AdditiveExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| AdditiveExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| AnonymousFunction::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_anonymous_function(&self) -> Vec<AnonymousFunction> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| AnonymousFunction::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_as_expression(&self) -> Option<AsExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| AsExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_as_expression(&self) -> Vec<AsExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| AsExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_bin_literal(&self) -> Option<BinLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| BinLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_bin_literal(&self) -> Vec<BinLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| BinLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_boolean_literal(&self) -> Option<BooleanLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| BooleanLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_boolean_literal(&self) -> Vec<BooleanLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| BooleanLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_call_expression(&self) -> Option<CallExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CallExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_call_expression(&self) -> Vec<CallExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CallExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_callable_reference(&self) -> Option<CallableReference> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CallableReference::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_callable_reference(&self) -> Vec<CallableReference> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CallableReference::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_character_literal(&self) -> Option<CharacterLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CharacterLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_character_literal(&self) -> Vec<CharacterLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CharacterLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_check_expression(&self) -> Option<CheckExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CheckExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_check_expression(&self) -> Vec<CheckExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CheckExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_collection_literal(&self) -> Option<CollectionLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CollectionLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_collection_literal(&self) -> Vec<CollectionLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| CollectionLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_comparison_expression(&self) -> Option<ComparisonExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ComparisonExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_comparison_expression(&self) -> Vec<ComparisonExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ComparisonExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_conjunction_expression(&self) -> Option<ConjunctionExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ConjunctionExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_conjunction_expression(&self) -> Vec<ConjunctionExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ConjunctionExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ControlStructureBody::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_control_structure_body(&self) -> Vec<ControlStructureBody> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ControlStructureBody::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_disjunction_expression(&self) -> Option<DisjunctionExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| DisjunctionExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_disjunction_expression(&self) -> Vec<DisjunctionExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| DisjunctionExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_elvis_expression(&self) -> Option<ElvisExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ElvisExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_elvis_expression(&self) -> Vec<ElvisExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ElvisExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_equality_expression(&self) -> Option<EqualityExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| EqualityExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_equality_expression(&self) -> Vec<EqualityExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| EqualityExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_hex_literal(&self) -> Option<HexLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| HexLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_hex_literal(&self) -> Vec<HexLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| HexLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_if_expression(&self) -> Option<IfExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| IfExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_if_expression(&self) -> Vec<IfExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| IfExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_indexing_expression(&self) -> Option<IndexingExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| IndexingExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_indexing_expression(&self) -> Vec<IndexingExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| IndexingExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_infix_expression(&self) -> Option<InfixExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| InfixExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_infix_expression(&self) -> Vec<InfixExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| InfixExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_integer_literal(&self) -> Option<IntegerLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| IntegerLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_integer_literal(&self) -> Vec<IntegerLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| IntegerLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_jump_expression(&self) -> Option<JumpExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| JumpExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_jump_expression(&self) -> Vec<JumpExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| JumpExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| LambdaLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_lambda_literal(&self) -> Vec<LambdaLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| LambdaLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_long_literal(&self) -> Option<LongLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| LongLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_long_literal(&self) -> Vec<LongLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| LongLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_multiplicative_expression(&self) -> Option<MultiplicativeExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| MultiplicativeExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_multiplicative_expression(&self) -> Vec<MultiplicativeExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| MultiplicativeExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_navigation_expression(&self) -> Option<NavigationExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| NavigationExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_navigation_expression(&self) -> Vec<NavigationExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| NavigationExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ObjectLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_object_literal(&self) -> Vec<ObjectLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ObjectLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ParenthesizedExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_parenthesized_expression(&self) -> Vec<ParenthesizedExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ParenthesizedExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_postfix_expression(&self) -> Option<PostfixExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| PostfixExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_postfix_expression(&self) -> Vec<PostfixExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| PostfixExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_prefix_expression(&self) -> Option<PrefixExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| PrefixExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_prefix_expression(&self) -> Vec<PrefixExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| PrefixExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_range_expression(&self) -> Option<RangeExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| RangeExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_range_expression(&self) -> Vec<RangeExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| RangeExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_real_literal(&self) -> Option<RealLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| RealLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_real_literal(&self) -> Vec<RealLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| RealLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| SimpleIdentifier::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_simple_identifier(&self) -> Vec<SimpleIdentifier> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| SimpleIdentifier::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_spread_expression(&self) -> Option<SpreadExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| SpreadExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_spread_expression(&self) -> Vec<SpreadExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| SpreadExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_string_literal(&self) -> Option<StringLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| StringLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_string_literal(&self) -> Vec<StringLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| StringLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_super_expression(&self) -> Option<SuperExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| SuperExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_super_expression(&self) -> Vec<SuperExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| SuperExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_this_expression(&self) -> Option<ThisExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ThisExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_this_expression(&self) -> Vec<ThisExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| ThisExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_try_expression(&self) -> Option<TryExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| TryExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_try_expression(&self) -> Vec<TryExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| TryExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_unsigned_literal(&self) -> Option<UnsignedLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| UnsignedLiteral::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_unsigned_literal(&self) -> Vec<UnsignedLiteral> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| UnsignedLiteral::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
-    }
-    pub fn find_when_expression(&self) -> Option<WhenExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| WhenExpression::new(n.clone(), &self.source))
-            .next();
-        x
-    }
-
-    pub fn find_all_when_expression(&self) -> Vec<WhenExpression> {
-        let mut cursor = self.node.walk();
-        let x = self
-            .node
-            .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
-            .map(|n| WhenExpression::new(n.clone(), &self.source))
-            .collect::<Vec<_>>();
-        x
     }}
 
 impl<'a> std::fmt::Debug for IfExpression<'a> {
@@ -20362,6 +19959,27 @@ impl<'a> ImportHeader<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| ImportAlias::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_wildcard_import(&self) -> Option<WildcardImport> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| WildcardImport::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_wildcard_import(&self) -> Vec<WildcardImport> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| WildcardImport::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }}
@@ -20963,6 +20581,27 @@ impl<'a> IndexingExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -21802,6 +21441,27 @@ impl<'a> IndexingSuffix<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -22635,6 +22295,27 @@ impl<'a> InfixExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -23491,6 +23172,27 @@ impl<'a> InterpolatedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24260,6 +23962,27 @@ impl<'a> JumpExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_label(&self) -> Option<Label> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| Label::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_label(&self) -> Vec<Label> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| Label::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_lambda_literal(&self) -> Option<LambdaLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -24341,6 +24064,27 @@ impl<'a> JumpExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -24640,6 +24384,23 @@ impl<'a> JumpExpression<'a> {
     }}
 
 impl<'a> std::fmt::Debug for JumpExpression<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.text())
+    }
+}pub struct Label<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> Label<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
+    pub fn text(&self) -> String {
+        text_of(&self.node, self.source)
+    }}
+
+impl<'a> std::fmt::Debug for Label<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
@@ -25639,6 +25400,27 @@ impl<'a> MultiplicativeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -26493,6 +26275,27 @@ impl<'a> NavigationExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationSuffix::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -28153,6 +27956,27 @@ impl<'a> ParenthesizedExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -29208,6 +29032,27 @@ impl<'a> PostfixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30086,6 +29931,27 @@ impl<'a> PrefixExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -30537,6 +30403,27 @@ impl<'a> PropertyDeclaration<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| BinLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_binding_pattern_kind(&self) -> Option<BindingPatternKind> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| BindingPatternKind::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_binding_pattern_kind(&self) -> Vec<BindingPatternKind> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| BindingPatternKind::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -31041,6 +30928,27 @@ impl<'a> PropertyDeclaration<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -32069,6 +31977,27 @@ impl<'a> PropertyDelegate<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -32905,6 +32834,27 @@ impl<'a> RangeExpression<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -33738,6 +33688,27 @@ impl<'a> RangeTest<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -35128,6 +35099,27 @@ impl<'a> SourceFile<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -36108,6 +36100,27 @@ impl<'a> SpreadExpression<'a> {
             .children(&mut cursor)
             .filter(|n| n.kind() == "type_identifier")
             .map(|n| NavigationExpression::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
     }
@@ -37115,6 +37128,27 @@ impl<'a> Statements<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_declaration(&self) -> Option<ObjectDeclaration> {
         let mut cursor = self.node.walk();
         let x = self
@@ -37572,6 +37606,27 @@ impl<'a> StringLiteral<'a> {
             .map(|n| InterpolatedIdentifier::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x
+    }
+    pub fn find_string_content(&self) -> Option<StringContent> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| StringContent::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_string_content(&self) -> Vec<StringContent> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| StringContent::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
     }}
 
 impl<'a> std::fmt::Debug for StringLiteral<'a> {
@@ -37589,6 +37644,153 @@ impl<'a> SuperExpression<'a> {
     }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+    pub fn find_function_type(&self) -> Option<FunctionType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| FunctionType::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_function_type(&self) -> Vec<FunctionType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| FunctionType::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_not_nullable_type(&self) -> Option<NotNullableType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NotNullableType::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_not_nullable_type(&self) -> Vec<NotNullableType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NotNullableType::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_nullable_type(&self) -> Option<NullableType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullableType::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_nullable_type(&self) -> Vec<NullableType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullableType::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| ParenthesizedType::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_parenthesized_type(&self) -> Vec<ParenthesizedType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| ParenthesizedType::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| TypeIdentifier::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_type_identifier(&self) -> Vec<TypeIdentifier> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| TypeIdentifier::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_type_modifiers(&self) -> Option<TypeModifiers> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| TypeModifiers::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_type_modifiers(&self) -> Vec<TypeModifiers> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| TypeModifiers::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
+    pub fn find_user_type(&self) -> Option<UserType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| UserType::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_user_type(&self) -> Vec<UserType> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| UserType::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
     }}
 
 impl<'a> std::fmt::Debug for SuperExpression<'a> {
@@ -37606,6 +37808,27 @@ impl<'a> ThisExpression<'a> {
     }
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+    pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| TypeIdentifier::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_type_identifier(&self) -> Vec<TypeIdentifier> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| TypeIdentifier::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
     }}
 
 impl<'a> std::fmt::Debug for ThisExpression<'a> {
@@ -39576,6 +39799,27 @@ impl<'a> ValueArgument<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -40648,6 +40892,27 @@ impl<'a> WhenCondition<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -41665,6 +41930,27 @@ impl<'a> WhenSubject<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42543,6 +42829,27 @@ impl<'a> WhileStatement<'a> {
             .collect::<Vec<_>>();
         x
     }
+    pub fn find_null_literal(&self) -> Option<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .next();
+        x
+    }
+
+    pub fn find_all_null_literal(&self) -> Vec<NullLiteral> {
+        let mut cursor = self.node.walk();
+        let x = self
+            .node
+            .children(&mut cursor)
+            .filter(|n| n.kind() == "type_identifier")
+            .map(|n| NullLiteral::new(n.clone(), &self.source))
+            .collect::<Vec<_>>();
+        x
+    }
     pub fn find_object_literal(&self) -> Option<ObjectLiteral> {
         let mut cursor = self.node.walk();
         let x = self
@@ -42893,23 +43200,6 @@ impl<'a> std::fmt::Debug for IntegerLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Label<'a> {
-    pub node: Node<'a>,
-    pub source: &'a Rope,
-}
-
-impl<'a> Label<'a> {
-    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
-        Self{node, source}
-    }
-    pub fn text(&self) -> String {
-        text_of(&self.node, self.source)
-    }}
-
-impl<'a> std::fmt::Debug for Label<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.text())
-    }
 }pub struct LineComment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
@@ -42941,6 +43231,23 @@ impl<'a> MultilineComment<'a> {
     }}
 
 impl<'a> std::fmt::Debug for MultilineComment<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.text())
+    }
+}pub struct NullLiteral<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> NullLiteral<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
+    pub fn text(&self) -> String {
+        text_of(&self.node, self.source)
+    }}
+
+impl<'a> std::fmt::Debug for NullLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
@@ -42992,6 +43299,40 @@ impl<'a> ReificationModifier<'a> {
     }}
 
 impl<'a> std::fmt::Debug for ReificationModifier<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.text())
+    }
+}pub struct StringContent<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> StringContent<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
+    pub fn text(&self) -> String {
+        text_of(&self.node, self.source)
+    }}
+
+impl<'a> std::fmt::Debug for StringContent<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.text())
+    }
+}pub struct WildcardImport<'a> {
+    pub node: Node<'a>,
+    pub source: &'a Rope,
+}
+
+impl<'a> WildcardImport<'a> {
+    pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
+        Self{node, source}
+    }
+    pub fn text(&self) -> String {
+        text_of(&self.node, self.source)
+    }}
+
+impl<'a> std::fmt::Debug for WildcardImport<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }

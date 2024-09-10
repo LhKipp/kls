@@ -68,7 +68,12 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                     None => s_file.path.display().to_string(),
                 };
                 if self.request.print_file_contents {
-                    format!("File ({})\n{}", file_path, s_file.text)
+                    format!(
+                        "File ({})\n{}\n{}",
+                        file_path,
+                        s_file.text,
+                        s_file.tree.root_node().to_sexp()
+                    )
                 } else {
                     format!("File ({})", file_path)
                 }

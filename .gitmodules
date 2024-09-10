@@ -4,3 +4,6 @@
 [submodule "plenary.nvim"]
 	path = plenary.nvim
 	url = https://github.com/nvim-lua/plenary.nvim
+[submodule "crates/parser/tree-sitter-kotlin"]
+	path = crates/parser/tree-sitter-kotlin
+	url = https://github.com/fwcd/tree-sitter-kotlin
