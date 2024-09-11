@@ -66,7 +66,6 @@ M.start = function(test_case_name, test_dir_cfg, client_config)
         local kls_response, err = client.request_sync(
             "custom/printScopes",
             vim.tbl_deep_extend('keep', params or {}, {
-                print_file_contents = false,
                 trim_from_file_paths = test_dir.root_dir
             }),
             nil,

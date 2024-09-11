@@ -1,12 +1,22 @@
 use serde::{Deserialize, Serialize};
+use tree_sitter::Node;
 
 use crate::kserver::KServer;
+use parser::*;
 
 #[derive(Debug, Serialize, Deserialize)]
-
 pub struct PrintScopesRequest {
+    #[serde(default)]
     pub print_file_contents: bool,
+    #[serde(flatten, default)]
+    pub print_ast: Option<PrintAstOptions>,
     pub trim_from_file_paths: Option<PathBuf>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PrintAstOptions {
+    #[serde(default)]
+    pub print_ast: bool,
 }
 
 #[derive(new)]
@@ -67,18 +77,45 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                         .to_string(),
                     None => s_file.path.display().to_string(),
                 };
-                if self.request.print_file_contents {
-                    format!(
-                        "File ({})\n{}\n{}",
-                        file_path,
-                        s_file.text,
-                        s_file.tree.root_node().to_sexp()
-                    )
-                } else {
-                    format!("File ({})", file_path)
+                let mut result = format!("File ({})", file_path);
+                if self.request.print_file_contents && !s_file.text.is_empty() {
+                    result += &format!("\n{}", s_file.text);
                 }
+                if let Some(print_ast_options) = &self.request.print_ast {
+                    if print_ast_options.print_ast {
+                        let mut tree = "".to_string();
+                        dfs_descend(&s_file.tree.root_node(), 0, &mut |node, depth| {
+                            if node.kind_id() == *parser::SourceFileId {
+                                tree += &format!("{}\n", node.kind());
+                            } else {
+                                tree += &format!(
+                                    "{}{} {}-{} ({})\n",
+                                    " ".repeat(depth * 2),
+                                    node.kind(),
+                                    node.start_position(),
+                                    node.end_position(),
+                                    parser::text_of(node, &s_file.text),
+                                );
+                            }
+                        });
+                        result += &tree;
+                    }
+                };
+
+                result
             }
         }
+    }
+}
+
+pub fn dfs_descend<'a, F>(node: &tree_sitter::Node<'a>, depth: usize, f: &mut F)
+where
+    F: FnMut(&tree_sitter::Node<'a>, usize),
+{
+    let mut cursor = node.walk();
+    f(node, depth);
+    for child in node.children(&mut cursor) {
+        dfs_descend(&child, depth + 1, f);
     }
 }
 

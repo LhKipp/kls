@@ -18,6 +18,17 @@ async fn main() {
     let args = AppArgs::from_env().expect("Parsing arguments failed");
     init_logging(&args);
 
+    // write panics next to the log file for easier debugging
+    if let Some(log_file) = args.log_file.clone() {
+        let normal_hook = std::panic::take_hook();
+        std::panic::set_hook(Box::new(move |p| {
+            if let Err(e) = std::fs::write(log_file.clone() + ".panic", p.to_string()) {
+                eprintln!("Writing panic next to the logfile failed! {e}")
+            }
+            normal_hook(p);
+        }));
+    };
+
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 

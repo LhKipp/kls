@@ -21,9 +21,11 @@ use tree_sitter::{Language, Parser, Tree};
 
 lazy_static! {
     static ref LANGUAGE: Language = unsafe { tree_sitter_kotlin() };
+    pub static ref SourceFileId: u16 = LANGUAGE.id_for_node_kind("source_file", true);
 }
 
 pub fn parse(rope: &Rope, old_tree: Option<&Tree>) -> Option<Tree> {
+    // LANGUAGE.id_for_node_kind(kind, named)
     let mut parser = Parser::new();
     parser.set_language(*LANGUAGE).unwrap();
     let empty_bytes: &[u8] = &[];
@@ -90,7 +92,7 @@ pub fn parse(rope: &Rope, old_tree: Option<&Tree>) -> Option<Tree> {
     tree
 }
 
-pub fn text_of(node: &Node, rope: &Rope) -> String {
+pub fn text_of(node: &Node<'_>, rope: &Rope) -> String {
     return rope.byte_slice(node.byte_range()).to_string();
 }
 
