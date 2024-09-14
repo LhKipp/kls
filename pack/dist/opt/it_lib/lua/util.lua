@@ -9,4 +9,10 @@ M.system_stdout = function(cmd)
     return result.stdout
 end
 
+M.exec_keys = function(keys)
+    local input = vim.api.nvim_replace_termcodes(keys, true, false, true)
+    vim.api.nvim_feedkeys(input, 'x', false)
+end
+
+
 return M

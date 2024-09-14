@@ -1,0 +1,21 @@
+[tests.did_change__add_new_text_ast]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package example.com
+I       // hello world
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+[tests.did_change__change_text]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package mypackage.com
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+[tests.did_change__delete_text]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""

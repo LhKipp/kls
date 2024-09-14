@@ -1,0 +1,6 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "default_golden_file"
+    ]
+}

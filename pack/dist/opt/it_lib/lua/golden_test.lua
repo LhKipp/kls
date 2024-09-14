@@ -12,6 +12,13 @@ GoldenTestSpec = {}
 ---@field test_name string
 GoldenTest = {}
 
+function default_golden_file()
+    local str = debug.getinfo(2, "S").source:sub(2)
+    local file_name_no_lua = str:gsub(vim.env.KLS_PROJECT_DIR .. "/", ""):gsub(".lua", "")
+    assert(file_name_no_lua ~= nil, "Current file does not match default lua file regex")
+    return file_name_no_lua .. "_golden.toml"
+end
+
 ---@param file string
 ---@return GoldenTestSpec
 function GoldenTestSpec:new(file)

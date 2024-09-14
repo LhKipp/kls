@@ -1,13 +1,9 @@
-local log = require 'log'
-local async = require 'plenary.async.tests'
-local golden = require 'golden_test'
+require 'golden_test'
+local async       = require 'plenary.async.tests'
+local log         = require 'log'
+local util        = require 'util'
 
-local golden_spec = GoldenTestSpec:new("integration_tests/edit_buffer_spec_golden.toml")
-
-local function exec_keys(keys)
-    local input = vim.api.nvim_replace_termcodes(keys, true, false, true)
-    vim.api.nvim_feedkeys(input, 'x', false)
-end
+local golden_spec = GoldenTestSpec:new(default_golden_file())
 
 async.describe("DidChangeNotification", function()
     async.it("track code additions", function()
@@ -19,7 +15,7 @@ async.describe("DidChangeNotification", function()
             }
         )
         vim.cmd.edit("src/main/kotlin/example.kt")
-        exec_keys("Go// hello world<ESC>")
+        util.exec_keys("Go// hello world<ESC>")
         -- TODO, neovim is not sending the didChange notification without the write
         vim.cmd.write()
 
@@ -39,7 +35,7 @@ async.describe("DidChangeNotification", function()
             }
         )
         vim.cmd.edit("src/main/kotlin/example.kt")
-        exec_keys("$Bcwmypackage<ESC>")
+        util.exec_keys("$Bcwmypackage<ESC>")
         -- TODO, neovim is not sending the didChange notification without the write
         vim.cmd.write()
 
@@ -50,7 +46,7 @@ async.describe("DidChangeNotification", function()
         golden_spec:test("did_change__change_text"):is_expected(scopes)
     end)
 
-    async.it("track code edits", function()
+    async.it("track code deletions", function()
         local client = require "kserver".start("did_change__delete_text",
             {
                 files = {
@@ -60,7 +56,7 @@ async.describe("DidChangeNotification", function()
             }
         )
         vim.cmd.edit("src/main/kotlin/example.kt")
-        exec_keys("dd")
+        util.exec_keys("dd")
         -- TODO, neovim is not sending the didChange notification without the write
         vim.cmd.write()
 

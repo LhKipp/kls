@@ -1,8 +1,8 @@
 local log = require 'log'
 local async = require 'plenary.async.tests'
-local golden = require 'golden_test'
+require 'golden_test'
 
-local golden_spec = GoldenTestSpec:new("integration_tests/init_spec_golden.toml")
+local golden_spec = GoldenTestSpec:new(default_golden_file())
 
 async.describe("Test init", function()
     before_each(function()
