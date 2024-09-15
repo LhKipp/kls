@@ -37,7 +37,7 @@ pub struct KServer {
     pub root_dir: ARwLock<Option<PathBuf>>,
     pub background_tasks: AMtx<Vec<JoinHandle<()>>>,
 
-    pub scopes: Scopes,
+    pub scopes: GScopes,
 }
 
 impl KServer {
@@ -46,7 +46,7 @@ impl KServer {
             client,
             root_dir: new_arc_rw_lock(None),
             background_tasks: new_arc_lock(vec![]),
-            scopes: Scopes::new(),
+            scopes: GScopes::new(),
         }
     }
 

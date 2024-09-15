@@ -10,17 +10,19 @@ use crate::project::{PProject, ProjectI};
 use super::*;
 
 #[derive(Debug, new)]
-pub struct SFile {
+pub struct GSFile {
     pub path: PathBuf,
     pub text: Rope,
-    pub tree: tree_sitter::Tree,
+    pub ast: tree_sitter::Tree,
+    #[new(default)]
+    pub scopes: indextree::Arena<Scope>,
 }
 
-impl SFile {
+impl GSFile {
     pub async fn create_file_scopes(
-        scopes: Scopes,
+        scopes: GScopes,
         source_set_node_id: NodeId,
-        s_source_set: &ARwScope,
+        s_source_set: &GARwScope,
     ) -> anyhow::Result<()> {
         let source_set_dir = {
             let r_source_set = s_source_set.read();
@@ -39,7 +41,7 @@ impl SFile {
             if file_path.extension().is_some_and(|ext| ext == "kt") {
                 let scopes = scopes.clone();
                 tokio::spawn(async move {
-                    match SFile::create_file_scope(&scopes, source_set_node_id, file_path.clone())
+                    match GSFile::create_file_scope(&scopes, source_set_node_id, file_path.clone())
                         .await
                     {
                         Err(e) => error!("Error while creating file scope {}", e),
@@ -60,7 +62,7 @@ impl SFile {
 
     /// Returns the created file node id on success
     pub async fn create_file_scope(
-        scopes: &Scopes,
+        scopes: &GScopes,
         source_set_node_id: NodeId,
         file_path: PathBuf,
     ) -> anyhow::Result<NodeId> {
@@ -69,7 +71,7 @@ impl SFile {
         let rope = Rope::from(file_content);
         let ast = parser::parse(&rope, None).unwrap_or_else(|| panic!("No tree for {}", rope));
 
-        let s_file = Scope::new_arw(SKind::File(SFile::new(file_path.clone(), rope, ast)));
+        let s_file = GScope::new_arw(GSKind::File(GSFile::new(file_path.clone(), rope, ast)));
 
         let s_file_node_id = {
             let mut w_scopes = scopes.0.write();

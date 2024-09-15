@@ -39,7 +39,7 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
     #[inline]
     pub(crate) fn new(
         id: &'a NodeId,
-        arena: &'a Arena<ARwLock<Scope>>,
+        arena: &'a Arena<ARwLock<GScope>>,
         request: &'a PrintScopesRequest,
     ) -> Self {
         Self { id, arena, request }
@@ -47,12 +47,12 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
 }
 
 impl<'a> ScopeDebugPrettyPrint<'a> {
-    fn print_debug(&self, scope: &ARwLock<Scope>) -> String {
+    fn print_debug(&self, scope: &ARwLock<GScope>) -> String {
         let r_scope = scope.read();
         match &r_scope.kind {
-            SKind::Project(project) => format!("Project {}", project.data.name.clone()),
+            GSKind::Project(project) => format!("Project {}", project.data.name.clone()),
 
-            SKind::SourceSet(source_set) => {
+            GSKind::SourceSet(source_set) => {
                 let includes = source_set
                     .data
                     .dependencies
@@ -67,7 +67,7 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                 result
             }
 
-            SKind::File(s_file) => {
+            GSKind::File(s_file) => {
                 let file_path = match &self.request.trim_from_file_paths {
                     Some(prefix) => s_file
                         .path
@@ -87,7 +87,7 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                 if let Some(print_ast_options) = &self.request.print_ast {
                     if print_ast_options.print_ast {
                         let mut tree = "".to_string();
-                        dfs_descend(&s_file.tree.root_node(), 0, &mut |node, depth| {
+                        dfs_descend(&s_file.ast.root_node(), 0, &mut |node, depth| {
                             if node.kind_id() == *parser::SourceFileId {
                                 tree += &format!("{}\n", node.kind());
                             } else {
@@ -340,7 +340,7 @@ struct ScopeDebugPrettyPrint<'a> {
     /// Root node ID of the (sub)tree to print.
     id: &'a NodeId,
     /// Arena the node belongs to.
-    arena: &'a Arena<ARwLock<Scope>>,
+    arena: &'a Arena<ARwLock<GScope>>,
     /// params
     request: &'a PrintScopesRequest,
 }
@@ -372,7 +372,7 @@ impl<'a> fmt::Debug for ScopeDebugPrettyPrint<'a> {
 fn prepare_next_node_printing<'a, T>(
     writer: &mut IndentWriter<'_, '_>,
     traverser: &mut Traverse<'_, T>,
-    arena: &Arena<ARwLock<Scope>>,
+    arena: &Arena<ARwLock<GScope>>,
 ) -> Result<Option<NodeId>, fmt::Error> {
     // Not using `for ev in traverser` in order to access to `traverser`
     // directly in the loop.

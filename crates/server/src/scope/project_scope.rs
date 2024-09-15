@@ -5,20 +5,20 @@ use crate::project::{PProject, ProjectI};
 use super::*;
 
 #[derive(Debug)]
-pub struct SProject {
+pub struct GSProject {
     pub data: PProject,
 }
 
-impl SProject {
+impl GSProject {
     pub fn create_project_scope(
-        scopes: &Scopes,
+        scopes: &GScopes,
         project: &Box<dyn ProjectI>,
-    ) -> anyhow::Result<(NodeId, ARwScope)> {
+    ) -> anyhow::Result<(NodeId, GARwScope)> {
         let project_info = project.project_info()?;
 
         debug!("Adding scope for project {}", project_info.name);
 
-        let s_project = Scope::new_arw(SKind::Project(SProject { data: project_info }));
+        let s_project = GScope::new_arw(GSKind::Project(GSProject { data: project_info }));
 
         let project_node_id = {
             let mut w_scopes = scopes.0.write();

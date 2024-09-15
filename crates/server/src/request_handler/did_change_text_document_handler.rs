@@ -35,11 +35,10 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
 
         let mut w_s_file = s_file.write();
         let s_file = w_s_file.kind.as_file_mut().unwrap();
-        // let rope = &mut w_s_file.kind.as_file_mut().unwrap().text;
         trace!("Buffer before edits:\n{}", s_file.text.to_string());
-        trace!("Tree before edits:\n{}", s_file.tree.root_node().to_sexp());
+        trace!("Tree before edits:\n{}", s_file.ast.root_node().to_sexp());
 
-        self.edit_rope(&mut s_file.text, &mut s_file.tree)?;
+        self.edit_rope(&mut s_file.text, &mut s_file.ast)?;
 
         Ok(())
     }
@@ -85,8 +84,6 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
             info!("Changed Range: {}-{}", r.start_point, r.end_point);
         }
 
-        ast.root_node().edit(edit)
-
         *ast = new_ast;
 
         // iterate over all nodes of ast and populate
@@ -94,7 +91,7 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
         // return tainted own_node_id's (node_ids changed or deleted)
         //
         // caller: iterte over scopes, if scopes node is tainted, update the scope, by looking up
-        // ast-node 
+        // ast-node
 
         Ok(())
     }

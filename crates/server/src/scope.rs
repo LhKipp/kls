@@ -2,26 +2,28 @@ mod file_scope;
 mod project_scope;
 mod source_set_scope;
 
-pub use file_scope::SFile;
-pub use project_scope::SProject;
-pub use source_set_scope::SSourceSet;
-
-use tokio::task::JoinHandle;
-use tracing::{debug, error};
+pub use file_scope::GSFile;
+pub use project_scope::GSProject;
+pub use source_set_scope::GSSourceSet;
 
 use crate::project::{PSourceSet, ProjectI};
 use enum_as_inner::EnumAsInner;
 use indextree::{Arena, NodeId};
 use std::{collections::HashMap, fmt, path::PathBuf, sync::Arc};
 use stdx::{new_arc_rw_lock, ARwLock};
+use tokio::task::JoinHandle;
+use tracing::{debug, error};
 use tree_sitter::{Node, Range};
 
+/// Global scopes are protected by a AMtx and operation on them can be concurrent. In comparison
+/// normal [scope::Scope]'s, which are used on a file level and below, are not protected by a AMtx.
+/// Once we are on a file level, we use non AMtx scopes to make life easier ...
 #[derive(Clone)]
-pub struct Scopes(pub ARwLock<ScopesData>);
+pub struct GScopes(pub ARwLock<GScopesData>);
 
-impl Scopes {
+impl GScopes {
     pub fn new() -> Self {
-        Scopes(new_arc_rw_lock(ScopesData::new()))
+        GScopes(new_arc_rw_lock(GScopesData::new()))
     }
 
     /// Adds scopes
@@ -29,14 +31,14 @@ impl Scopes {
         &self,
         project: Box<dyn ProjectI>,
     ) -> anyhow::Result<()> {
-        let (project_node_id, s_project) = SProject::create_project_scope(self, &project)?;
-        let source_sets = SSourceSet::create_source_set_scopes(self, project_node_id, &s_project)?;
+        let (project_node_id, s_project) = GSProject::create_project_scope(self, &project)?;
+        let source_sets = GSSourceSet::create_source_set_scopes(self, project_node_id, &s_project)?;
 
         for (source_set_node_id, source_set) in source_sets {
             let scopes = self.clone();
             tokio::spawn(async move {
                 if let Err(e) =
-                    SFile::create_file_scopes(scopes, source_set_node_id, &source_set).await
+                    GSFile::create_file_scopes(scopes, source_set_node_id, &source_set).await
                 {
                     error!(
                         "Error while creating files of source_set {:?} - {}",
@@ -51,20 +53,20 @@ impl Scopes {
     }
 }
 
-impl Default for Scopes {
+impl Default for GScopes {
     fn default() -> Self {
         Self::new()
     }
 }
 
-pub struct ScopesData {
-    pub(crate) scopes: indextree::Arena<ARwLock<Scope>>,
+pub struct GScopesData {
+    pub(crate) scopes: indextree::Arena<ARwLock<GScope>>,
     /// root nodes in scopes
     pub project_nodes: Vec<NodeId>,
     pub file_nodes: HashMap<PathBuf, NodeId>,
 }
 
-impl ScopesData {
+impl GScopesData {
     pub fn debug_fmt_scopes(&self) -> anyhow::Result<String> {
         let result = String::with_capacity(1024);
 
@@ -83,7 +85,7 @@ impl ScopesData {
     }
 
     pub fn new() -> Self {
-        ScopesData {
+        GScopesData {
             scopes: Arena::new(),
             project_nodes: vec![],
             file_nodes: HashMap::new(),
@@ -91,21 +93,21 @@ impl ScopesData {
     }
 }
 
-impl Default for ScopesData {
+impl Default for GScopesData {
     fn default() -> Self {
         Self::new()
     }
 }
 
-pub type ARwScope = ARwLock<Scope>;
+pub type GARwScope = ARwLock<GScope>;
 #[derive(new, Debug)]
-pub struct Scope {
-    pub kind: SKind,
+pub struct GScope {
+    pub kind: GSKind,
 }
 
-impl Scope {
-    pub fn new_arw(kind: SKind) -> ARwScope {
-        new_arc_rw_lock(Scope { kind })
+impl GScope {
+    pub fn new_arw(kind: GSKind) -> GARwScope {
+        new_arc_rw_lock(GScope { kind })
     }
 }
 
@@ -113,11 +115,23 @@ impl Scope {
 // pub type RScope<'a> = RwLockReadGuard<'a, Scope>;
 
 #[derive(Debug, EnumAsInner)]
-pub enum SKind {
-    Project(SProject),
-    SourceSet(SSourceSet),
-    File(SFile),
+pub enum GSKind {
+    Project(GSProject),
+    SourceSet(GSSourceSet),
+    File(GSFile),
     // Module { path: PathBuf, range: Range },
+    // Class { name: String, range: Range },
+    // Function(String /*name*/),
+    // MemberFunction(String /*name*/),
+}
+
+#[derive(Debug, new)]
+pub struct Scope {
+    pub kind: SKind,
+}
+
+#[derive(Debug, EnumAsInner)]
+pub enum SKind {
     // Class { name: String, range: Range },
     // Function(String /*name*/),
     // MemberFunction(String /*name*/),
