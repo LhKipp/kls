@@ -4,18 +4,65 @@ Project KLS Test
 I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
 I       package example.com
-I       // hello world
+I       class B()
+I       class A()
+I       source_file
+I         package_header (0, 0)-(0, 19) (package example.com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 19) (example.com)
+I             simple_identifier (0, 8)-(0, 15) (example)
+I             . (0, 15)-(0, 16) (.)
+I             simple_identifier (0, 16)-(0, 19) (com)
+I         class_declaration (1, 0)-(1, 9) (class B())
+I           class (1, 0)-(1, 5) (class)
+I           type_identifier (1, 6)-(1, 7) (B)
+I           primary_constructor (1, 7)-(1, 9) (())
+I             ( (1, 7)-(1, 8) (()
+I             ) (1, 8)-(1, 9) ())
+I         class_declaration (2, 0)-(2, 9) (class A())
+I           class (2, 0)-(2, 5) (class)
+I           type_identifier (2, 6)-(2, 7) (A)
+I           primary_constructor (2, 7)-(2, 9) (())
+I             ( (2, 7)-(2, 8) (()
+I             ) (2, 8)-(2, 9) ())
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
-[tests.did_change__change_text]
+[tests.did_change__change_text_ast]
 expected = """
 Project KLS Test
 I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
 I       package mypackage.com
+I       class B()
+I       source_file
+I         package_header (0, 0)-(0, 21) (package mypackage.com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 21) (mypackage.com)
+I             simple_identifier (0, 8)-(0, 17) (mypackage)
+I             . (0, 17)-(0, 18) (.)
+I             simple_identifier (0, 18)-(0, 21) (com)
+I         class_declaration (1, 0)-(1, 9) (class B())
+I           class (1, 0)-(1, 5) (class)
+I           type_identifier (1, 6)-(1, 7) (B)
+I           primary_constructor (1, 7)-(1, 9) (())
+I             ( (1, 7)-(1, 8) (()
+I             ) (1, 8)-(1, 9) ())
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
-[tests.did_change__delete_text]
+[tests.did_change__delete_text_ast]
 expected = """
 Project KLS Test
 I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
+I       package com
+I       class A()
+I       source_file
+I         package_header (0, 0)-(0, 11) (package com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 11) (com)
+I             simple_identifier (0, 8)-(0, 11) (com)
+I         class_declaration (1, 0)-(1, 9) (class A())
+I           class (1, 0)-(1, 5) (class)
+I           type_identifier (1, 6)-(1, 7) (A)
+I           primary_constructor (1, 7)-(1, 9) (())
+I             ( (1, 7)-(1, 8) (()
+I             ) (1, 8)-(1, 9) ())
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
