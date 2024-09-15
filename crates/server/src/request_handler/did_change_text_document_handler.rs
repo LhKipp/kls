@@ -1,10 +1,10 @@
 use crop::Rope;
 use tower_lsp::lsp_types::DidChangeTextDocumentParams;
-use tracing::trace;
+use tracing::{info, instrument::WithSubscriber, trace};
 use tree_sitter::{InputEdit, Point};
 
 use crate::{kserver::KServer, to_file_path};
-use anyhow::anyhow;
+use anyhow::{anyhow, bail};
 
 #[derive(new)]
 pub struct DidChangeTextDocumentHandler<'a> {
@@ -46,7 +46,11 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
 
     fn edit_rope(&self, rope: &mut Rope, ast: &mut tree_sitter::Tree) -> anyhow::Result<()> {
         for change in &self.notification.content_changes {
+            if change.range_length.is_some() && change.range.is_none() {
+                bail!("editor sends deprecated DidChangeTextDocument notification. Expected field `range`, but only `range_length` has been provided");
+            }
             if let Some(range) = &change.range {
+                info!("range {:?}", range);
                 let old_byte_range = self.to_byte_range(rope, range);
                 // old_client_changed_ranges.push(byte_range_from_usize_range(&old_byte_range));
 
@@ -75,7 +79,22 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
         }
 
         let new_ast = parser::parse(rope, Some(ast)).expect("No tree returned");
+        let changed_ranges = ast.changed_ranges(&new_ast);
+
+        for r in changed_ranges {
+            info!("Changed Range: {}-{}", r.start_point, r.end_point);
+        }
+
+        ast.root_node().edit(edit)
+
         *ast = new_ast;
+
+        // iterate over all nodes of ast and populate
+        // bi_map <own_node_i, node_range> (or insert if not yet present)
+        // return tainted own_node_id's (node_ids changed or deleted)
+        //
+        // caller: iterte over scopes, if scopes node is tainted, update the scope, by looking up
+        // ast-node 
 
         Ok(())
     }

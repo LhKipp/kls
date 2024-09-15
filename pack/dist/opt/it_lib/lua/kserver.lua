@@ -48,7 +48,7 @@ M.start = function(test_case_name, test_dir_cfg, client_config)
     vim.api.nvim_create_autocmd('FileType', {
         pattern = 'kotlin',
         callback = function()
-            log.info("FileType autocmd send")
+            log.debug("FileType autocmd send")
             vim.lsp.start(client_config_fixed)
         end,
     })
@@ -74,7 +74,7 @@ M.start = function(test_case_name, test_dir_cfg, client_config)
         if err ~= nil then
             assert(err == "", "Err is not empty: " .. err)
         end
-        log.info("return result", kls_response.result)
+        log.debug("print_scopes result: ", kls_response.result)
         return kls_response.result
     end
 

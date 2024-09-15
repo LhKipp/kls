@@ -3,7 +3,7 @@
 use std::collections::VecDeque;
 
 use crop::Rope;
-use tracing::info;
+use tracing::{debug, info};
 use tree_sitter::{Node, Point};
 
 #[macro_use]
@@ -33,13 +33,13 @@ pub fn parse(rope: &Rope, old_tree: Option<&Tree>) -> Option<Tree> {
     let mut all_text = String::new();
     let tree = parser.parse_with(
         &mut |_byte: usize, position: Point| -> &[u8] {
-            info!(
+            debug!(
                 "Got byte pos {}, and row/col pos {}/{}",
                 _byte, position.row, position.column
             );
 
             if (_byte >= rope.byte_len()) {
-                info!("returning empty bytes");
+                debug!("returning empty bytes");
                 return empty_bytes;
             }
             // The rope does not store newlines. So
@@ -63,12 +63,12 @@ pub fn parse(rope: &Rope, old_tree: Option<&Tree>) -> Option<Tree> {
 
             match rope.byte_slice(_byte..).chunks().next() {
                 Some(text) => {
-                    info!("Returning text to parse {}", text);
+                    debug!("Returning text to parse {}", text);
                     all_text += text;
                     text.as_bytes()
                 }
                 None => {
-                    info!("returning empty slice");
+                    debug!("returning empty slice");
                     empty_bytes
                 }
             }
@@ -87,8 +87,8 @@ pub fn parse(rope: &Rope, old_tree: Option<&Tree>) -> Option<Tree> {
         },
         old_tree,
     );
-    info!("Parsed text is {}", all_text);
-    info!("tree is {}", tree.clone().unwrap().root_node().to_sexp());
+    debug!("Parsed text is {}", all_text);
+    debug!("tree is {}", tree.clone().unwrap().root_node().to_sexp());
     tree
 }
 

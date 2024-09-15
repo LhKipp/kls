@@ -77,10 +77,13 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                         .to_string(),
                     None => s_file.path.display().to_string(),
                 };
+
                 let mut result = format!("File ({})", file_path);
+
                 if self.request.print_file_contents && !s_file.text.is_empty() {
                     result += &format!("\n{}", s_file.text);
                 }
+
                 if let Some(print_ast_options) = &self.request.print_ast {
                     if print_ast_options.print_ast {
                         let mut tree = "".to_string();
