@@ -15,6 +15,7 @@ pub mod kserver;
 pub mod project;
 pub mod request_handler;
 mod scope;
+pub mod range_util;
 
 /// [Url::to_file_path] does not check, for the scheme, so we do manually
 fn to_file_path(uri: &Url) -> anyhow::Result<PathBuf> {
