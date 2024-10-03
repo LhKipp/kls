@@ -20,7 +20,7 @@ pub fn lsp_range_byte_distance(range: &tower_lsp::lsp_types::Range) -> u32 {
 }
 
 pub fn lsp_pos_to_byte_pos(rope: &Rope, point: &tower_lsp::lsp_types::Position) -> u32 {
-    rope.byte_of_line(point.line as usize) as u32 + point.character as u32
+    rope.byte_of_line(point.line as usize) as u32 + point.character
 }
 
 pub fn ts_point_of(rope: &Rope, byte_offset: usize) -> tree_sitter::Point {
@@ -44,7 +44,7 @@ pub fn lsp_range_apply_text_edit(
     tower_lsp::lsp_types::Range {
         start: range.start,
         end: tower_lsp::lsp_types::Position {
-            line: range.start.line + text.chars().into_iter().filter(|c| *c == '\n').count() as u32,
+            line: range.start.line + text.chars().filter(|c| *c == '\n').count() as u32,
             character: range.start.character + text_len,
         },
     }
