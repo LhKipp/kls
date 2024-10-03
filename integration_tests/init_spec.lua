@@ -17,7 +17,7 @@ async.describe("Test init", function()
 
     async.it("Sets up project and source set scope nodes", function()
         local client = require "kserver".start("project_scope_node",
-            { files = { ["src/main/kotlin/example.kt"] = "package example.com" } })
+            { files = { ["src/main/kotlin/example.kt"] = "package example.com\n" } })
         local scopes = client.print_scopes({ print_file_contents = true })
 
         golden_spec:test("project_source_set_nodes"):is_expected(scopes)

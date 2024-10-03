@@ -28,7 +28,7 @@ impl<'a> {{node.type | camel_case }}<'a> {
         let x = self
             .node
             .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
+            .filter(|n| n.kind() == "{{child.type}}")
             .map(|n| {{child.type | camel_case }}::new(n.clone(), &self.source))
             .next();
         x
@@ -39,7 +39,7 @@ impl<'a> {{node.type | camel_case }}<'a> {
         let x = self
             .node
             .children(&mut cursor)
-            .filter(|n| n.kind() == "type_identifier")
+            .filter(|n| n.kind() == "{{child.type}}")
             .map(|n| {{child.type | camel_case }}::new(n.clone(), &self.source))
             .collect::<Vec<_>>();
         x

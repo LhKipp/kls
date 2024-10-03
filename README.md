@@ -19,3 +19,7 @@ SFunction(text_range) <=> TreeElement
 SFunction(id) <=> TreeElement
 - requires id <=> node_id <=> TreeElement
 - can update all node_ids at once
+
+# Comments
+CLONE -> Clones which are possibly optimisable
+CONTINUE_HERE -> where I left off working on

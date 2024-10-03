@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use tree_sitter::Node;
 
 use crate::kserver::KServer;
+use tracing::debug;
 use parser::*;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -11,6 +12,8 @@ pub struct PrintScopesRequest {
     #[serde(flatten, default)]
     pub print_ast: Option<PrintAstOptions>,
     pub trim_from_file_paths: Option<PathBuf>,
+    #[serde(default)]
+    pub print_scopes: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -29,26 +32,30 @@ impl<'a> PrintScopesHandler<'a> {
     pub fn handle(&self) -> anyhow::Result<String> {
         let r_scopes = self.server.scopes.0.read();
         let printer =
-            ScopeDebugPrettyPrint::new(&r_scopes.project_nodes[0], &r_scopes.scopes, &self.request);
+            ScopeDebugPrettyPrint::new(&r_scopes.project_nodes[0], &r_scopes.scopes, self.request);
         Ok(format!("{:?}", printer))
     }
 }
 
-impl<'a> ScopeDebugPrettyPrint<'a> {
+impl<'a, P: Printable> ScopeDebugPrettyPrint<'a, P> {
     /// Creates a new `DebugPrettyPrint` object for the node.
     #[inline]
     pub(crate) fn new(
         id: &'a NodeId,
-        arena: &'a Arena<ARwLock<GScope>>,
+        arena: &'a Arena<P>,
         request: &'a PrintScopesRequest,
     ) -> Self {
         Self { id, arena, request }
     }
 }
 
-impl<'a> ScopeDebugPrettyPrint<'a> {
-    fn print_debug(&self, scope: &ARwLock<GScope>) -> String {
-        let r_scope = scope.read();
+trait Printable {
+    fn print(&self, request: &PrintScopesRequest) -> String;
+}
+
+impl Printable for ARwLock<GScope> {
+    fn print(&self, request: &PrintScopesRequest) -> String {
+        let r_scope = self.read();
         match &r_scope.kind {
             GSKind::Project(project) => format!("Project {}", project.data.name.clone()),
 
@@ -68,7 +75,7 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
             }
 
             GSKind::File(s_file) => {
-                let file_path = match &self.request.trim_from_file_paths {
+                let file_path = match &request.trim_from_file_paths {
                     Some(prefix) => s_file
                         .path
                         .strip_prefix(prefix)
@@ -78,13 +85,17 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                     None => s_file.path.display().to_string(),
                 };
 
-                let mut result = format!("File ({})", file_path);
+                let mut result = format!("File ({})\n", file_path);
 
-                if self.request.print_file_contents && !s_file.text.is_empty() {
-                    result += &format!("\n{}", s_file.text);
+                if request.print_file_contents && !s_file.text.is_empty() {
+                    result += &format!("{}", s_file.text);
+
+                    if request.print_ast.is_some() || request.print_scopes {
+                        result += "=============\n"
+                    }
                 }
 
-                if let Some(print_ast_options) = &self.request.print_ast {
+                if let Some(print_ast_options) = &request.print_ast {
                     if print_ast_options.print_ast {
                         let mut tree = "".to_string();
                         dfs_descend(&s_file.ast.root_node(), 0, &mut |node, depth| {
@@ -103,10 +114,31 @@ impl<'a> ScopeDebugPrettyPrint<'a> {
                         });
                         result += &tree;
                     }
+
+                    if request.print_scopes {
+                        result += "=============\n"
+                    }
                 };
+
+                if request.print_scopes {
+                    for root_node in &s_file.root_nodes {
+                        result += &format!(
+                            "{:?}\n",
+                            ScopeDebugPrettyPrint::new(root_node, &s_file.scopes, request)
+                        );
+                    }
+                }
 
                 result
             }
+        }
+    }
+}
+
+impl Printable for Scope {
+    fn print(&self, _: &PrintScopesRequest) -> String {
+        match &self.kind {
+            SKind::PackageHeader { ident } => format!("({}) package {}", self.range, ident),
         }
     }
 }
@@ -336,15 +368,15 @@ impl fmt::Write for IndentWriter<'_, '_> {
 }
 
 #[derive(Clone, Copy)]
-struct ScopeDebugPrettyPrint<'a> {
+struct ScopeDebugPrettyPrint<'a, T: Printable> {
     /// Root node ID of the (sub)tree to print.
     id: &'a NodeId,
     /// Arena the node belongs to.
-    arena: &'a Arena<ARwLock<GScope>>,
+    arena: &'a Arena<T>,
     /// params
     request: &'a PrintScopesRequest,
 }
-impl<'a> fmt::Debug for ScopeDebugPrettyPrint<'a> {
+impl<'a, P: Printable> fmt::Debug for ScopeDebugPrettyPrint<'a, P> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut writer = IndentWriter::new(f);
         let mut traverser = self.id.traverse(self.arena);
@@ -353,13 +385,13 @@ impl<'a> fmt::Debug for ScopeDebugPrettyPrint<'a> {
         traverser.next();
         {
             let data = self.arena[*self.id].get();
-            writer.write_str(&self.print_debug(data))?;
+            writer.write_str(&data.print(self.request))?;
         }
 
         // Print the descendants.
         while let Some(id) = prepare_next_node_printing(&mut writer, &mut traverser, &self.arena)? {
             let data = self.arena[id].get();
-            writer.write_str(&self.print_debug(data))?;
+            writer.write_str(&data.print(self.request))?;
         }
 
         Ok(())
@@ -369,10 +401,10 @@ impl<'a> fmt::Debug for ScopeDebugPrettyPrint<'a> {
 /// Prepares printing of next node.
 ///
 /// Internally, this searches next node open and adjust indent level and prefix.
-fn prepare_next_node_printing<'a, T>(
+fn prepare_next_node_printing<'a, T, P: Printable>(
     writer: &mut IndentWriter<'_, '_>,
     traverser: &mut Traverse<'_, T>,
-    arena: &Arena<ARwLock<GScope>>,
+    arena: &Arena<P>,
 ) -> Result<Option<NodeId>, fmt::Error> {
     // Not using `for ev in traverser` in order to access to `traverser`
     // directly in the loop.

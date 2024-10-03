@@ -1,4 +1,5 @@
 mod file_scope;
+mod file_scope_creation;
 mod project_scope;
 mod source_set_scope;
 
@@ -6,7 +7,10 @@ pub use file_scope::GSFile;
 pub use project_scope::GSProject;
 pub use source_set_scope::GSSourceSet;
 
-use crate::project::{PSourceSet, ProjectI};
+use crate::{
+    project::{PSourceSet, ProjectI},
+    range_util::TextRange,
+};
 use enum_as_inner::EnumAsInner;
 use indextree::{Arena, NodeId};
 use std::{collections::HashMap, fmt, path::PathBuf, sync::Arc};
@@ -14,6 +18,8 @@ use stdx::{new_arc_rw_lock, ARwLock};
 use tokio::task::JoinHandle;
 use tracing::{debug, error};
 use tree_sitter::{Node, Range};
+
+use self::file_scope_creation::create_file_scopes;
 
 /// Global scopes are protected by a AMtx and operation on them can be concurrent. In comparison
 /// normal [scope::Scope]'s, which are used on a file level and below, are not protected by a AMtx.
@@ -37,9 +43,7 @@ impl GScopes {
         for (source_set_node_id, source_set) in source_sets {
             let scopes = self.clone();
             tokio::spawn(async move {
-                if let Err(e) =
-                    GSFile::create_file_scopes(scopes, source_set_node_id, &source_set).await
-                {
+                if let Err(e) = create_file_scopes(scopes, source_set_node_id, &source_set).await {
                     error!(
                         "Error while creating files of source_set {:?} - {}",
                         source_set.read().kind.as_source_set().unwrap(),
@@ -128,11 +132,12 @@ pub enum GSKind {
 #[derive(Debug, new)]
 pub struct Scope {
     pub kind: SKind,
+    pub range: TextRange,
 }
 
 #[derive(Debug, EnumAsInner)]
 pub enum SKind {
-    // Class { name: String, range: Range },
-    // Function(String /*name*/),
-    // MemberFunction(String /*name*/),
+    PackageHeader { ident: String }, // Class { name: String, range: Range },
+                                     // Function(String /*name*/),
+                                     // MemberFunction(String /*name*/),
 }

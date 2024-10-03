@@ -22,6 +22,9 @@ use tree_sitter::{Language, Parser, Tree};
 lazy_static! {
     static ref LANGUAGE: Language = unsafe { tree_sitter_kotlin() };
     pub static ref SourceFileId: u16 = LANGUAGE.id_for_node_kind("source_file", true);
+    pub static ref PackageHeader: u16 = LANGUAGE.id_for_node_kind("package_header", true);
+    pub static ref Identifier: u16 = LANGUAGE.id_for_node_kind("identifier", true);
+    pub static ref SimpleIdentifier: u16 = LANGUAGE.id_for_node_kind("simple_identifier", true);
 }
 
 pub fn parse(rope: &Rope, old_tree: Option<&Tree>) -> Option<Tree> {

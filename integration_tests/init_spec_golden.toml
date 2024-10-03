@@ -4,4 +4,5 @@ Project KLS Test
 I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
 I       package example.com
+I       =============
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""

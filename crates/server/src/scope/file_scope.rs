@@ -1,13 +1,17 @@
+use crate::project::{PProject, ProjectI};
+use crate::range_util::TextRange;
 use anyhow::bail;
 use crop::Rope;
+use indextree::*;
 use itertools::Itertools;
+use std::cell::RefCell;
+use std::ops::Range;
+use std::path::PathBuf;
 use tap::Tap;
 use tokio::fs;
 use tracing::trace;
 
-use crate::project::{PProject, ProjectI};
-
-use super::*;
+use super::Scope;
 
 #[derive(Debug, new)]
 pub struct GSFile {
@@ -16,69 +20,47 @@ pub struct GSFile {
     pub ast: tree_sitter::Tree,
     #[new(default)]
     pub scopes: indextree::Arena<Scope>,
+    #[new(default)]
+    pub root_nodes: Vec<NodeId>,
 }
 
 impl GSFile {
-    pub async fn create_file_scopes(
-        scopes: GScopes,
-        source_set_node_id: NodeId,
-        s_source_set: &GARwScope,
-    ) -> anyhow::Result<()> {
-        let source_set_dir = {
-            let r_source_set = s_source_set.read();
-            let source_set_data = r_source_set.kind.as_source_set().unwrap();
-            source_set_data.source_set_root_dir(&source_set_data.data)
-        };
-
-        trace!("Reading files of dir {}", source_set_dir.display());
-        let mut files = tokio::fs::read_dir(&source_set_dir).await?;
-        while let Some(file) = files.next_entry().await? {
-            let file_path = file.path();
-            trace!(
-                "Checking whether to create scope for file {}",
-                file_path.display()
-            );
-            if file_path.extension().is_some_and(|ext| ext == "kt") {
-                let scopes = scopes.clone();
-                tokio::spawn(async move {
-                    match GSFile::create_file_scope(&scopes, source_set_node_id, file_path.clone())
-                        .await
-                    {
-                        Err(e) => error!("Error while creating file scope {}", e),
-                        Ok(s_file_node_id) => {
-                            scopes
-                                .0
-                                .write()
-                                .file_nodes
-                                .insert(file_path, s_file_node_id);
-                        }
-                    }
-                });
-            }
-        }
-
-        Ok(())
+    pub fn scope_at_byte(&mut self, byte: u32) -> Option<NodeId> {
+        self.scope_having_best_match(&|scope| scope.range.contains(byte))
     }
 
-    /// Returns the created file node id on success
-    pub async fn create_file_scope(
-        scopes: &GScopes,
-        source_set_node_id: NodeId,
-        file_path: PathBuf,
-    ) -> anyhow::Result<NodeId> {
-        debug!("Creating scope for file {}", file_path.display());
-        let file_content = fs::read_to_string(&file_path).await?;
-        let rope = Rope::from(file_content);
-        let ast = parser::parse(&rope, None).unwrap_or_else(|| panic!("No tree for {}", rope));
+    /// iterates down the scope-tree, until condition is not satisfied
+    /// If no scope satisfies `condition`, returns None
+    pub fn scope_having_best_match(&self, condition: &dyn Fn(&Scope) -> bool) -> Option<NodeId> {
+        let mut current = *self
+            .root_nodes
+            .clone() // CLONE
+            .iter()
+            .find(|n| {
+                let root_scope = self.root_scope(n);
+                return condition(root_scope.get());
+            })?;
 
-        let s_file = GScope::new_arw(GSKind::File(GSFile::new(file_path.clone(), rope, ast)));
+        'outer: loop {
+            for child_scope in current.children(&self.scopes) {
+                if condition(self.scopes.get(child_scope).unwrap().get()) {
+                    current = child_scope;
+                    continue 'outer;
+                }
+            }
+            return Some(current);
+        }
+    }
 
-        let s_file_node_id = {
-            let mut w_scopes = scopes.0.write();
-            source_set_node_id.append_value(s_file, &mut w_scopes.scopes)
-        };
+    fn root_scope(&self, node_id: &NodeId) -> &Node<Scope> {
+        return self
+            .scopes
+            .get(*node_id)
+            .unwrap_or_else(|| panic!("No scope for node-id {}", node_id));
+    }
 
-        debug!("Created scope for file {}", file_path.display());
-        Ok(s_file_node_id)
+    pub fn new_root_scope(&mut self, scope: Scope) {
+        let id = self.scopes.new_node(scope);
+        self.root_nodes.push(id);
     }
 }

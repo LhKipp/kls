@@ -30,7 +30,7 @@ async.describe("DidChangeNotification", function()
         local client = require "kserver".start("did_change__change_text",
             {
                 files = {
-                    ["src/main/kotlin/example.kt"] = "package example.com",
+                    ["src/main/kotlin/example.kt"] = "package example.com\n",
                 }
             }
         )
@@ -56,7 +56,7 @@ async.describe("DidChangeNotification", function()
             }
         )
         vim.cmd.edit("src/main/kotlin/example.kt")
-        util.exec_keys("dd")
+        util.exec_keys("ggdd")
         -- TODO, neovim is not sending the didChange notification without the write
         vim.cmd.write()
 

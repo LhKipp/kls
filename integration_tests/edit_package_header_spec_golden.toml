@@ -1,11 +1,9 @@
-[tests.did_change__add_new_text_ast]
+[tests.did_change__add_new_text_package_header]
 expected = """
 Project KLS Test
 I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
 I       package example.com
-I       class B()
-I       class A()
 I       =============
 I       source_file
 I         package_header (0, 0)-(0, 19) (package example.com)
@@ -14,18 +12,8 @@ I           identifier (0, 8)-(0, 19) (example.com)
 I             simple_identifier (0, 8)-(0, 15) (example)
 I             . (0, 15)-(0, 16) (.)
 I             simple_identifier (0, 16)-(0, 19) (com)
-I         class_declaration (1, 0)-(1, 9) (class B())
-I           class (1, 0)-(1, 5) (class)
-I           type_identifier (1, 6)-(1, 7) (B)
-I           primary_constructor (1, 7)-(1, 9) (())
-I             ( (1, 7)-(1, 8) (()
-I             ) (1, 8)-(1, 9) ())
-I         class_declaration (2, 0)-(2, 9) (class A())
-I           class (2, 0)-(2, 5) (class)
-I           type_identifier (2, 6)-(2, 7) (A)
-I           primary_constructor (2, 7)-(2, 9) (())
-I             ( (2, 7)-(2, 8) (()
-I             ) (2, 8)-(2, 9) ())
+I       =============
+I       (0..19) package example.com
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
 [tests.did_change__change_text_ast]
 expected = """
@@ -34,7 +22,6 @@ I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
 I       package mypackage.com
 I       class B()
-I       =============
 I       source_file
 I         package_header (0, 0)-(0, 21) (package mypackage.com)
 I           package (0, 0)-(0, 7) (package)
@@ -56,7 +43,6 @@ I-- SourceSet kotlin
 |   L-- File (src/main/kotlin/example.kt)
 I       package com
 I       class A()
-I       =============
 I       source_file
 I         package_header (0, 0)-(0, 11) (package com)
 I           package (0, 0)-(0, 7) (package)
@@ -68,4 +54,24 @@ I           type_identifier (1, 6)-(1, 7) (A)
 I           primary_constructor (1, 7)-(1, 9) (())
 I             ( (1, 7)-(1, 8) (()
 I             ) (1, 8)-(1, 9) ())
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+
+[tests.did_change__replace_existing_package_header]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package update2.package.com
+I                           =============
+I       source_file
+I         package_header (0, 0)-(0, 27) (package update2.package.com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 27) (update2.package.com)
+I             simple_identifier (0, 8)-(0, 15) (update2)
+I             . (0, 15)-(0, 16) (.)
+I             simple_identifier (0, 16)-(0, 23) (package)
+I             . (0, 23)-(0, 24) (.)
+I             simple_identifier (0, 24)-(0, 27) (com)
+I       =============
+I       (0..27) package update2.package.com
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
