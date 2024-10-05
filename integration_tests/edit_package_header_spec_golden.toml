@@ -75,3 +75,12 @@ I             simple_identifier (0, 24)-(0, 27) (com)
 I       =============
 I       (0..27) package update2.package.com
 L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+
+[tests.did_change__remove_existing_package_header]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       source_file
+I       =============
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""

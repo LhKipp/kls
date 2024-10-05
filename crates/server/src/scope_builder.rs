@@ -105,16 +105,23 @@ impl<'a> ScopeBuilder<'a> {
     }
 
     pub fn delete_scope(&mut self, r: TextRange) {
-        debug!("deleting scope at {}", r);
         if let Some(scope) = self
             .s_file
             .scope_having_best_match(&|scope| scope.range == r)
         {
             debug!(
-                "deleting scope {} at {}",
-                self.s_file.scopes.get(scope).unwrap(),
+                "deleting scope {:?} at {}",
+                self.s_file.scopes.get(scope).unwrap().get().kind,
                 r
             );
+            if let Some(root_node_id) = self
+                .s_file
+                .root_nodes
+                .iter()
+                .position(|n| *n == scope)
+            {
+                self.s_file.root_nodes.remove(root_node_id);
+            }
             scope.remove_subtree(&mut self.s_file.scopes)
         } else {
             warn!("Got text-range to delete {r}, but found no single scope matching it")

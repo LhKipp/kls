@@ -27,7 +27,6 @@ type NewRange = TextRange;
 #[derive(Debug)]
 struct LspTextEdit {
     pub lsp_range: Range,
-    /// the
     pub byte_range_in_rope: TextRange,
     pub text: String,
     pub lsp_range_after_apply: Range,
@@ -35,7 +34,7 @@ struct LspTextEdit {
 
 #[derive(Debug)]
 struct ByteEditOffsets {
-    pub applies_after_byte: u32,
+    pub applies_at_byte_inclusive: u32,
     pub offset: i32,
 }
 
@@ -81,33 +80,23 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
     }
 
     fn edit_rope(&self, s_file: &mut GSFile) -> anyhow::Result<(Vec<ChangedRange>, Tree)> {
-        let mut delete_edit_ranges: Vec<OldRange> = Vec::with_capacity(0);
         let mut edit_offsets: Vec<ByteEditOffsets> =
             Vec::with_capacity(self.notification.content_changes.len());
 
         let mut i = 0usize;
         while let Some(edit) = &self.merged_content_changes(s_file, &mut i)? {
             trace!("applying merged_content_change: {:?}", edit);
-            if edit.text.is_empty() {
-                delete_edit_ranges.push(edit.byte_range_in_rope);
-            }
 
             // old_range : val myValue
             // new_range1: val myV          -> applies_after_byte = byte_of(`V`), offset = -4
             // new_range2: val myValueHere  -> applies_after_byte = byte_of(`e`), offset = 4
             edit_offsets.push(ByteEditOffsets {
-                applies_after_byte: std::cmp::min(
-                    edit.byte_range_in_rope.start + edit.text.len() as u32,
-                    edit.byte_range_in_rope.end,
-                ),
+                applies_at_byte_inclusive: edit.byte_range_in_rope.start,
                 offset: edit.text.len() as i32 - edit.byte_range_in_rope.len() as i32,
             });
 
-            // old_client_changed_ranges.push(byte_range_from_usize_range(&old_byte_range));
-
             let new_byte_range = edit.byte_range_in_rope.start
                 ..(edit.byte_range_in_rope.start + edit.text.len() as u32);
-            // new_client_changed_ranges.push(byte_range_from_usize_range(&new_byte_range));
 
             s_file
                 .text
@@ -149,20 +138,11 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
         for scope_node in s_file.scopes.iter_mut() {
             let scope = scope_node.get_mut();
             scope.range = Self::old_range_to_new_range(&edit_offsets, &scope.range)
-                .tap_dbg(|r| debug!("Setting scope.range {} to {}", scope.range, r));
-        }
-
-        // special case: when an edit completely removes a node, without adding other text, ts will
-        // not return it as a changed range
-        for deletion in delete_edit_ranges {
-            if changed_ranges.iter().any(|r| r.0.overlaps_with(deletion)) {
-                // deletion did not completely remove a node, so it is already covered for
-                continue;
+                .tap_dbg(|r| trace!("Setting scope.range {} to {}", scope.range, r));
+            if scope.range.is_empty() {
+                debug!("Scope at {} got deleted. Adding as to delete", scope.range);
+                changed_ranges.push(ChangedRange(scope.range, UpsertOrDelete::Delete));
             }
-            changed_ranges.push(ChangedRange(
-                Self::old_range_to_new_range(&edit_offsets, &deletion),
-                UpsertOrDelete::Delete,
-            ));
         }
 
         Ok((changed_ranges, new_ast))
@@ -179,38 +159,33 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
         );
         let mut new_range = *old_range;
         for edit_offset in edit_offsets {
-            if new_range.contains(edit_offset.applies_after_byte)
-            /*|| (new_range.is_empty() && edit_offset.applies_after_byte == new_range.start)*/
-            {
-                // update the end only. The start is not affected
-                let offset_adjusted = if edit_offset.offset < 0 {
-                    std::cmp::max(
-                        edit_offset.offset,
-                        -(new_range.end.strict_sub(edit_offset.applies_after_byte) as i32),
-                    )
-                } else {
-                    edit_offset.offset
-                };
+            if edit_offset.applies_at_byte_inclusive <= new_range.start {
+                // case 1: Edit is before the range
+                // case 2: Edit is before the range && in the range
+                // case 3: Edit is in the range
 
-                trace!(
-                    "new_range end {} += offset {}. TODO this will do the wrong",
-                    new_range.end,
-                    edit_offset.offset
-                );
-                new_range.end = new_range.end.strict_add_signed(offset_adjusted);
-            } else if edit_offset.applies_after_byte < new_range.start {
-                trace!(
-                    "new_range start {} += offset {}",
-                    new_range.start,
-                    edit_offset.offset
-                );
-                new_range.start = new_range.start.strict_add_signed(edit_offset.offset);
-                trace!(
-                    "new_range end {} += offset {}",
-                    new_range.end,
-                    edit_offset.offset
-                );
-                new_range.end = new_range.end.strict_add_signed(edit_offset.offset);
+                // Make sure that when edit is a delete, the start is at most moved to the edit start
+                let distance_to_start = edit_offset
+                    .applies_at_byte_inclusive
+                    .abs_diff(new_range.start);
+                if edit_offset.offset < 0 && edit_offset.offset.unsigned_abs() >= distance_to_start
+                {
+                    new_range.start = edit_offset.applies_at_byte_inclusive;
+                } else {
+                    new_range.start = new_range.start.strict_add_signed(edit_offset.offset);
+                }
+
+                // Same for the end
+                let distance_to_end = edit_offset
+                    .applies_at_byte_inclusive
+                    .abs_diff(new_range.end);
+                if edit_offset.offset < 0 && edit_offset.offset.unsigned_abs() >= distance_to_end {
+                    new_range.end = edit_offset.applies_at_byte_inclusive;
+                } else {
+                    new_range.end = new_range.end.strict_add_signed(edit_offset.offset);
+                }
+            } else {
+                // case 4: Edit is after the range => nothing to do
             }
         }
         trace!("Returning {:?} after as the new_range", new_range);
@@ -239,10 +214,8 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
                     prior_edit.byte_range_in_rope.end +=
                         lsp_range_byte_distance(&content_change_range_lsp);
                     prior_edit.text += &content_change.text;
-                    prior_edit.lsp_range_after_apply = lsp_range_apply_text_edit(
-                        &prior_edit.lsp_range,
-                        &prior_edit.text,
-                    );
+                    prior_edit.lsp_range_after_apply =
+                        lsp_range_apply_text_edit(&prior_edit.lsp_range, &prior_edit.text);
                     *i += 1
                 } else {
                     return Ok(edit);

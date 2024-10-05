@@ -46,4 +46,25 @@ async.describe("DidChangeNotification updates the scope", function()
         local scopes = client.print_scopes({ print_file_contents = true, print_ast = true, print_scopes = true })
         golden_spec:test(test_name):is_expected(scopes)
     end)
+
+    test_name = "did_change__remove_existing_package_header"
+    async.it(test_name, function()
+        local client = require "kserver".start(test_name,
+            {
+                files = {
+                    ["src/main/kotlin/example.kt"] = [[]],
+                }
+            }
+        )
+        vim.cmd.edit("src/main/kotlin/example.kt")
+        util.exec_keys("ggipackage mypackage.com<Esc>")
+        -- TODO, neovim is not sending the didChange notification without the write
+        vim.cmd.write()
+        util.exec_keys("ggdd<Esc>")
+        vim.cmd.write()
+
+        log.info("sending print scopes request")
+        local scopes = client.print_scopes({ print_file_contents = true, print_ast = true, print_scopes = true })
+        golden_spec:test(test_name):is_expected(scopes)
+    end)
 end)
