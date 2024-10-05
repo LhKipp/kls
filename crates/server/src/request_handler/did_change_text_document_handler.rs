@@ -33,9 +33,15 @@ struct LspTextEdit {
 }
 
 #[derive(Debug)]
-struct ByteEditOffsets {
-    pub applies_at_byte_inclusive: u32,
-    pub offset: i32,
+enum ByteEditOffsets {
+    Insert {
+        before_byte: u32,
+        shift_right: u32,
+    },
+    Deletion {
+        starting_at_byte: u32,
+        shift_left: u32,
+    },
 }
 
 impl<'a> DidChangeTextDocumentHandler<'a> {
@@ -90,10 +96,18 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
             // old_range : val myValue
             // new_range1: val myV          -> applies_after_byte = byte_of(`V`), offset = -4
             // new_range2: val myValueHere  -> applies_after_byte = byte_of(`e`), offset = 4
-            edit_offsets.push(ByteEditOffsets {
-                applies_at_byte_inclusive: edit.byte_range_in_rope.start,
-                offset: edit.text.len() as i32 - edit.byte_range_in_rope.len() as i32,
-            });
+            let offset = edit.text.len() as i32 - edit.byte_range_in_rope.len() as i32;
+            if offset < 0 {
+                edit_offsets.push(ByteEditOffsets::Deletion {
+                    starting_at_byte: edit.byte_range_in_rope.start,
+                    shift_left: offset.unsigned_abs(),
+                });
+            } else if offset > 0 {
+                edit_offsets.push(ByteEditOffsets::Insert {
+                    before_byte: edit.byte_range_in_rope.start,
+                    shift_right: offset.unsigned_abs(),
+                });
+            } // no need to handle offset == 0, as exact replacements do not change range bytes
 
             let new_byte_range = edit.byte_range_in_rope.start
                 ..(edit.byte_range_in_rope.start + edit.text.len() as u32);
@@ -159,33 +173,50 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
         );
         let mut new_range = *old_range;
         for edit_offset in edit_offsets {
-            if edit_offset.applies_at_byte_inclusive <= new_range.start {
-                // case 1: Edit is before the range
-                // case 2: Edit is before the range && in the range
-                // case 3: Edit is in the range
-
-                // Make sure that when edit is a delete, the start is at most moved to the edit start
-                let distance_to_start = edit_offset
-                    .applies_at_byte_inclusive
-                    .abs_diff(new_range.start);
-                if edit_offset.offset < 0 && edit_offset.offset.unsigned_abs() >= distance_to_start
-                {
-                    new_range.start = edit_offset.applies_at_byte_inclusive;
-                } else {
-                    new_range.start = new_range.start.strict_add_signed(edit_offset.offset);
+            trace!(
+                "Applying edit_offset {:?} to new_range {}",
+                edit_offset,
+                new_range
+            );
+            match edit_offset {
+                ByteEditOffsets::Insert {
+                    before_byte,
+                    shift_right,
+                } => {
+                    if new_range.start >= *before_byte {
+                        new_range = new_range.shift_right_by(*shift_right);
+                    } else if new_range.end > *before_byte {
+                        new_range.end += *shift_right;
+                    }
                 }
+                ByteEditOffsets::Deletion {
+                    starting_at_byte,
+                    shift_left,
+                } => {
+                    if *starting_at_byte <= new_range.start {
+                        // case 1: Edit is before the range
+                        // case 2: Edit is before the range && in the range
+                        // case 3: Edit is in the range
 
-                // Same for the end
-                let distance_to_end = edit_offset
-                    .applies_at_byte_inclusive
-                    .abs_diff(new_range.end);
-                if edit_offset.offset < 0 && edit_offset.offset.unsigned_abs() >= distance_to_end {
-                    new_range.end = edit_offset.applies_at_byte_inclusive;
-                } else {
-                    new_range.end = new_range.end.strict_add_signed(edit_offset.offset);
+                        // Make sure that when edit is a delete, the start is at most moved to the edit start
+                        let distance_to_start = starting_at_byte.abs_diff(new_range.start);
+                        if *shift_left >= distance_to_start {
+                            new_range.start = *starting_at_byte;
+                        } else {
+                            new_range.start = new_range.start.strict_sub(*shift_left);
+                        }
+
+                        // Same for the end
+                        let distance_to_end = starting_at_byte.abs_diff(new_range.end);
+                        if *shift_left >= distance_to_end {
+                            new_range.end = *starting_at_byte;
+                        } else {
+                            new_range.end = new_range.end.strict_sub(*shift_left);
+                        }
+                    } else {
+                        // case 4: Edit is after the range => nothing to do
+                    }
                 }
-            } else {
-                // case 4: Edit is after the range => nothing to do
             }
         }
         trace!("Returning {:?} after as the new_range", new_range);

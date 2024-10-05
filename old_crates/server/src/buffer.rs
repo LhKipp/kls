@@ -197,39 +197,6 @@ impl Buffer {
 
         changed_ranges
     }
-
-    // fn to_capped_byte_range(
-    //     &self,
-    //     range: &tower_lsp::lsp_types::Range,
-    //     new_text_len: usize,
-    // ) -> std::ops::Range<usize> {
-    //     if self.text.line_len() == 0 {
-    //         return 0..0;
-    //     }
-
-    //     let start_line = min(self.text.line_len(), range.start.line as usize);
-    //     let end_line = min(self.text.line_len(), (range.end.line + 1) as usize);
-
-    //     let lines = self.text.line_slice(start_line..end_line);
-    //     let end_line_ = lines.line(lines.line_len() - 1);
-
-    //     // let range_byte_count = lines.byte_len()
-    //     //     + 1 // + 1 ==> commented out -1
-    //     //     - (range.start.character as usize /*-1*/) // -1 to make start inclusive
-    //     //     + (- (end_line_.byte_len() as isize - range.end.character as isize)) as usize;
-
-    //     let mut start_byte = match start_line {
-    //         0 => 0,
-    //         1.. => self.text.line_slice(0..start_line).byte_len(),
-    //         _ => unreachable!(),
-    //     } + range.start.character as usize;
-
-    //     start_byte = min(self.text.byte_len(), start_byte);
-    //     let end_byte = min(self.text.byte_len(), start_byte + new_text_len);
-
-    //     start_byte..(end_byte) // don't know why -1
-    // }
-
     pub fn to_byte_position(&self, point: &tower_lsp::lsp_types::Position) -> usize {
         self.text.byte_of_line(point.line as usize) + point.character as usize
     }

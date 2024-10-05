@@ -42,9 +42,9 @@ impl<'a> ScopeBuilder<'a> {
 
         let Some(existing_scope_id) = self
             .s_file
-            .scope_having_best_match(&|scope| scope.range.contains_range(upsert_range))
+            .scope_having_best_match(&|scope| scope.range.overlaps_with(upsert_range))
         else {
-            self.insert_top_level_scope(tree, upsert_range);
+            self.insert_top_level_scopes(tree, upsert_range);
             return Ok(());
         };
 
@@ -54,14 +54,14 @@ impl<'a> ScopeBuilder<'a> {
         if upsert_range.contains_range(existing_scope.range) {
             // just delete and reinsert
             debug!("removing existing scope as it got completely replaced during update");
-            existing_scope_id.remove_subtree(&mut self.s_file.scopes);
-            self.insert_top_level_scope(tree, upsert_range);
+            self.s_file.delete_scope(existing_scope_id);
+            self.insert_top_level_scopes(tree, upsert_range);
             return Ok(());
         }
 
         // Update existing scope
 
-        let Some(ast_node) = Self::node_at(tree, existing_scope.range) else {
+        let Some(ast_node) = Self::node_at(tree, existing_scope.range.start) else {
             warn!(
                 "expected to update existing scope {:?}, but found no ast-node at {}",
                 existing_scope, existing_scope.range
@@ -77,30 +77,41 @@ impl<'a> ScopeBuilder<'a> {
         }
     }
 
-    pub fn node_at(tree: &tree_sitter::Tree, r: TextRange) -> Option<Node> {
+    pub fn node_at(tree: &tree_sitter::Tree, byte: u32) -> Option<Node> {
         let mut cursor = tree.walk();
-        let Some(_) = cursor.goto_first_child_for_byte(r.start as usize) else {
-            warn!(
-                "expected to find a child in the ast at {}, but found none",
-                r.start
-            );
+        let Some(_) = cursor.goto_first_child_for_byte(byte as usize) else {
+            warn!("expected to find a child in the ast at {byte}, but found none");
             return None;
         };
         Some(cursor.node())
     }
 
-    pub fn insert_top_level_scope(&mut self, tree: &Tree, r: TextRange) {
-        let Some(node) = Self::node_at(tree, r) else {
+    pub fn insert_top_level_scopes(&mut self, tree: &Tree, r: TextRange) {
+        let Some(node) = Self::node_at(tree, r.start) else {
             warn!("expected to insert a top level scope, but found no ast-node at {r}");
             return;
         };
 
-        debug!("inserting top level scope for range {r}");
-        let node_kind_id = node.kind_id();
-        if node_kind_id == *parser::PackageHeader {
-            package_header::insert_package_header(self, node);
-        } else {
-            warn!("Unhandled to insert node of kind {}", node.kind());
+        let mut cursor = node.walk();
+        loop {
+            debug!("inserting top level scope for range {r}");
+            let node_kind_id = cursor.node().kind_id();
+            if node_kind_id == *parser::PackageHeader {
+                package_header::insert_package_header(self, node);
+            } else {
+                warn!("Unhandled to insert node of kind {}", node.kind());
+            }
+
+            if !cursor.goto_next_sibling() {
+                debug!("No more ast nodes present. stopping to insert");
+                return;
+            }
+            if cursor.node().byte_range().start >= r.end as usize {
+                debug!(
+                    "Not inserting {} as the node is after the passed range to insert",
+                    cursor.node().kind_id()
+                );
+            }
         }
     }
 
@@ -114,15 +125,7 @@ impl<'a> ScopeBuilder<'a> {
                 self.s_file.scopes.get(scope).unwrap().get().kind,
                 r
             );
-            if let Some(root_node_id) = self
-                .s_file
-                .root_nodes
-                .iter()
-                .position(|n| *n == scope)
-            {
-                self.s_file.root_nodes.remove(root_node_id);
-            }
-            scope.remove_subtree(&mut self.s_file.scopes)
+            self.s_file.delete_scope(scope);
         } else {
             warn!("Got text-range to delete {r}, but found no single scope matching it")
         }

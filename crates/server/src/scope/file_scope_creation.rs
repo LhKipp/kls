@@ -8,6 +8,7 @@ use tokio::fs;
 use tracing::trace;
 
 use crate::project::{PProject, ProjectI};
+use crate::scope_builder::{ChangedRange, ScopeBuilder, UpsertOrDelete};
 
 use super::*;
 
@@ -58,20 +59,33 @@ pub async fn create_file_scope(
 ) -> anyhow::Result<NodeId> {
     debug!("Creating scope for file {}", file_path.display());
     let file_content = fs::read_to_string(&file_path).await?;
+    let file_content_len = file_content.len();
     let rope = Rope::from(file_content);
     let ast = parser::parse(&rope, None).unwrap_or_else(|| panic!("No tree for {}", rope));
 
     let s_file = GScope::new_arw(GSKind::File(GSFile::new(
         file_path.clone(),
         rope,
-        ast,
+        ast.clone(),
     )));
 
     let s_file_node_id = {
         let mut w_scopes = scopes.0.write();
-        source_set_node_id.append_value(s_file, &mut w_scopes.scopes)
+        source_set_node_id.append_value(s_file.clone(), &mut w_scopes.scopes)
     };
+    debug!(
+        "Created scope for file {}. Now building scopes within the file",
+        file_path.display()
+    );
 
-    debug!("Created scope for file {}", file_path.display());
+    ScopeBuilder::new(
+        s_file.write().kind.as_file_mut().unwrap(),
+        ChangedRange(
+            TextRange::new(0, file_content_len as u32),
+            UpsertOrDelete::Upsert,
+        ),
+    )
+    .update_scopes(&ast)?;
+
     Ok(s_file_node_id)
 }

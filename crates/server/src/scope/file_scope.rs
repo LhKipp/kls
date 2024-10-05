@@ -63,4 +63,11 @@ impl GSFile {
         let id = self.scopes.new_node(scope);
         self.root_nodes.push(id);
     }
+
+    pub fn delete_scope(&mut self, scope_id: NodeId) {
+        if let Some(root_node_id) = self.root_nodes.iter().position(|n| *n == scope_id) {
+            self.root_nodes.remove(root_node_id);
+        }
+        scope_id.remove_subtree(&mut self.scopes)
+    }
 }

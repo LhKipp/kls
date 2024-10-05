@@ -81,6 +81,12 @@ impl TextRange {
     pub fn is_empty(self) -> bool {
         self.start == self.end
     }
+    pub fn shift_right_by(self, offset: u32) -> TextRange {
+        let mut copy = self;
+        copy.start += offset;
+        copy.end += offset;
+        copy
+    }
 }
 
 impl std::fmt::Display for TextRange {
