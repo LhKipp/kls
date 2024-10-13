@@ -1,4 +1,5 @@
 use std::cell::RefCell;
+use stdx::TextRange;
 
 use anyhow::bail;
 use crop::Rope;

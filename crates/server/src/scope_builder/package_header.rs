@@ -1,4 +1,3 @@
-use crate::range_util::HasTextRange;
 use anyhow::{bail, ensure};
 use indextree::NodeId;
 use parser::node::PackageHeader;
@@ -10,20 +9,23 @@ use crate::scope::{SKind, Scope};
 
 use super::ScopeBuilder;
 
-pub(super) fn insert_package_header(self_: &mut ScopeBuilder<'_>, node: Node) {
+pub(super) fn create_package_header(
+    self_: &mut ScopeBuilder<'_>,
+    node: Node,
+) -> anyhow::Result<Option<Scope>> {
     debug!("inserting package header scope");
     let package_header_node = PackageHeader::new(node, &self_.s_file.text);
     let Some(ident) = package_header_node.find_identifier() else {
         debug!("not inserting package header, as it has no package identifier");
         // Don't insert empty package
-        return;
+        return Ok(None);
     };
     let text = ident.text();
 
-    self_.s_file.new_root_scope(Scope::new(
+    Ok(Some(Scope::new(
         SKind::PackageHeader { ident: text },
-        node.text_range(),
-    ))
+        node.byte_range().try_into().unwrap(),
+    )))
 }
 
 pub(super) fn update_package_header(
@@ -33,7 +35,7 @@ pub(super) fn update_package_header(
     node: &Node,
 ) -> anyhow::Result<()> {
     debug!("Updating package header");
-    if !node.kind_id() == *parser::PackageHeader {
+    if !node.kind_id() == *parser::node::PackageHeaderId {
         panic!("Node must be PackageHeader")
     }
 
@@ -44,7 +46,7 @@ pub(super) fn update_package_header(
     }
     if !cursor.goto_next_sibling() { // no Identifier
     }
-    if cursor.node().kind_id() == *parser::Identifier {
+    if cursor.node().kind_id() == *parser::node::IdentifierId {
         package_header_text = parser::text_of(&cursor.node(), &self_.s_file.text);
     }
 

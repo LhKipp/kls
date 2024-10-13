@@ -1,5 +1,6 @@
+use stdx::TextRange;
 use crop::Rope;
-use std::ops::Range;
+use std::ops::{Deref, DerefMut, Range};
 
 pub fn ts_range_to_text_range(range: tree_sitter::Range) -> TextRange {
     TextRange::new(range.start_byte as u32, range.end_byte as u32)
@@ -50,57 +51,3 @@ pub fn lsp_range_apply_text_edit(
     }
 }
 
-/////////// Range<u32> funcs ///////////
-
-#[derive(Clone, Copy, Debug, new, PartialEq, Eq)]
-pub struct TextRange {
-    pub start: u32,
-    pub end: u32, // exlusive
-}
-
-impl TextRange {
-    pub fn overlaps_with(self, b: TextRange) -> bool {
-        // x_start <= y_end && y_start <= x_end
-        self.start <= b.end && b.start <= self.end
-    }
-
-    pub fn contains(self, byte: u32) -> bool {
-        self.start <= byte && byte < self.end
-    }
-
-    pub fn contains_range(self, b: TextRange) -> bool {
-        self.start <= b.start && self.end >= b.end
-    }
-
-    pub fn as_usize_range(self) -> Range<usize> {
-        (self.start as usize)..(self.end as usize)
-    }
-    pub fn len(self) -> usize {
-        (self.end - self.start) as usize
-    }
-    pub fn is_empty(self) -> bool {
-        self.start == self.end
-    }
-    pub fn shift_right_by(self, offset: u32) -> TextRange {
-        let mut copy = self;
-        copy.start += offset;
-        copy.end += offset;
-        copy
-    }
-}
-
-impl std::fmt::Display for TextRange {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}..{}", self.start, self.end)
-    }
-}
-
-pub trait HasTextRange {
-    fn text_range(&self) -> TextRange;
-}
-
-impl HasTextRange for tree_sitter::Node<'_> {
-    fn text_range(&self) -> TextRange {
-        usize_range_to_text_range(&self.byte_range())
-    }
-}

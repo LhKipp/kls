@@ -1,5 +1,5 @@
 # Logs of the language server. Logs are written to /tmp/<test>/logs
-export RUST_LOG := env_var_or_default("RUST_LOG","trace,parser=info") 
+export RUST_LOG := env_var_or_default("RUST_LOG","trace,parser=trace") 
 # Logs of the test setup
 export KLS_TEST_LOG := env_var_or_default("KLS_TEST_LOG", "info")
 # Pass 1 to update golden files

@@ -1,5 +1,4 @@
 use crate::project::{PProject, ProjectI};
-use crate::range_util::TextRange;
 use anyhow::bail;
 use crop::Rope;
 use indextree::*;

@@ -4,7 +4,7 @@ use crate::{
     scope_builder::{ChangedRange, ScopeBuilder, UpsertOrDelete},
 };
 use crop::Rope;
-use stdx::{i32_as_u32, u32_as_i32};
+use stdx::TextRange;
 use tap::Tap;
 use tower_lsp::lsp_types::{DidChangeTextDocumentParams, Range};
 use tracing::{debug, info, instrument::WithSubscriber, trace};
@@ -114,7 +114,7 @@ impl<'a> DidChangeTextDocumentHandler<'a> {
 
             s_file
                 .text
-                .replace(edit.byte_range_in_rope.as_usize_range(), &edit.text);
+                .replace(edit.byte_range_in_rope.into_usize_range(), &edit.text);
             let new_end_point = ts_point_of(&s_file.text, new_byte_range.end as usize);
 
             s_file.ast.edit(&InputEdit {

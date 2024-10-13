@@ -1,0 +1,164 @@
+[tests.did_change__add_new_text_package_header]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package example.com
+I       =============
+I       source_file
+I         package_header (0, 0)-(0, 19) (package example.com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 19) (example.com)
+I             simple_identifier (0, 8)-(0, 15) (example)
+I             . (0, 15)-(0, 16) (.)
+I             simple_identifier (0, 16)-(0, 19) (com)
+I       =============
+I       (0..19) package example.com
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+[tests.did_change__change_text_ast]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package mypackage.com
+I       class B()
+I       source_file
+I         package_header (0, 0)-(0, 21) (package mypackage.com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 21) (mypackage.com)
+I             simple_identifier (0, 8)-(0, 17) (mypackage)
+I             . (0, 17)-(0, 18) (.)
+I             simple_identifier (0, 18)-(0, 21) (com)
+I         class_declaration (1, 0)-(1, 9) (class B())
+I           class (1, 0)-(1, 5) (class)
+I           type_identifier (1, 6)-(1, 7) (B)
+I           primary_constructor (1, 7)-(1, 9) (())
+I             ( (1, 7)-(1, 8) (()
+I             ) (1, 8)-(1, 9) ())
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+[tests.did_change__delete_text_ast]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package com
+I       class A()
+I       source_file
+I         package_header (0, 0)-(0, 11) (package com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 11) (com)
+I             simple_identifier (0, 8)-(0, 11) (com)
+I         class_declaration (1, 0)-(1, 9) (class A())
+I           class (1, 0)-(1, 5) (class)
+I           type_identifier (1, 6)-(1, 7) (A)
+I           primary_constructor (1, 7)-(1, 9) (())
+I             ( (1, 7)-(1, 8) (()
+I             ) (1, 8)-(1, 9) ())
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+
+[tests.did_change__replace_existing_package_header]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       package update2.package.com
+I                           =============
+I       source_file
+I         package_header (0, 0)-(0, 27) (package update2.package.com)
+I           package (0, 0)-(0, 7) (package)
+I           identifier (0, 8)-(0, 27) (update2.package.com)
+I             simple_identifier (0, 8)-(0, 15) (update2)
+I             . (0, 15)-(0, 16) (.)
+I             simple_identifier (0, 16)-(0, 23) (package)
+I             . (0, 23)-(0, 24) (.)
+I             simple_identifier (0, 24)-(0, 27) (com)
+I       =============
+I       (0..27) package update2.package.com
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+
+[tests.did_change__remove_existing_package_header]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       source_file
+I       =============
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+
+[tests.did_change__add_new_simple_function]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       fun myFun(myArg: Int): Int {
+I       \treturn myArg
+I       }
+I       =============
+I       source_file
+I         function_declaration (0, 0)-(2, 1) (fun myFun(myArg: Int): Int {
+I       \treturn myArg
+I       })
+I           fun (0, 0)-(0, 3) (fun)
+I           simple_identifier (0, 4)-(0, 9) (myFun)
+I           function_value_parameters (0, 9)-(0, 21) ((myArg: Int))
+I             ( (0, 9)-(0, 10) (()
+I             parameter (0, 10)-(0, 20) (myArg: Int)
+I               simple_identifier (0, 10)-(0, 15) (myArg)
+I               : (0, 15)-(0, 16) (:)
+I               user_type (0, 17)-(0, 20) (Int)
+I                 type_identifier (0, 17)-(0, 20) (Int)
+I             ) (0, 20)-(0, 21) ())
+I           : (0, 21)-(0, 22) (:)
+I           user_type (0, 23)-(0, 26) (Int)
+I             type_identifier (0, 23)-(0, 26) (Int)
+I           function_body (0, 27)-(2, 1) ({
+I       \treturn myArg
+I       })
+I             { (0, 27)-(0, 28) ({)
+I             statements (1, 1)-(1, 13) (return myArg)
+I               jump_expression (1, 1)-(1, 13) (return myArg)
+I                 return (1, 1)-(1, 7) (return)
+I                 simple_identifier (1, 8)-(1, 13) (myArg)
+I             } (2, 0)-(2, 1) (})
+I       =============
+I       (0..44) fn myFun(myArg: Int,) -> Int  {...}
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""
+
+[tests.did_change__update_existing_function]
+expected = """
+Project KLS Test
+I-- SourceSet kotlin
+|   L-- File (src/main/kotlin/example.kt)
+I       fun custom_fun(arg: Long): Long{
+I           return myArg
+I       }
+I                           =============
+I       source_file
+I         function_declaration (0, 0)-(2, 1) (fun custom_fun(arg: Long): Long{
+I           return myArg
+I       })
+I           fun (0, 0)-(0, 3) (fun)
+I           simple_identifier (0, 4)-(0, 14) (custom_fun)
+I           function_value_parameters (0, 14)-(0, 25) ((arg: Long))
+I             ( (0, 14)-(0, 15) (()
+I             parameter (0, 15)-(0, 24) (arg: Long)
+I               simple_identifier (0, 15)-(0, 18) (arg)
+I               : (0, 18)-(0, 19) (:)
+I               user_type (0, 20)-(0, 24) (Long)
+I                 type_identifier (0, 20)-(0, 24) (Long)
+I             ) (0, 24)-(0, 25) ())
+I           : (0, 25)-(0, 26) (:)
+I           user_type (0, 27)-(0, 31) (Long)
+I             type_identifier (0, 27)-(0, 31) (Long)
+I           function_body (0, 31)-(2, 1) ({
+I           return myArg
+I       })
+I             { (0, 31)-(0, 32) ({)
+I             statements (1, 4)-(1, 16) (return myArg)
+I               jump_expression (1, 4)-(1, 16) (return myArg)
+I                 return (1, 4)-(1, 10) (return)
+I                 simple_identifier (1, 11)-(1, 16) (myArg)
+I             } (2, 0)-(2, 1) (})
+I       =============
+I       (0..51) fn custom_fun(arg: Long,) -> Long  {...}
+L-- SourceSet test (includes Api \"kotlin\" (SourceSet))"""

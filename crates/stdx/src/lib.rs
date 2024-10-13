@@ -1,6 +1,15 @@
+#[macro_use]
+extern crate derive_new;
+
 use std::sync::Arc;
 
 use parking_lot::{Mutex, RwLock};
+
+mod text_range;
+mod with_tr;
+
+pub use text_range::TextRange;
+pub use with_tr::WithTR;
 
 pub type AMtx<T> = Arc<Mutex<T>>;
 pub fn new_arc_lock<T>(val: T) -> AMtx<T> {

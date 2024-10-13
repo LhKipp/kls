@@ -2,8 +2,8 @@ use serde::{Deserialize, Serialize};
 use tree_sitter::Node;
 
 use crate::kserver::KServer;
-use tracing::debug;
 use parser::*;
+use tracing::debug;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PrintScopesRequest {
@@ -99,7 +99,7 @@ impl Printable for ARwLock<GScope> {
                     if print_ast_options.print_ast {
                         let mut tree = "".to_string();
                         dfs_descend(&s_file.ast.root_node(), 0, &mut |node, depth| {
-                            if node.kind_id() == *parser::SourceFileId {
+                            if node.kind_id() == *parser::node::SourceFileId {
                                 tree += &format!("{}\n", node.kind());
                             } else {
                                 tree += &format!(
@@ -137,9 +137,12 @@ impl Printable for ARwLock<GScope> {
 
 impl Printable for Scope {
     fn print(&self, _: &PrintScopesRequest) -> String {
-        match &self.kind {
-            SKind::PackageHeader { ident } => format!("({}) package {}", self.range, ident),
-        }
+        let data = match &self.kind {
+            SKind::PackageHeader { ident } => format!("package {}", ident),
+            SKind::FunDecl(s_fun_decl) => format!("{}", s_fun_decl),
+        };
+
+        format!("({}) {}", self.range, data)
     }
 }
 

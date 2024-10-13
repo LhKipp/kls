@@ -2,11 +2,16 @@
 
 use crop::Rope;
 use tree_sitter::Node;
+use stdx::{TextRange, WithTR};
+use lazy_static::lazy_static;
 
 use crate::text_of;
 
 // for w/e reasons looking up the child by field_name doesn't work
 // so we filter on kind
+lazy_static!{
+    pub static ref AdditiveExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("additive_expression", true);
+}
 pub struct AdditiveExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
@@ -16,8 +21,17 @@ impl<'a> AdditiveExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -864,7 +878,10 @@ impl<'a> std::fmt::Debug for AdditiveExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct AnnotatedLambda<'a> {
+}lazy_static!{
+    pub static ref AnnotatedLambdaId: u16 = crate::LANGUAGE.id_for_node_kind("annotated_lambda", true);
+}
+pub struct AnnotatedLambda<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -873,8 +890,17 @@ impl<'a> AnnotatedLambda<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -944,7 +970,10 @@ impl<'a> std::fmt::Debug for AnnotatedLambda<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Annotation<'a> {
+}lazy_static!{
+    pub static ref AnnotationId: u16 = crate::LANGUAGE.id_for_node_kind("annotation", true);
+}
+pub struct Annotation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -953,8 +982,17 @@ impl<'a> Annotation<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_constructor_invocation(&self) -> Option<ConstructorInvocation> {
         let mut cursor = self.node.walk();
@@ -1024,7 +1062,10 @@ impl<'a> std::fmt::Debug for Annotation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct AnonymousFunction<'a> {
+}lazy_static!{
+    pub static ref AnonymousFunctionId: u16 = crate::LANGUAGE.id_for_node_kind("anonymous_function", true);
+}
+pub struct AnonymousFunction<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -1033,8 +1074,17 @@ impl<'a> AnonymousFunction<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
@@ -1251,7 +1301,10 @@ impl<'a> std::fmt::Debug for AnonymousFunction<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct AnonymousInitializer<'a> {
+}lazy_static!{
+    pub static ref AnonymousInitializerId: u16 = crate::LANGUAGE.id_for_node_kind("anonymous_initializer", true);
+}
+pub struct AnonymousInitializer<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -1260,8 +1313,17 @@ impl<'a> AnonymousInitializer<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
@@ -1289,7 +1351,10 @@ impl<'a> std::fmt::Debug for AnonymousInitializer<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct AsExpression<'a> {
+}lazy_static!{
+    pub static ref AsExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("as_expression", true);
+}
+pub struct AsExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -1298,8 +1363,17 @@ impl<'a> AsExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -2272,7 +2346,10 @@ impl<'a> std::fmt::Debug for AsExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Assignment<'a> {
+}lazy_static!{
+    pub static ref AssignmentId: u16 = crate::LANGUAGE.id_for_node_kind("assignment", true);
+}
+pub struct Assignment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -2281,8 +2358,17 @@ impl<'a> Assignment<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -3150,7 +3236,10 @@ impl<'a> std::fmt::Debug for Assignment<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct BindingPatternKind<'a> {
+}lazy_static!{
+    pub static ref BindingPatternKindId: u16 = crate::LANGUAGE.id_for_node_kind("binding_pattern_kind", true);
+}
+pub struct BindingPatternKind<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -3159,15 +3248,27 @@ impl<'a> BindingPatternKind<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for BindingPatternKind<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct BooleanLiteral<'a> {
+}lazy_static!{
+    pub static ref BooleanLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("boolean_literal", true);
+}
+pub struct BooleanLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -3176,15 +3277,27 @@ impl<'a> BooleanLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for BooleanLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CallExpression<'a> {
+}lazy_static!{
+    pub static ref CallExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("call_expression", true);
+}
+pub struct CallExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -3193,8 +3306,17 @@ impl<'a> CallExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -4062,7 +4184,10 @@ impl<'a> std::fmt::Debug for CallExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CallSuffix<'a> {
+}lazy_static!{
+    pub static ref CallSuffixId: u16 = crate::LANGUAGE.id_for_node_kind("call_suffix", true);
+}
+pub struct CallSuffix<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -4071,8 +4196,17 @@ impl<'a> CallSuffix<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotated_lambda(&self) -> Option<AnnotatedLambda> {
         let mut cursor = self.node.walk();
@@ -4142,7 +4276,10 @@ impl<'a> std::fmt::Debug for CallSuffix<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CallableReference<'a> {
+}lazy_static!{
+    pub static ref CallableReferenceId: u16 = crate::LANGUAGE.id_for_node_kind("callable_reference", true);
+}
+pub struct CallableReference<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -4151,8 +4288,17 @@ impl<'a> CallableReference<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
@@ -4201,7 +4347,10 @@ impl<'a> std::fmt::Debug for CallableReference<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CatchBlock<'a> {
+}lazy_static!{
+    pub static ref CatchBlockId: u16 = crate::LANGUAGE.id_for_node_kind("catch_block", true);
+}
+pub struct CatchBlock<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -4210,8 +4359,17 @@ impl<'a> CatchBlock<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -4407,7 +4565,10 @@ impl<'a> std::fmt::Debug for CatchBlock<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CharacterEscapeSeq<'a> {
+}lazy_static!{
+    pub static ref CharacterEscapeSeqId: u16 = crate::LANGUAGE.id_for_node_kind("character_escape_seq", true);
+}
+pub struct CharacterEscapeSeq<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -4416,15 +4577,27 @@ impl<'a> CharacterEscapeSeq<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for CharacterEscapeSeq<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CharacterLiteral<'a> {
+}lazy_static!{
+    pub static ref CharacterLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("character_literal", true);
+}
+pub struct CharacterLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -4433,8 +4606,17 @@ impl<'a> CharacterLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_character_escape_seq(&self) -> Option<CharacterEscapeSeq> {
         let mut cursor = self.node.walk();
@@ -4462,7 +4644,10 @@ impl<'a> std::fmt::Debug for CharacterLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CheckExpression<'a> {
+}lazy_static!{
+    pub static ref CheckExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("check_expression", true);
+}
+pub struct CheckExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -4471,8 +4656,17 @@ impl<'a> CheckExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -5445,7 +5639,10 @@ impl<'a> std::fmt::Debug for CheckExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ClassBody<'a> {
+}lazy_static!{
+    pub static ref ClassBodyId: u16 = crate::LANGUAGE.id_for_node_kind("class_body", true);
+}
+pub struct ClassBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -5454,8 +5651,17 @@ impl<'a> ClassBody<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_anonymous_initializer(&self) -> Option<AnonymousInitializer> {
         let mut cursor = self.node.walk();
@@ -5672,7 +5878,10 @@ impl<'a> std::fmt::Debug for ClassBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ClassDeclaration<'a> {
+}lazy_static!{
+    pub static ref ClassDeclarationId: u16 = crate::LANGUAGE.id_for_node_kind("class_declaration", true);
+}
+pub struct ClassDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -5681,8 +5890,17 @@ impl<'a> ClassDeclaration<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
@@ -5857,7 +6075,10 @@ impl<'a> std::fmt::Debug for ClassDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ClassModifier<'a> {
+}lazy_static!{
+    pub static ref ClassModifierId: u16 = crate::LANGUAGE.id_for_node_kind("class_modifier", true);
+}
+pub struct ClassModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -5866,15 +6087,27 @@ impl<'a> ClassModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for ClassModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ClassParameter<'a> {
+}lazy_static!{
+    pub static ref ClassParameterId: u16 = crate::LANGUAGE.id_for_node_kind("class_parameter", true);
+}
+pub struct ClassParameter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -5883,8 +6116,17 @@ impl<'a> ClassParameter<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -6899,7 +7141,10 @@ impl<'a> std::fmt::Debug for ClassParameter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CollectionLiteral<'a> {
+}lazy_static!{
+    pub static ref CollectionLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("collection_literal", true);
+}
+pub struct CollectionLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -6908,8 +7153,17 @@ impl<'a> CollectionLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -7756,7 +8010,10 @@ impl<'a> std::fmt::Debug for CollectionLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct CompanionObject<'a> {
+}lazy_static!{
+    pub static ref CompanionObjectId: u16 = crate::LANGUAGE.id_for_node_kind("companion_object", true);
+}
+pub struct CompanionObject<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -7765,8 +8022,17 @@ impl<'a> CompanionObject<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
@@ -7857,7 +8123,10 @@ impl<'a> std::fmt::Debug for CompanionObject<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ComparisonExpression<'a> {
+}lazy_static!{
+    pub static ref ComparisonExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("comparison_expression", true);
+}
+pub struct ComparisonExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -7866,8 +8135,17 @@ impl<'a> ComparisonExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -8714,7 +8992,10 @@ impl<'a> std::fmt::Debug for ComparisonExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ConjunctionExpression<'a> {
+}lazy_static!{
+    pub static ref ConjunctionExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("conjunction_expression", true);
+}
+pub struct ConjunctionExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -8723,8 +9004,17 @@ impl<'a> ConjunctionExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -9571,7 +9861,10 @@ impl<'a> std::fmt::Debug for ConjunctionExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ConstructorDelegationCall<'a> {
+}lazy_static!{
+    pub static ref ConstructorDelegationCallId: u16 = crate::LANGUAGE.id_for_node_kind("constructor_delegation_call", true);
+}
+pub struct ConstructorDelegationCall<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -9580,8 +9873,17 @@ impl<'a> ConstructorDelegationCall<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_value_arguments(&self) -> Option<ValueArguments> {
         let mut cursor = self.node.walk();
@@ -9609,7 +9911,10 @@ impl<'a> std::fmt::Debug for ConstructorDelegationCall<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ConstructorInvocation<'a> {
+}lazy_static!{
+    pub static ref ConstructorInvocationId: u16 = crate::LANGUAGE.id_for_node_kind("constructor_invocation", true);
+}
+pub struct ConstructorInvocation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -9618,8 +9923,17 @@ impl<'a> ConstructorInvocation<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_user_type(&self) -> Option<UserType> {
         let mut cursor = self.node.walk();
@@ -9668,7 +9982,10 @@ impl<'a> std::fmt::Debug for ConstructorInvocation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ControlStructureBody<'a> {
+}lazy_static!{
+    pub static ref ControlStructureBodyId: u16 = crate::LANGUAGE.id_for_node_kind("control_structure_body", true);
+}
+pub struct ControlStructureBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -9677,8 +9994,17 @@ impl<'a> ControlStructureBody<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -10819,7 +11145,10 @@ impl<'a> std::fmt::Debug for ControlStructureBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct DelegationSpecifier<'a> {
+}lazy_static!{
+    pub static ref DelegationSpecifierId: u16 = crate::LANGUAGE.id_for_node_kind("delegation_specifier", true);
+}
+pub struct DelegationSpecifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -10828,8 +11157,17 @@ impl<'a> DelegationSpecifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_constructor_invocation(&self) -> Option<ConstructorInvocation> {
         let mut cursor = self.node.walk();
@@ -10920,7 +11258,10 @@ impl<'a> std::fmt::Debug for DelegationSpecifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct DirectlyAssignableExpression<'a> {
+}lazy_static!{
+    pub static ref DirectlyAssignableExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("directly_assignable_expression", true);
+}
+pub struct DirectlyAssignableExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -10929,8 +11270,17 @@ impl<'a> DirectlyAssignableExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_anonymous_function(&self) -> Option<AnonymousFunction> {
         let mut cursor = self.node.walk();
@@ -11462,7 +11812,10 @@ impl<'a> std::fmt::Debug for DirectlyAssignableExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct DisjunctionExpression<'a> {
+}lazy_static!{
+    pub static ref DisjunctionExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("disjunction_expression", true);
+}
+pub struct DisjunctionExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -11471,8 +11824,17 @@ impl<'a> DisjunctionExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -12319,7 +12681,10 @@ impl<'a> std::fmt::Debug for DisjunctionExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct DoWhileStatement<'a> {
+}lazy_static!{
+    pub static ref DoWhileStatementId: u16 = crate::LANGUAGE.id_for_node_kind("do_while_statement", true);
+}
+pub struct DoWhileStatement<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -12328,8 +12693,17 @@ impl<'a> DoWhileStatement<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -13197,7 +13571,10 @@ impl<'a> std::fmt::Debug for DoWhileStatement<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ElvisExpression<'a> {
+}lazy_static!{
+    pub static ref ElvisExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("elvis_expression", true);
+}
+pub struct ElvisExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -13206,8 +13583,17 @@ impl<'a> ElvisExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -14054,7 +14440,10 @@ impl<'a> std::fmt::Debug for ElvisExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct EnumClassBody<'a> {
+}lazy_static!{
+    pub static ref EnumClassBodyId: u16 = crate::LANGUAGE.id_for_node_kind("enum_class_body", true);
+}
+pub struct EnumClassBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -14063,8 +14452,17 @@ impl<'a> EnumClassBody<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_anonymous_initializer(&self) -> Option<AnonymousInitializer> {
         let mut cursor = self.node.walk();
@@ -14302,7 +14700,10 @@ impl<'a> std::fmt::Debug for EnumClassBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct EnumEntry<'a> {
+}lazy_static!{
+    pub static ref EnumEntryId: u16 = crate::LANGUAGE.id_for_node_kind("enum_entry", true);
+}
+pub struct EnumEntry<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -14311,8 +14712,17 @@ impl<'a> EnumEntry<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
@@ -14403,7 +14813,10 @@ impl<'a> std::fmt::Debug for EnumEntry<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct EqualityExpression<'a> {
+}lazy_static!{
+    pub static ref EqualityExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("equality_expression", true);
+}
+pub struct EqualityExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -14412,8 +14825,17 @@ impl<'a> EqualityExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -15260,7 +15682,10 @@ impl<'a> std::fmt::Debug for EqualityExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ExplicitDelegation<'a> {
+}lazy_static!{
+    pub static ref ExplicitDelegationId: u16 = crate::LANGUAGE.id_for_node_kind("explicit_delegation", true);
+}
+pub struct ExplicitDelegation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -15269,8 +15694,17 @@ impl<'a> ExplicitDelegation<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -16159,7 +16593,10 @@ impl<'a> std::fmt::Debug for ExplicitDelegation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FileAnnotation<'a> {
+}lazy_static!{
+    pub static ref FileAnnotationId: u16 = crate::LANGUAGE.id_for_node_kind("file_annotation", true);
+}
+pub struct FileAnnotation<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -16168,8 +16605,17 @@ impl<'a> FileAnnotation<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_constructor_invocation(&self) -> Option<ConstructorInvocation> {
         let mut cursor = self.node.walk();
@@ -16218,7 +16664,10 @@ impl<'a> std::fmt::Debug for FileAnnotation<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FinallyBlock<'a> {
+}lazy_static!{
+    pub static ref FinallyBlockId: u16 = crate::LANGUAGE.id_for_node_kind("finally_block", true);
+}
+pub struct FinallyBlock<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -16227,8 +16676,17 @@ impl<'a> FinallyBlock<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_statements(&self) -> Option<Statements> {
         let mut cursor = self.node.walk();
@@ -16256,7 +16714,10 @@ impl<'a> std::fmt::Debug for FinallyBlock<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ForStatement<'a> {
+}lazy_static!{
+    pub static ref ForStatementId: u16 = crate::LANGUAGE.id_for_node_kind("for_statement", true);
+}
+pub struct ForStatement<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -16265,8 +16726,17 @@ impl<'a> ForStatement<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -17197,7 +17667,10 @@ impl<'a> std::fmt::Debug for ForStatement<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FunctionBody<'a> {
+}lazy_static!{
+    pub static ref FunctionBodyId: u16 = crate::LANGUAGE.id_for_node_kind("function_body", true);
+}
+pub struct FunctionBody<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -17206,8 +17679,17 @@ impl<'a> FunctionBody<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -18075,7 +18557,10 @@ impl<'a> std::fmt::Debug for FunctionBody<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FunctionDeclaration<'a> {
+}lazy_static!{
+    pub static ref FunctionDeclarationId: u16 = crate::LANGUAGE.id_for_node_kind("function_declaration", true);
+}
+pub struct FunctionDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -18084,8 +18569,17 @@ impl<'a> FunctionDeclaration<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
@@ -18344,7 +18838,10 @@ impl<'a> std::fmt::Debug for FunctionDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FunctionModifier<'a> {
+}lazy_static!{
+    pub static ref FunctionModifierId: u16 = crate::LANGUAGE.id_for_node_kind("function_modifier", true);
+}
+pub struct FunctionModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -18353,15 +18850,27 @@ impl<'a> FunctionModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for FunctionModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FunctionType<'a> {
+}lazy_static!{
+    pub static ref FunctionTypeId: u16 = crate::LANGUAGE.id_for_node_kind("function_type", true);
+}
+pub struct FunctionType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -18370,8 +18879,17 @@ impl<'a> FunctionType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -18567,7 +19085,10 @@ impl<'a> std::fmt::Debug for FunctionType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FunctionTypeParameters<'a> {
+}lazy_static!{
+    pub static ref FunctionTypeParametersId: u16 = crate::LANGUAGE.id_for_node_kind("function_type_parameters", true);
+}
+pub struct FunctionTypeParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -18576,8 +19097,17 @@ impl<'a> FunctionTypeParameters<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -18731,7 +19261,10 @@ impl<'a> std::fmt::Debug for FunctionTypeParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct FunctionValueParameters<'a> {
+}lazy_static!{
+    pub static ref FunctionValueParametersId: u16 = crate::LANGUAGE.id_for_node_kind("function_value_parameters", true);
+}
+pub struct FunctionValueParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -18740,8 +19273,17 @@ impl<'a> FunctionValueParameters<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -19630,7 +20172,10 @@ impl<'a> std::fmt::Debug for FunctionValueParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Getter<'a> {
+}lazy_static!{
+    pub static ref GetterId: u16 = crate::LANGUAGE.id_for_node_kind("getter", true);
+}
+pub struct Getter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -19639,8 +20184,17 @@ impl<'a> Getter<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
@@ -19815,7 +20369,10 @@ impl<'a> std::fmt::Debug for Getter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Identifier<'a> {
+}lazy_static!{
+    pub static ref IdentifierId: u16 = crate::LANGUAGE.id_for_node_kind("identifier", true);
+}
+pub struct Identifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -19824,8 +20381,17 @@ impl<'a> Identifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_simple_identifier(&self) -> Option<SimpleIdentifier> {
         let mut cursor = self.node.walk();
@@ -19853,7 +20419,10 @@ impl<'a> std::fmt::Debug for Identifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct IfExpression<'a> {
+}lazy_static!{
+    pub static ref IfExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("if_expression", true);
+}
+pub struct IfExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -19862,15 +20431,27 @@ impl<'a> IfExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for IfExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ImportAlias<'a> {
+}lazy_static!{
+    pub static ref ImportAliasId: u16 = crate::LANGUAGE.id_for_node_kind("import_alias", true);
+}
+pub struct ImportAlias<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -19879,8 +20460,17 @@ impl<'a> ImportAlias<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
@@ -19908,7 +20498,10 @@ impl<'a> std::fmt::Debug for ImportAlias<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ImportHeader<'a> {
+}lazy_static!{
+    pub static ref ImportHeaderId: u16 = crate::LANGUAGE.id_for_node_kind("import_header", true);
+}
+pub struct ImportHeader<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -19917,8 +20510,17 @@ impl<'a> ImportHeader<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_identifier(&self) -> Option<Identifier> {
         let mut cursor = self.node.walk();
@@ -19988,7 +20590,10 @@ impl<'a> std::fmt::Debug for ImportHeader<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ImportList<'a> {
+}lazy_static!{
+    pub static ref ImportListId: u16 = crate::LANGUAGE.id_for_node_kind("import_list", true);
+}
+pub struct ImportList<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -19997,8 +20602,17 @@ impl<'a> ImportList<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_import_header(&self) -> Option<ImportHeader> {
         let mut cursor = self.node.walk();
@@ -20026,7 +20640,10 @@ impl<'a> std::fmt::Debug for ImportList<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct IndexingExpression<'a> {
+}lazy_static!{
+    pub static ref IndexingExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("indexing_expression", true);
+}
+pub struct IndexingExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -20035,8 +20652,17 @@ impl<'a> IndexingExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -20904,7 +21530,10 @@ impl<'a> std::fmt::Debug for IndexingExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct IndexingSuffix<'a> {
+}lazy_static!{
+    pub static ref IndexingSuffixId: u16 = crate::LANGUAGE.id_for_node_kind("indexing_suffix", true);
+}
+pub struct IndexingSuffix<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -20913,8 +21542,17 @@ impl<'a> IndexingSuffix<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -21761,7 +22399,10 @@ impl<'a> std::fmt::Debug for IndexingSuffix<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct InfixExpression<'a> {
+}lazy_static!{
+    pub static ref InfixExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("infix_expression", true);
+}
+pub struct InfixExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -21770,8 +22411,17 @@ impl<'a> InfixExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -22618,7 +23268,10 @@ impl<'a> std::fmt::Debug for InfixExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct InheritanceModifier<'a> {
+}lazy_static!{
+    pub static ref InheritanceModifierId: u16 = crate::LANGUAGE.id_for_node_kind("inheritance_modifier", true);
+}
+pub struct InheritanceModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -22627,15 +23280,27 @@ impl<'a> InheritanceModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for InheritanceModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct InterpolatedExpression<'a> {
+}lazy_static!{
+    pub static ref InterpolatedExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("interpolated_expression", true);
+}
+pub struct InterpolatedExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -22644,8 +23309,17 @@ impl<'a> InterpolatedExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -23492,7 +24166,10 @@ impl<'a> std::fmt::Debug for InterpolatedExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct InterpolatedIdentifier<'a> {
+}lazy_static!{
+    pub static ref InterpolatedIdentifierId: u16 = crate::LANGUAGE.id_for_node_kind("interpolated_identifier", true);
+}
+pub struct InterpolatedIdentifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -23501,15 +24178,27 @@ impl<'a> InterpolatedIdentifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for InterpolatedIdentifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct JumpExpression<'a> {
+}lazy_static!{
+    pub static ref JumpExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("jump_expression", true);
+}
+pub struct JumpExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -23518,8 +24207,17 @@ impl<'a> JumpExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -24387,7 +25085,10 @@ impl<'a> std::fmt::Debug for JumpExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Label<'a> {
+}lazy_static!{
+    pub static ref LabelId: u16 = crate::LANGUAGE.id_for_node_kind("label", true);
+}
+pub struct Label<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24396,15 +25097,27 @@ impl<'a> Label<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for Label<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct LambdaLiteral<'a> {
+}lazy_static!{
+    pub static ref LambdaLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("lambda_literal", true);
+}
+pub struct LambdaLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24413,8 +25126,17 @@ impl<'a> LambdaLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_lambda_parameters(&self) -> Option<LambdaParameters> {
         let mut cursor = self.node.walk();
@@ -24463,7 +25185,10 @@ impl<'a> std::fmt::Debug for LambdaLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct LambdaParameters<'a> {
+}lazy_static!{
+    pub static ref LambdaParametersId: u16 = crate::LANGUAGE.id_for_node_kind("lambda_parameters", true);
+}
+pub struct LambdaParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24472,8 +25197,17 @@ impl<'a> LambdaParameters<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_multi_variable_declaration(&self) -> Option<MultiVariableDeclaration> {
         let mut cursor = self.node.walk();
@@ -24522,7 +25256,10 @@ impl<'a> std::fmt::Debug for LambdaParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct LongLiteral<'a> {
+}lazy_static!{
+    pub static ref LongLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("long_literal", true);
+}
+pub struct LongLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24531,8 +25268,17 @@ impl<'a> LongLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
@@ -24602,7 +25348,10 @@ impl<'a> std::fmt::Debug for LongLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct MemberModifier<'a> {
+}lazy_static!{
+    pub static ref MemberModifierId: u16 = crate::LANGUAGE.id_for_node_kind("member_modifier", true);
+}
+pub struct MemberModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24611,15 +25360,27 @@ impl<'a> MemberModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for MemberModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Modifiers<'a> {
+}lazy_static!{
+    pub static ref ModifiersId: u16 = crate::LANGUAGE.id_for_node_kind("modifiers", true);
+}
+pub struct Modifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24628,8 +25389,17 @@ impl<'a> Modifiers<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -24825,7 +25595,10 @@ impl<'a> std::fmt::Debug for Modifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct MultiVariableDeclaration<'a> {
+}lazy_static!{
+    pub static ref MultiVariableDeclarationId: u16 = crate::LANGUAGE.id_for_node_kind("multi_variable_declaration", true);
+}
+pub struct MultiVariableDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24834,8 +25607,17 @@ impl<'a> MultiVariableDeclaration<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_variable_declaration(&self) -> Option<VariableDeclaration> {
         let mut cursor = self.node.walk();
@@ -24863,7 +25645,10 @@ impl<'a> std::fmt::Debug for MultiVariableDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct MultiplicativeExpression<'a> {
+}lazy_static!{
+    pub static ref MultiplicativeExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("multiplicative_expression", true);
+}
+pub struct MultiplicativeExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -24872,8 +25657,17 @@ impl<'a> MultiplicativeExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -25720,7 +26514,10 @@ impl<'a> std::fmt::Debug for MultiplicativeExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct NavigationExpression<'a> {
+}lazy_static!{
+    pub static ref NavigationExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("navigation_expression", true);
+}
+pub struct NavigationExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -25729,8 +26526,17 @@ impl<'a> NavigationExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -26598,7 +27404,10 @@ impl<'a> std::fmt::Debug for NavigationExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct NavigationSuffix<'a> {
+}lazy_static!{
+    pub static ref NavigationSuffixId: u16 = crate::LANGUAGE.id_for_node_kind("navigation_suffix", true);
+}
+pub struct NavigationSuffix<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -26607,8 +27416,17 @@ impl<'a> NavigationSuffix<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_parenthesized_expression(&self) -> Option<ParenthesizedExpression> {
         let mut cursor = self.node.walk();
@@ -26657,7 +27475,10 @@ impl<'a> std::fmt::Debug for NavigationSuffix<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct NotNullableType<'a> {
+}lazy_static!{
+    pub static ref NotNullableTypeId: u16 = crate::LANGUAGE.id_for_node_kind("not_nullable_type", true);
+}
+pub struct NotNullableType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -26666,8 +27487,17 @@ impl<'a> NotNullableType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_parenthesized_user_type(&self) -> Option<ParenthesizedUserType> {
         let mut cursor = self.node.walk();
@@ -26737,7 +27567,10 @@ impl<'a> std::fmt::Debug for NotNullableType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct NullableType<'a> {
+}lazy_static!{
+    pub static ref NullableTypeId: u16 = crate::LANGUAGE.id_for_node_kind("nullable_type", true);
+}
+pub struct NullableType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -26746,8 +27579,17 @@ impl<'a> NullableType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_parenthesized_type(&self) -> Option<ParenthesizedType> {
         let mut cursor = self.node.walk();
@@ -26796,7 +27638,10 @@ impl<'a> std::fmt::Debug for NullableType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ObjectDeclaration<'a> {
+}lazy_static!{
+    pub static ref ObjectDeclarationId: u16 = crate::LANGUAGE.id_for_node_kind("object_declaration", true);
+}
+pub struct ObjectDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -26805,8 +27650,17 @@ impl<'a> ObjectDeclaration<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
@@ -26897,7 +27751,10 @@ impl<'a> std::fmt::Debug for ObjectDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ObjectLiteral<'a> {
+}lazy_static!{
+    pub static ref ObjectLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("object_literal", true);
+}
+pub struct ObjectLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -26906,8 +27763,17 @@ impl<'a> ObjectLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_class_body(&self) -> Option<ClassBody> {
         let mut cursor = self.node.walk();
@@ -26956,7 +27822,10 @@ impl<'a> std::fmt::Debug for ObjectLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PackageHeader<'a> {
+}lazy_static!{
+    pub static ref PackageHeaderId: u16 = crate::LANGUAGE.id_for_node_kind("package_header", true);
+}
+pub struct PackageHeader<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -26965,8 +27834,17 @@ impl<'a> PackageHeader<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_identifier(&self) -> Option<Identifier> {
         let mut cursor = self.node.walk();
@@ -26994,7 +27872,10 @@ impl<'a> std::fmt::Debug for PackageHeader<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Parameter<'a> {
+}lazy_static!{
+    pub static ref ParameterId: u16 = crate::LANGUAGE.id_for_node_kind("parameter", true);
+}
+pub struct Parameter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -27003,8 +27884,17 @@ impl<'a> Parameter<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -27158,7 +28048,10 @@ impl<'a> std::fmt::Debug for Parameter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ParameterModifier<'a> {
+}lazy_static!{
+    pub static ref ParameterModifierId: u16 = crate::LANGUAGE.id_for_node_kind("parameter_modifier", true);
+}
+pub struct ParameterModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -27167,15 +28060,27 @@ impl<'a> ParameterModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for ParameterModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ParameterModifiers<'a> {
+}lazy_static!{
+    pub static ref ParameterModifiersId: u16 = crate::LANGUAGE.id_for_node_kind("parameter_modifiers", true);
+}
+pub struct ParameterModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -27184,8 +28089,17 @@ impl<'a> ParameterModifiers<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -27234,7 +28148,10 @@ impl<'a> std::fmt::Debug for ParameterModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ParameterWithOptionalType<'a> {
+}lazy_static!{
+    pub static ref ParameterWithOptionalTypeId: u16 = crate::LANGUAGE.id_for_node_kind("parameter_with_optional_type", true);
+}
+pub struct ParameterWithOptionalType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -27243,8 +28160,17 @@ impl<'a> ParameterWithOptionalType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -27419,7 +28345,10 @@ impl<'a> std::fmt::Debug for ParameterWithOptionalType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ParenthesizedExpression<'a> {
+}lazy_static!{
+    pub static ref ParenthesizedExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("parenthesized_expression", true);
+}
+pub struct ParenthesizedExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -27428,8 +28357,17 @@ impl<'a> ParenthesizedExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -28276,7 +29214,10 @@ impl<'a> std::fmt::Debug for ParenthesizedExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ParenthesizedType<'a> {
+}lazy_static!{
+    pub static ref ParenthesizedTypeId: u16 = crate::LANGUAGE.id_for_node_kind("parenthesized_type", true);
+}
+pub struct ParenthesizedType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -28285,8 +29226,17 @@ impl<'a> ParenthesizedType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -28419,7 +29369,10 @@ impl<'a> std::fmt::Debug for ParenthesizedType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ParenthesizedUserType<'a> {
+}lazy_static!{
+    pub static ref ParenthesizedUserTypeId: u16 = crate::LANGUAGE.id_for_node_kind("parenthesized_user_type", true);
+}
+pub struct ParenthesizedUserType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -28428,8 +29381,17 @@ impl<'a> ParenthesizedUserType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_parenthesized_user_type(&self) -> Option<ParenthesizedUserType> {
         let mut cursor = self.node.walk();
@@ -28478,7 +29440,10 @@ impl<'a> std::fmt::Debug for ParenthesizedUserType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PlatformModifier<'a> {
+}lazy_static!{
+    pub static ref PlatformModifierId: u16 = crate::LANGUAGE.id_for_node_kind("platform_modifier", true);
+}
+pub struct PlatformModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -28487,15 +29452,27 @@ impl<'a> PlatformModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for PlatformModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PostfixExpression<'a> {
+}lazy_static!{
+    pub static ref PostfixExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("postfix_expression", true);
+}
+pub struct PostfixExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -28504,8 +29481,17 @@ impl<'a> PostfixExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -29352,7 +30338,10 @@ impl<'a> std::fmt::Debug for PostfixExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PrefixExpression<'a> {
+}lazy_static!{
+    pub static ref PrefixExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("prefix_expression", true);
+}
+pub struct PrefixExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -29361,8 +30350,17 @@ impl<'a> PrefixExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -30251,7 +31249,10 @@ impl<'a> std::fmt::Debug for PrefixExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PrimaryConstructor<'a> {
+}lazy_static!{
+    pub static ref PrimaryConstructorId: u16 = crate::LANGUAGE.id_for_node_kind("primary_constructor", true);
+}
+pub struct PrimaryConstructor<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -30260,8 +31261,17 @@ impl<'a> PrimaryConstructor<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_class_parameter(&self) -> Option<ClassParameter> {
         let mut cursor = self.node.walk();
@@ -30310,7 +31320,10 @@ impl<'a> std::fmt::Debug for PrimaryConstructor<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PropertyDeclaration<'a> {
+}lazy_static!{
+    pub static ref PropertyDeclarationId: u16 = crate::LANGUAGE.id_for_node_kind("property_declaration", true);
+}
+pub struct PropertyDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -30319,8 +31332,17 @@ impl<'a> PropertyDeclaration<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -31440,7 +32462,10 @@ impl<'a> std::fmt::Debug for PropertyDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PropertyDelegate<'a> {
+}lazy_static!{
+    pub static ref PropertyDelegateId: u16 = crate::LANGUAGE.id_for_node_kind("property_delegate", true);
+}
+pub struct PropertyDelegate<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -31449,8 +32474,17 @@ impl<'a> PropertyDelegate<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -32297,7 +33331,10 @@ impl<'a> std::fmt::Debug for PropertyDelegate<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct RangeExpression<'a> {
+}lazy_static!{
+    pub static ref RangeExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("range_expression", true);
+}
+pub struct RangeExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -32306,8 +33343,17 @@ impl<'a> RangeExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -33154,7 +34200,10 @@ impl<'a> std::fmt::Debug for RangeExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct RangeTest<'a> {
+}lazy_static!{
+    pub static ref RangeTestId: u16 = crate::LANGUAGE.id_for_node_kind("range_test", true);
+}
+pub struct RangeTest<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -33163,8 +34212,17 @@ impl<'a> RangeTest<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -34011,7 +35069,10 @@ impl<'a> std::fmt::Debug for RangeTest<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct SecondaryConstructor<'a> {
+}lazy_static!{
+    pub static ref SecondaryConstructorId: u16 = crate::LANGUAGE.id_for_node_kind("secondary_constructor", true);
+}
+pub struct SecondaryConstructor<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -34020,8 +35081,17 @@ impl<'a> SecondaryConstructor<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_constructor_delegation_call(&self) -> Option<ConstructorDelegationCall> {
         let mut cursor = self.node.walk();
@@ -34112,7 +35182,10 @@ impl<'a> std::fmt::Debug for SecondaryConstructor<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Setter<'a> {
+}lazy_static!{
+    pub static ref SetterId: u16 = crate::LANGUAGE.id_for_node_kind("setter", true);
+}
+pub struct Setter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -34121,8 +35194,17 @@ impl<'a> Setter<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_body(&self) -> Option<FunctionBody> {
         let mut cursor = self.node.walk();
@@ -34318,7 +35400,10 @@ impl<'a> std::fmt::Debug for Setter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ShebangLine<'a> {
+}lazy_static!{
+    pub static ref ShebangLineId: u16 = crate::LANGUAGE.id_for_node_kind("shebang_line", true);
+}
+pub struct ShebangLine<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -34327,15 +35412,27 @@ impl<'a> ShebangLine<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for ShebangLine<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct SimpleIdentifier<'a> {
+}lazy_static!{
+    pub static ref SimpleIdentifierId: u16 = crate::LANGUAGE.id_for_node_kind("simple_identifier", true);
+}
+pub struct SimpleIdentifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -34344,15 +35441,27 @@ impl<'a> SimpleIdentifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for SimpleIdentifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct SourceFile<'a> {
+}lazy_static!{
+    pub static ref SourceFileId: u16 = crate::LANGUAGE.id_for_node_kind("source_file", true);
+}
+pub struct SourceFile<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -34361,8 +35470,17 @@ impl<'a> SourceFile<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -35566,7 +36684,10 @@ impl<'a> std::fmt::Debug for SourceFile<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct SpreadExpression<'a> {
+}lazy_static!{
+    pub static ref SpreadExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("spread_expression", true);
+}
+pub struct SpreadExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -35575,8 +36696,17 @@ impl<'a> SpreadExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -36423,7 +37553,10 @@ impl<'a> std::fmt::Debug for SpreadExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct Statements<'a> {
+}lazy_static!{
+    pub static ref StatementsId: u16 = crate::LANGUAGE.id_for_node_kind("statements", true);
+}
+pub struct Statements<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -36432,8 +37565,17 @@ impl<'a> Statements<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -37553,7 +38695,10 @@ impl<'a> std::fmt::Debug for Statements<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct StringLiteral<'a> {
+}lazy_static!{
+    pub static ref StringLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("string_literal", true);
+}
+pub struct StringLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -37562,8 +38707,17 @@ impl<'a> StringLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_interpolated_expression(&self) -> Option<InterpolatedExpression> {
         let mut cursor = self.node.walk();
@@ -37633,7 +38787,10 @@ impl<'a> std::fmt::Debug for StringLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct SuperExpression<'a> {
+}lazy_static!{
+    pub static ref SuperExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("super_expression", true);
+}
+pub struct SuperExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -37642,8 +38799,17 @@ impl<'a> SuperExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -37797,7 +38963,10 @@ impl<'a> std::fmt::Debug for SuperExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ThisExpression<'a> {
+}lazy_static!{
+    pub static ref ThisExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("this_expression", true);
+}
+pub struct ThisExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -37806,8 +38975,17 @@ impl<'a> ThisExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_type_identifier(&self) -> Option<TypeIdentifier> {
         let mut cursor = self.node.walk();
@@ -37835,7 +39013,10 @@ impl<'a> std::fmt::Debug for ThisExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TryExpression<'a> {
+}lazy_static!{
+    pub static ref TryExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("try_expression", true);
+}
+pub struct TryExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -37844,8 +39025,17 @@ impl<'a> TryExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_catch_block(&self) -> Option<CatchBlock> {
         let mut cursor = self.node.walk();
@@ -37915,7 +39105,10 @@ impl<'a> std::fmt::Debug for TryExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeAlias<'a> {
+}lazy_static!{
+    pub static ref TypeAliasId: u16 = crate::LANGUAGE.id_for_node_kind("type_alias", true);
+}
+pub struct TypeAlias<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -37924,8 +39117,17 @@ impl<'a> TypeAlias<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -38121,7 +39323,10 @@ impl<'a> std::fmt::Debug for TypeAlias<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeArguments<'a> {
+}lazy_static!{
+    pub static ref TypeArgumentsId: u16 = crate::LANGUAGE.id_for_node_kind("type_arguments", true);
+}
+pub struct TypeArguments<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38130,8 +39335,17 @@ impl<'a> TypeArguments<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_type_projection(&self) -> Option<TypeProjection> {
         let mut cursor = self.node.walk();
@@ -38159,7 +39373,10 @@ impl<'a> std::fmt::Debug for TypeArguments<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeConstraint<'a> {
+}lazy_static!{
+    pub static ref TypeConstraintId: u16 = crate::LANGUAGE.id_for_node_kind("type_constraint", true);
+}
+pub struct TypeConstraint<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38168,8 +39385,17 @@ impl<'a> TypeConstraint<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -38344,7 +39570,10 @@ impl<'a> std::fmt::Debug for TypeConstraint<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeConstraints<'a> {
+}lazy_static!{
+    pub static ref TypeConstraintsId: u16 = crate::LANGUAGE.id_for_node_kind("type_constraints", true);
+}
+pub struct TypeConstraints<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38353,8 +39582,17 @@ impl<'a> TypeConstraints<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_type_constraint(&self) -> Option<TypeConstraint> {
         let mut cursor = self.node.walk();
@@ -38382,7 +39620,10 @@ impl<'a> std::fmt::Debug for TypeConstraints<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeIdentifier<'a> {
+}lazy_static!{
+    pub static ref TypeIdentifierId: u16 = crate::LANGUAGE.id_for_node_kind("type_identifier", true);
+}
+pub struct TypeIdentifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38391,15 +39632,27 @@ impl<'a> TypeIdentifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for TypeIdentifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeModifiers<'a> {
+}lazy_static!{
+    pub static ref TypeModifiersId: u16 = crate::LANGUAGE.id_for_node_kind("type_modifiers", true);
+}
+pub struct TypeModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38408,8 +39661,17 @@ impl<'a> TypeModifiers<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -38437,7 +39699,10 @@ impl<'a> std::fmt::Debug for TypeModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeParameter<'a> {
+}lazy_static!{
+    pub static ref TypeParameterId: u16 = crate::LANGUAGE.id_for_node_kind("type_parameter", true);
+}
+pub struct TypeParameter<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38446,8 +39711,17 @@ impl<'a> TypeParameter<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -38622,7 +39896,10 @@ impl<'a> std::fmt::Debug for TypeParameter<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeParameterModifiers<'a> {
+}lazy_static!{
+    pub static ref TypeParameterModifiersId: u16 = crate::LANGUAGE.id_for_node_kind("type_parameter_modifiers", true);
+}
+pub struct TypeParameterModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38631,8 +39908,17 @@ impl<'a> TypeParameterModifiers<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_annotation(&self) -> Option<Annotation> {
         let mut cursor = self.node.walk();
@@ -38702,7 +39988,10 @@ impl<'a> std::fmt::Debug for TypeParameterModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeParameters<'a> {
+}lazy_static!{
+    pub static ref TypeParametersId: u16 = crate::LANGUAGE.id_for_node_kind("type_parameters", true);
+}
+pub struct TypeParameters<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38711,8 +40000,17 @@ impl<'a> TypeParameters<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_type_parameter(&self) -> Option<TypeParameter> {
         let mut cursor = self.node.walk();
@@ -38740,7 +40038,10 @@ impl<'a> std::fmt::Debug for TypeParameters<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeProjection<'a> {
+}lazy_static!{
+    pub static ref TypeProjectionId: u16 = crate::LANGUAGE.id_for_node_kind("type_projection", true);
+}
+pub struct TypeProjection<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38749,8 +40050,17 @@ impl<'a> TypeProjection<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -38904,7 +40214,10 @@ impl<'a> std::fmt::Debug for TypeProjection<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeProjectionModifiers<'a> {
+}lazy_static!{
+    pub static ref TypeProjectionModifiersId: u16 = crate::LANGUAGE.id_for_node_kind("type_projection_modifiers", true);
+}
+pub struct TypeProjectionModifiers<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38913,8 +40226,17 @@ impl<'a> TypeProjectionModifiers<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_variance_modifier(&self) -> Option<VarianceModifier> {
         let mut cursor = self.node.walk();
@@ -38942,7 +40264,10 @@ impl<'a> std::fmt::Debug for TypeProjectionModifiers<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct TypeTest<'a> {
+}lazy_static!{
+    pub static ref TypeTestId: u16 = crate::LANGUAGE.id_for_node_kind("type_test", true);
+}
+pub struct TypeTest<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -38951,8 +40276,17 @@ impl<'a> TypeTest<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -39085,7 +40419,10 @@ impl<'a> std::fmt::Debug for TypeTest<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct UnsignedLiteral<'a> {
+}lazy_static!{
+    pub static ref UnsignedLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("unsigned_literal", true);
+}
+pub struct UnsignedLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -39094,8 +40431,17 @@ impl<'a> UnsignedLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_bin_literal(&self) -> Option<BinLiteral> {
         let mut cursor = self.node.walk();
@@ -39165,7 +40511,10 @@ impl<'a> std::fmt::Debug for UnsignedLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct UseSiteTarget<'a> {
+}lazy_static!{
+    pub static ref UseSiteTargetId: u16 = crate::LANGUAGE.id_for_node_kind("use_site_target", true);
+}
+pub struct UseSiteTarget<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -39174,15 +40523,27 @@ impl<'a> UseSiteTarget<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for UseSiteTarget<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct UserType<'a> {
+}lazy_static!{
+    pub static ref UserTypeId: u16 = crate::LANGUAGE.id_for_node_kind("user_type", true);
+}
+pub struct UserType<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -39191,8 +40552,17 @@ impl<'a> UserType<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_type_arguments(&self) -> Option<TypeArguments> {
         let mut cursor = self.node.walk();
@@ -39241,7 +40611,10 @@ impl<'a> std::fmt::Debug for UserType<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ValueArgument<'a> {
+}lazy_static!{
+    pub static ref ValueArgumentId: u16 = crate::LANGUAGE.id_for_node_kind("value_argument", true);
+}
+pub struct ValueArgument<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -39250,8 +40623,17 @@ impl<'a> ValueArgument<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -40119,7 +41501,10 @@ impl<'a> std::fmt::Debug for ValueArgument<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ValueArguments<'a> {
+}lazy_static!{
+    pub static ref ValueArgumentsId: u16 = crate::LANGUAGE.id_for_node_kind("value_arguments", true);
+}
+pub struct ValueArguments<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -40128,8 +41513,17 @@ impl<'a> ValueArguments<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_value_argument(&self) -> Option<ValueArgument> {
         let mut cursor = self.node.walk();
@@ -40157,7 +41551,10 @@ impl<'a> std::fmt::Debug for ValueArguments<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct VariableDeclaration<'a> {
+}lazy_static!{
+    pub static ref VariableDeclarationId: u16 = crate::LANGUAGE.id_for_node_kind("variable_declaration", true);
+}
+pub struct VariableDeclaration<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -40166,8 +41563,17 @@ impl<'a> VariableDeclaration<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_function_type(&self) -> Option<FunctionType> {
         let mut cursor = self.node.walk();
@@ -40321,7 +41727,10 @@ impl<'a> std::fmt::Debug for VariableDeclaration<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct VarianceModifier<'a> {
+}lazy_static!{
+    pub static ref VarianceModifierId: u16 = crate::LANGUAGE.id_for_node_kind("variance_modifier", true);
+}
+pub struct VarianceModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -40330,15 +41739,27 @@ impl<'a> VarianceModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for VarianceModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct VisibilityModifier<'a> {
+}lazy_static!{
+    pub static ref VisibilityModifierId: u16 = crate::LANGUAGE.id_for_node_kind("visibility_modifier", true);
+}
+pub struct VisibilityModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -40347,15 +41768,27 @@ impl<'a> VisibilityModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for VisibilityModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct WhenCondition<'a> {
+}lazy_static!{
+    pub static ref WhenConditionId: u16 = crate::LANGUAGE.id_for_node_kind("when_condition", true);
+}
+pub struct WhenCondition<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -40364,8 +41797,17 @@ impl<'a> WhenCondition<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -41254,7 +42696,10 @@ impl<'a> std::fmt::Debug for WhenCondition<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct WhenEntry<'a> {
+}lazy_static!{
+    pub static ref WhenEntryId: u16 = crate::LANGUAGE.id_for_node_kind("when_entry", true);
+}
+pub struct WhenEntry<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -41263,8 +42708,17 @@ impl<'a> WhenEntry<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_control_structure_body(&self) -> Option<ControlStructureBody> {
         let mut cursor = self.node.walk();
@@ -41313,7 +42767,10 @@ impl<'a> std::fmt::Debug for WhenEntry<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct WhenExpression<'a> {
+}lazy_static!{
+    pub static ref WhenExpressionId: u16 = crate::LANGUAGE.id_for_node_kind("when_expression", true);
+}
+pub struct WhenExpression<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -41322,8 +42779,17 @@ impl<'a> WhenExpression<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_when_entry(&self) -> Option<WhenEntry> {
         let mut cursor = self.node.walk();
@@ -41372,7 +42838,10 @@ impl<'a> std::fmt::Debug for WhenExpression<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct WhenSubject<'a> {
+}lazy_static!{
+    pub static ref WhenSubjectId: u16 = crate::LANGUAGE.id_for_node_kind("when_subject", true);
+}
+pub struct WhenSubject<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -41381,8 +42850,17 @@ impl<'a> WhenSubject<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -42271,7 +43749,10 @@ impl<'a> std::fmt::Debug for WhenSubject<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct WhileStatement<'a> {
+}lazy_static!{
+    pub static ref WhileStatementId: u16 = crate::LANGUAGE.id_for_node_kind("while_statement", true);
+}
+pub struct WhileStatement<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -42280,8 +43761,17 @@ impl<'a> WhileStatement<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }
     pub fn find_additive_expression(&self) -> Option<AdditiveExpression> {
         let mut cursor = self.node.walk();
@@ -43149,7 +44639,10 @@ impl<'a> std::fmt::Debug for WhileStatement<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct BinLiteral<'a> {
+}lazy_static!{
+    pub static ref BinLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("bin_literal", true);
+}
+pub struct BinLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43158,15 +44651,27 @@ impl<'a> BinLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for BinLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct HexLiteral<'a> {
+}lazy_static!{
+    pub static ref HexLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("hex_literal", true);
+}
+pub struct HexLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43175,15 +44680,27 @@ impl<'a> HexLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for HexLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct IntegerLiteral<'a> {
+}lazy_static!{
+    pub static ref IntegerLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("integer_literal", true);
+}
+pub struct IntegerLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43192,15 +44709,27 @@ impl<'a> IntegerLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for IntegerLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct LineComment<'a> {
+}lazy_static!{
+    pub static ref LineCommentId: u16 = crate::LANGUAGE.id_for_node_kind("line_comment", true);
+}
+pub struct LineComment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43209,15 +44738,27 @@ impl<'a> LineComment<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for LineComment<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct MultilineComment<'a> {
+}lazy_static!{
+    pub static ref MultilineCommentId: u16 = crate::LANGUAGE.id_for_node_kind("multiline_comment", true);
+}
+pub struct MultilineComment<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43226,15 +44767,27 @@ impl<'a> MultilineComment<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for MultilineComment<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct NullLiteral<'a> {
+}lazy_static!{
+    pub static ref NullLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("null_literal", true);
+}
+pub struct NullLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43243,15 +44796,27 @@ impl<'a> NullLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for NullLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct PropertyModifier<'a> {
+}lazy_static!{
+    pub static ref PropertyModifierId: u16 = crate::LANGUAGE.id_for_node_kind("property_modifier", true);
+}
+pub struct PropertyModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43260,15 +44825,27 @@ impl<'a> PropertyModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for PropertyModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct RealLiteral<'a> {
+}lazy_static!{
+    pub static ref RealLiteralId: u16 = crate::LANGUAGE.id_for_node_kind("real_literal", true);
+}
+pub struct RealLiteral<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43277,15 +44854,27 @@ impl<'a> RealLiteral<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for RealLiteral<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct ReificationModifier<'a> {
+}lazy_static!{
+    pub static ref ReificationModifierId: u16 = crate::LANGUAGE.id_for_node_kind("reification_modifier", true);
+}
+pub struct ReificationModifier<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43294,15 +44883,27 @@ impl<'a> ReificationModifier<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for ReificationModifier<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct StringContent<'a> {
+}lazy_static!{
+    pub static ref StringContentId: u16 = crate::LANGUAGE.id_for_node_kind("string_content", true);
+}
+pub struct StringContent<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43311,15 +44912,27 @@ impl<'a> StringContent<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for StringContent<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.text())
     }
-}pub struct WildcardImport<'a> {
+}lazy_static!{
+    pub static ref WildcardImportId: u16 = crate::LANGUAGE.id_for_node_kind("wildcard_import", true);
+}
+pub struct WildcardImport<'a> {
     pub node: Node<'a>,
     pub source: &'a Rope,
 }
@@ -43328,8 +44941,17 @@ impl<'a> WildcardImport<'a> {
     pub fn new(node: Node<'a>, source: &'a Rope) -> Self {
         Self{node, source}
     }
+
     pub fn text(&self) -> String {
         text_of(&self.node, self.source)
+    }
+
+    pub fn text_tr(&self) -> WithTR<String> {
+        WithTR::new(self.text_range(), self.text())
+    }
+
+    pub fn text_range(&self) -> TextRange {
+        self.node.byte_range().try_into().unwrap()
     }}
 
 impl<'a> std::fmt::Debug for WildcardImport<'a> {

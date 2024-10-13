@@ -978,6 +978,7 @@ dependencies = [
 name = "parser"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "cc",
  "crop",
  "derive-new",
@@ -1524,6 +1525,7 @@ dependencies = [
 name = "stdx"
 version = "0.1.0"
 dependencies = [
+ "derive-new",
  "parking_lot",
 ]
 

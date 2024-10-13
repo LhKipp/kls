@@ -1,20 +1,19 @@
 mod file_scope;
 mod file_scope_creation;
+pub mod fun_decl_scope;
 mod project_scope;
 mod source_set_scope;
 
 pub use file_scope::GSFile;
+pub use fun_decl_scope::SFunDecl;
 pub use project_scope::GSProject;
 pub use source_set_scope::GSSourceSet;
 
-use crate::{
-    project::{PSourceSet, ProjectI},
-    range_util::TextRange,
-};
+use crate::project::{PSourceSet, ProjectI};
 use enum_as_inner::EnumAsInner;
 use indextree::{Arena, NodeId};
 use std::{collections::HashMap, fmt, path::PathBuf, sync::Arc};
-use stdx::{new_arc_rw_lock, ARwLock};
+use stdx::{new_arc_rw_lock, ARwLock, TextRange};
 use tokio::task::JoinHandle;
 use tracing::{debug, error};
 use tree_sitter::{Node, Range};
@@ -129,15 +128,23 @@ pub enum GSKind {
     // MemberFunction(String /*name*/),
 }
 
-#[derive(Debug, new)]
+#[derive(Debug, new, Clone)]
 pub struct Scope {
     pub kind: SKind,
     pub range: TextRange,
 }
 
-#[derive(Debug, EnumAsInner)]
+#[derive(Debug, EnumAsInner, Clone)]
 pub enum SKind {
-    PackageHeader { ident: String }, // Class { name: String, range: Range },
-                                     // Function(String /*name*/),
-                                     // MemberFunction(String /*name*/),
+    PackageHeader { ident: String },
+    FunDecl(SFunDecl),
+    // Class { name: String, range: Range },
+    // Function(String /*name*/),
+    // MemberFunction(String /*name*/),
+}
+
+impl SKind {
+    fn discriminant(&self) -> u8 {
+        unsafe { *(self as *const Self as *const u8) }
+    }
 }
