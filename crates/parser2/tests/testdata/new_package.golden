@@ -1,0 +1,8 @@
+0..1 SourceFile
+└─ 0..1 PackageDecl
+   ├─ 0..1 Ws
+   ├─ 1..8 PackageKeyword
+   ├─ 8..9 Ws
+   ├─ 9..12 SimpleIdent
+   ├─ 12..13 Period
+   └─ 13..20 SimpleIdent

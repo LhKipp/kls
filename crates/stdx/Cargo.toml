@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 parking_lot.workspace = true
 derive-new.workspace = true
+anyhow.workspace = true
+tracing.workspace = true

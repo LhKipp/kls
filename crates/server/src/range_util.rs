@@ -1,6 +1,6 @@
-use stdx::TextRange;
 use crop::Rope;
 use std::ops::{Deref, DerefMut, Range};
+use stdx::TextRange;
 
 pub fn ts_range_to_text_range(range: tree_sitter::Range) -> TextRange {
     TextRange::new(range.start_byte as u32, range.end_byte as u32)
@@ -51,3 +51,9 @@ pub fn lsp_range_apply_text_edit(
     }
 }
 
+pub fn u32_range_to_usize_range(u32_range: Range<u32>) -> Range<usize> {
+    Range {
+        start: u32_range.start as usize,
+        end: u32_range.end as usize,
+    }
+}

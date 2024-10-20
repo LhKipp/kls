@@ -1,0 +1,29 @@
+[package]
+name = "parser2"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow.workspace = true
+stdx.workspace = true
+tracing.workspace = true
+derive-new.workspace = true
+crop.workspace = true
+lazy_static.workspace = true
+logos = "0.14.2"
+drop_bomb = "0.1.5"
+strum = "0.26"
+strum_macros = "0.26"
+ptree = "0.5.0"
+
+[dev-dependencies]
+goldie = "0.5.0"
+tracing-subscriber.workspace = true
+
+[build-dependencies]
+serde = {version= "1.0.193", features = ["derive"]}
+serde_json = "1.0.108"
+tera = "1.19.1"
+tera-text-filters = "1.0.0"

@@ -5,8 +5,11 @@ use std::sync::Arc;
 
 use parking_lot::{Mutex, RwLock};
 
+mod result_util;
 mod text_range;
 mod with_tr;
+
+pub mod prelude;
 
 pub use text_range::TextRange;
 pub use with_tr::WithTR;

@@ -14,6 +14,7 @@ server = {path = "crates/server", version = "0.1"}
 testing = {path = "crates/testing", version = "0.1"}
 stdx = {path = "crates/stdx", version = "0.1"}
 parser = {path= "crates/parser", version = "0.1"}
+parser2 = {path= "crates/parser2", version = "0.1"}
 tycheck = {path= "crates/tycheck", version = "0.1"}
 
 anyhow = "1.0.75"
