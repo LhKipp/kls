@@ -1,7 +1,9 @@
 use drop_bomb::DropBomb;
 use std::{borrow::Borrow, rc::Rc};
 use stdx::prelude::*;
+use tap::Tap;
 
+use crate::node_helper::prior_sibling_of;
 use crop::Rope;
 use stdx::TextRange;
 
@@ -20,6 +22,10 @@ pub enum ParserState {
     SourceFile,
     OptionalTopLevelStatements,
     __UNSET,
+
+    PackageDeclPackageKeywordParsed,
+    PackageDeclPeriodParsed,
+    PackageDeclIdentParsed,
 }
 
 pub struct Parser {
@@ -29,8 +35,7 @@ pub struct Parser {
     pub(crate) next_ast_node: Option<RcNode>,
     pub(crate) tokens: TokenVec,
 
-    pub(crate) possible_states: Vec<ParserState>,
-    pub(crate) current_state: ParserState,
+    pub(crate) state: Vec<Box<dyn Rule>>,
     pub(crate) result: Vec<ParseEvent>,
 }
 
@@ -45,17 +50,16 @@ impl Parser {
         let tokens = lexer::lex_string(new_text, 0);
         Parser {
             ast_root: None,
-            possible_states: vec![ParserState::SourceFile],
             prior_ast_node: None,
             next_ast_node: None,
             tokens,
             result: vec![],
-            current_state: ParserState::__UNSET,
+            state: Self::default_state(),
         }
     }
 
-    pub fn new(text: Rope, ast_root: RcNode, change: &ChangedRange) -> Result<Self> {
-        let (possible_states, tokens, prior_ast_node, next_ast_node) = match &change {
+    pub fn try_new(text: &Rope, ast_root: RcNode, change: &ChangedRange) -> Result<Self> {
+        let (state, tokens, prior_ast_node, next_ast_node) = match &change {
             ChangedRange::Insert { at_byte, new_text } => {
                 let prior_ast_node = if *at_byte == 0 {
                     None
@@ -70,22 +74,20 @@ impl Parser {
 
                 let full_change = prior_ast_node
                     .as_ref()
-                    .map_or(String::new(), |n| n.text(&text))
+                    .map_or(String::new(), |n| n.text(text))
                     + new_text
                     + &next_ast_node
                         .as_ref()
-                        .map_or(String::new(), |n| n.text(&text));
+                        .map_or(String::new(), |n| n.text(text));
                 let tokens = lexer::lex_string(
                     &full_change,
                     prior_ast_node.as_ref().map_or(0u32, |n| n.range.start),
                 );
                 let parser_state = prior_ast_node
                     .as_ref()
-                    .map_or(ParserState::OptionalTopLevelStatements, |n| {
-                        Self::parser_state_from(n)
-                    });
+                    .map_or_else(Self::default_state, |n| Self::parser_state_from(n.clone()));
 
-                (vec![parser_state], tokens, prior_ast_node, next_ast_node)
+                (parser_state, tokens, prior_ast_node, next_ast_node)
             }
             ChangedRange::Delete { range } => todo!(),
             ChangedRange::Update { range, new_text } => todo!(),
@@ -93,26 +95,21 @@ impl Parser {
 
         Ok(Parser {
             ast_root: Some(ast_root),
-            possible_states,
             prior_ast_node,
             next_ast_node,
             tokens,
             result: vec![],
-            current_state: ParserState::__UNSET,
+            state,
         })
     }
 
     pub fn parse(mut self) -> Vec<ParseEvent> {
         // TODO evaluate all possible_states and choose best parse
-        self.current_state = self.possible_states[0];
-        match self.current_state {
-            ParserState::SourceFile => SourceFileRule {}.parse(&mut self),
-            ParserState::OptionalTopLevelStatements => {
-                todo!()
-                // OptionalTopLevelStatementsRule {}.parse(self)
-            }
-            ParserState::__UNSET => unreachable!(),
-        };
+        // assert_eq!(self.state.len(), 1);
+
+        let next_rule = self.state.pop();
+        next_rule.unwrap().parse(&mut self);
+
         debug!("parse result: {:?}", self.result);
         self.result
     }
@@ -162,7 +159,7 @@ impl Parser {
             return false;
         }
         trace!("Eating {}", token);
-        self.result.push(ParseEvent::Token(*t,*r));
+        self.result.push(ParseEvent::Token(*t, *r));
         self.tokens.bump();
         true
     }
@@ -182,7 +179,51 @@ impl Parser {
         self.result.push(ParseEvent::Error(err, range));
     }
 
-    pub fn parser_state_from(node: &RcNode) -> ParserState {
-        todo!()
+    pub fn parser_state_from(mut node: RcNode) -> Vec<BoxedRule> {
+        trace!("getting parser state from {}", node.ntype);
+        const KNOWN_STATES: [Token; 2] = [Token::PackageDecl, Token::SourceFile];
+        let original_node = node.clone();
+
+        let mut state: Vec<BoxedRule> = vec![];
+
+        loop {
+            let node_type = if node.ntype == Token::Ws {
+                prior_sibling_of(&node).expect("no prior sibling").ntype
+            } else {
+                node.ntype
+            };
+
+            if node_type == Token::SourceFile {
+                if state.is_empty() {
+                    state.push(Box::new(SourceFileRule {}));
+                }
+                break;
+            }
+
+            // goto parent
+            trace!("going to parent of node {}", node.ntype);
+            node = node.parent.clone().expect("node has no parent");
+            let parent_type = node.ntype;
+
+            trace!("state from node {} and parent {}", node_type, parent_type);
+            match parent_type {
+                Token::SourceFile => {
+                    // Todo add state from node_type
+                    state.push(Box::new(SourceFileRule {}));
+                }
+                Token::PackageDecl => state.push(Box::new(PackageStatement::new(Some(node_type)))),
+                _ => todo!("node type not yet handled {}", parent_type),
+            };
+        }
+
+        state
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .tap(|state| trace!("returning state {:?}", state))
+    }
+
+    fn default_state() -> Vec<BoxedRule> {
+        vec![Box::new(SourceFileRule {})]
     }
 }

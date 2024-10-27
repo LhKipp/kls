@@ -1312,6 +1312,7 @@ dependencies = [
  "stdx",
  "strum",
  "strum_macros",
+ "tap",
  "tera",
  "tera-text-filters",
  "tracing",

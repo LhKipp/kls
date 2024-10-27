@@ -16,15 +16,13 @@ pub fn descendant_containing_byte(node: &RcNode, byte: u32) -> Result<&RcNode> {
         if cur.children.is_empty() {
             break;
         }
+        trace!("finding descendant for byte {byte} in {}", cur.ntype);
 
-        for child in &cur.children {
-            if child.range.contains(byte) {
-                cur = &child;
-                break;
-            }
+        let Some(next) = cur.children.iter().find(|n| n.range.contains(byte)) else {
             unreachable!("If cur contains {byte}, at least 1 child contains {byte}");
-        }
+        };
+        cur = next;
     }
 
-    Ok(node)
+    Ok(cur)
 }

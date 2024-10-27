@@ -12,6 +12,7 @@ tracing.workspace = true
 derive-new.workspace = true
 crop.workspace = true
 lazy_static.workspace = true
+tap.workspace = true
 logos = "0.14.2"
 drop_bomb = "0.1.5"
 strum = "0.26"

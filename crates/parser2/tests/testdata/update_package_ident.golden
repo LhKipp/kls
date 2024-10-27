@@ -1,0 +1,5 @@
+12..24 PackageDecl
+├─ 12..13 Period
+├─ 13..16 SimpleIdent
+├─ 16..17 Period
+└─ 17..24 SimpleIdent

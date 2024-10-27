@@ -1,4 +1,5 @@
 use tracing::level_filters::LevelFilter;
+use tracing::trace;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{fmt, EnvFilter};
 
@@ -10,5 +11,7 @@ pub fn setup() {
                 .from_env_lossy(),
         )
         .with(fmt::Layer::default().with_writer(std::io::stdout));
-    tracing::subscriber::set_global_default(subscriber).expect("unable to set test subscriber");
+    if let Err(e) = tracing::subscriber::set_global_default(subscriber) {
+        trace!("unable to set test subscriber: {}", e);
+    }
 }

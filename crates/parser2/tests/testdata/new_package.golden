@@ -1,5 +1,5 @@
-0..1 SourceFile
-└─ 0..1 PackageDecl
+0..20 SourceFile
+└─ 0..20 PackageDecl
    ├─ 0..1 Ws
    ├─ 1..8 PackageKeyword
    ├─ 8..9 Ws

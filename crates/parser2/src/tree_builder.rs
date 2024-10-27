@@ -8,7 +8,7 @@ use stdx::TextRange;
 use crate::parse_event::ParseEvent;
 use crate::{
     grammar::Rule,
-    node::{Node, RcNode},
+    node::{get_mut_unchecked, Node, RcNode},
 };
 use stdx::prelude::*;
 
@@ -41,6 +41,7 @@ impl TreeBuilder {
         if self.result.is_none() {
             self.result = Some(Node::new(token, range));
             self.current = self.result.clone();
+            self.state = State::Normal;
             return;
         }
 
@@ -57,6 +58,13 @@ impl TreeBuilder {
                 self.current = self.current.as_ref().unwrap().parent.clone();
             }
             State::Normal => (),
+        }
+        if let Some(cur) = &mut self.current {
+            let cur_mut = get_mut_unchecked(cur);
+            cur_mut.range = TextRange::new(
+                cur_mut.children.first().map_or(0, |n| n.range.start),
+                cur_mut.children.last().map_or(0, |n| n.range.end),
+            )
         }
     }
 
@@ -87,11 +95,7 @@ impl TreeBuilder {
 
     fn do_token(&mut self, token: Token, range: TextRange) {
         debug!("BuildTree: doing token: {:?}", token);
-        unsafe {
-            Rc::get_mut_unchecked(self.current.as_mut().unwrap())
-                .children
-                .push(Node::new(token, range));
-        }
+        Node::child_of(self.current.as_mut().unwrap(), token, range);
     }
 
     pub fn build(mut events: Vec<ParseEvent>) -> RcNode {

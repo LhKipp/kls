@@ -50,9 +50,7 @@ impl Node {
             range,
             err: None,
         });
-        unsafe {
-            Rc::get_mut_unchecked(parent).children.push(self_.clone());
-        }
+        get_mut_unchecked(parent).children.push(self_.clone());
         self_
     }
 
@@ -101,4 +99,8 @@ fn rc_node_sexp_helper(node: &Node, builder: &mut TreeBuilder) {
         }
         builder.end_child();
     }
+}
+
+pub(crate) fn get_mut_unchecked(node: &mut RcNode) -> &mut Node {
+    unsafe { Rc::get_mut_unchecked(node) }
 }

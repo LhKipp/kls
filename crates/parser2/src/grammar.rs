@@ -5,11 +5,14 @@ use stdx::prelude::*;
 mod source_file_rule;
 mod top_level_statement;
 pub(crate) use source_file_rule::SourceFileRule;
-pub(crate) use top_level_statement::TopLevelStatement;
+pub(crate) use top_level_statement::PackageStatement;
+
+pub type BoxedRule = Box<dyn Rule>;
 
 pub trait Rule {
     /// Returns the name of the rule
     fn name(&self) -> String;
+    fn debug_format(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result;
     /// Returns whether parser state matches this rule
     fn matches(&self, s: &Parser) -> bool;
     /// Internal function
@@ -37,13 +40,12 @@ pub trait Rule {
             self.name(),
             p.tokens.next_non_ws()
         );
-        let result = self.parse_rule(p);
+        self.parse_rule(p);
         debug!(
             "Finished Parsing {}, Now at {:?}",
             self.name(),
             p.tokens.next_non_ws()
         );
-        result
     }
 }
 
@@ -58,5 +60,15 @@ impl Rule for Token {
 
     fn parse_rule(&self, p: &mut Parser) {
         p.expect(*self);
+    }
+
+    fn debug_format(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl std::fmt::Debug for dyn Rule {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.debug_format(f)
     }
 }
